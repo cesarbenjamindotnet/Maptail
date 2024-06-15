@@ -2,3 +2,22 @@
 # https://docs.coderedcorp.com/wagtail-crx/releases/
 coderedcms==4.0.*
 wagtail==6.1.*
+fiona
+pyproj
+geos
+gdal
+shapely
+django-auditlog
+django-autoslug
+django-sass
+django-json-widget
+django-guardian
+django-allauth
+django-polymorphic
+django-modelcluster
+djoser
+djangorestframework
+djangorestframework-gis
+django-filter
+earthengine-api
+httpx

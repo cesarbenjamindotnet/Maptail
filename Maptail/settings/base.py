@@ -57,6 +57,25 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
+
+    # Maptail
+    "base",
+    "features",
+    "resources",
+    "resource_attrs",
+    "resource_files",
+    "metadata",
+
+    # Third-party
+    "rest_framework",
+    "rest_framework_gis",
+    "django_json_widget",
+    "guardian",
+    "polymorphic",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.openid_connect",
 ]
 
 MIDDLEWARE = [
@@ -73,6 +92,10 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     # CMS functionality
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    # AllAuth
+    "allauth.account.middleware.AccountMiddleware",
+    # Auditlog
+    'auditlog.middleware.AuditlogMiddleware'
     # Fetch from cache. Must be LAST.
     "wagtailcache.cache.FetchFromCacheMiddleware",
 ]
@@ -194,3 +217,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # custom implementation.
 CRX_DISABLE_NAVBAR = True
 CRX_DISABLE_FOOTER = True
+
+
+# Maptail settings
+
+AUDITLOG_INCLUDE_ALL_MODELS=True
