@@ -17,7 +17,7 @@ class ResourceBaseFileMixin(Orderable):
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     file = models.FileField(upload_to='resources/files/')
-    kind = models.CharField(max_length=255, null=True, blank=True)
+    kind = models.CharField(max_length=255, null=True)
 
     class Meta:
         abstract = True
@@ -28,13 +28,16 @@ class PointVectorLayerFile(ResourceBaseFileMixin):
     A point dataset.
     """
 
-    layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="layer_files")
+    layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
         return f"{self.uuid} - {self.layer.name}"
 
+    def save(self, *args, **kwargs):
+        if not self.kind or not self.pk:
+            self.kind = "point_vector_file"
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = "Point Vector Layer File"
         verbose_name_plural = "Resource Files: Point Vector Layer Files"
-
-

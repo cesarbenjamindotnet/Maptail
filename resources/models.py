@@ -85,6 +85,13 @@ class PointVectorLayer(VectorLayerMixin):
     A point dataset.
     """
 
+    def publish(self, *args, **kwargs):
+        # TODO: aqui meter la logica para meter los objetos de los archivos
+        print("Publishing PointVectorLayer")
+        print("self", self)
+        print("self", self.points.all())
+        super(PointVectorLayer, self).publish(*args, **kwargs)
+
     class Meta:
         verbose_name = "Point Vector Layer"
         verbose_name_plural = "Resources: Point Vector Layers"

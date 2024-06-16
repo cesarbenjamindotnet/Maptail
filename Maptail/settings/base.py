@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
+    "django.contrib.gis",
 
     # Maptail
     "base",
@@ -70,7 +71,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_gis",
     "django_json_widget",
-    "guardian",
     "polymorphic",
     "allauth",
     "allauth.account",
@@ -94,8 +94,6 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     # AllAuth
     "allauth.account.middleware.AccountMiddleware",
-    # Auditlog
-    'auditlog.middleware.AuditlogMiddleware'
     # Fetch from cache. Must be LAST.
     "wagtailcache.cache.FetchFromCacheMiddleware",
 ]
@@ -126,8 +124,8 @@ WSGI_APPLICATION = "Maptail.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.contrib.gis.db.backends.spatialite",
+        "NAME": BASE_DIR / "db.spatialite",
     }
 }
 
@@ -221,4 +219,21 @@ CRX_DISABLE_FOOTER = True
 
 # Maptail settings
 
-AUDITLOG_INCLUDE_ALL_MODELS=True
+USE_AUDITLOG = True
+
+if USE_AUDITLOG:
+    INSTALLED_APPS.append("auditlog")
+    MIDDLEWARE.append("auditlog.middleware.AuditlogMiddleware")
+    AUDITLOG_INCLUDE_ALL_MODELS = True
+
+
+OL_MAP_ZOOM = 11
+OL_MAP_CENTER = [-101.2, 24.8]
+OL_MAP_CENTER_LON = -101.2
+OL_MAP_CENTER_LAT = 24.8
+
+ENABLE_MAP_CENTER_FROM_USER_LOCATION = True
+ENABLE_MODELS_REVISIONS = True
+
+DATA_FEATURES_SRID = 4326
+USE_RICHTEXT_TEXTFIELD = True

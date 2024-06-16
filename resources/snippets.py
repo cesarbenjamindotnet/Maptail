@@ -14,7 +14,7 @@ class PointVectorLayerSnippetViewSet(SnippetViewSet):
 
     add_to_admin_menu = False
     search_fields = ("name", "description", "category", "abstract", "purpose")
-    list_filter = ("category", "topic_category", "license", "language", "date_type", "maintenance_frequency", "regions", "restriction_code_type", "is_featured", "is_advertised", "state")
+    list_filter = ("category", "topic_category", "license", "language", "date_type", "maintenance_frequency", "regions", "restriction_code_type", "is_featured", "is_advertised")
 
     main_panels = [
         FieldPanel('name'),
@@ -43,11 +43,10 @@ class PointVectorLayerSnippetViewSet(SnippetViewSet):
     ]
 
     files_panels = [
-        InlinePanel('layer_files', panels=[
-            # FieldPanel('uuid', read_only=True),
+        InlinePanel('files', panels=[
             FieldPanel('file'),
-            FieldPanel('kind', read_only=False),
-        ], min_num=1),
+            # FieldPanel('kind', read_only=True),
+        ], min_num=0),
     ]
 
     extra_panels = [

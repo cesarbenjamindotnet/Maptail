@@ -10,7 +10,7 @@ from wagtail.admin.ui.tables import (
     BulkActionsCheckboxColumn,
     Column,
     DateColumn,
-    InlineActionsTable,
+    # InlineActionsTable,
     LiveStatusTagColumn,
     TitleColumn,
     UserColumn,

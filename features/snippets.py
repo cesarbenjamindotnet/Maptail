@@ -15,6 +15,7 @@ class PointSnippetViewSet(SnippetViewSet):
     list_filter = ("id",)
 
     panels = [
+        FieldPanel('layer'),
         FieldPanel('data', widget=JSONEditorWidget(options={})),
         FieldPanel('geom', widget=CustomOSMWidget),
     ]
