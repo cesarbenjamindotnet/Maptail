@@ -93,6 +93,7 @@ class PointVectorLayer(VectorLayerMixin):
         # TODO: aqui meter la logica para meter los objetos de los archivos
         print("Publishing PointVectorLayer")
         print("self", self)
+        print("self files", self.files.all())
         super(PointVectorLayer, self).publish(*args, **kwargs)
 
     class Meta:
