@@ -18,9 +18,9 @@ from wagtail.admin.ui.tables import (
 
 
 @register_snippet
-class PointVectorLayerSnippetViewSet(SnippetViewSet):
+class PointVectorLayerFileSnippetViewSet(SnippetViewSet):
     model = PointVectorLayerFile
-    menu_label = "Point Vector Layers"
+    menu_label = "Point Vector Layer Files"
     # list_display = ("uuid", "layer", "kind", "status_string")
     add_to_admin_menu = False
     search_fields = ("name",)
@@ -29,7 +29,7 @@ class PointVectorLayerSnippetViewSet(SnippetViewSet):
     @cached_property
     def list_display(self):
         # list_display = super().list_display.copy()
-        list_display = ["id", "uuid", "layer", "kind"]
+        list_display = ["uuid", "layer", "kind"]
         if self.draftstate_enabled:
             list_display.append(LiveStatusTagColumn())
         return list_display

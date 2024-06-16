@@ -44,7 +44,7 @@ class PointVectorLayerSnippetViewSet(SnippetViewSet):
 
     files_panels = [
         InlinePanel('files', panels=[
-            FieldPanel('file'),
+            FieldPanel('file', read_only=True),
             # FieldPanel('kind', read_only=True),
         ], min_num=0),
     ]

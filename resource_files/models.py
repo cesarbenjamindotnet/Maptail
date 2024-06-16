@@ -1,5 +1,6 @@
 from django.db import models
-from base.mixins import LockableWorkFlowDraftStateRevisionModelBaseMixin, LockableRevisionOrderableModelBaseMixin
+from base.mixins import (LockableWorkFlowDraftStateRevisionModelBaseMixin, LockableRevisionOrderableModelBaseMixin,
+                         LockableDraftStateRevisionOrderableModelBaseAbstract)
 from modelcluster.fields import ParentalKey
 from wagtail.models import Orderable
 import uuid
@@ -10,12 +11,12 @@ from wagtail.models import RevisionMixin, LockableMixin, DraftStateMixin, Workfl
 # Create your models here.
 
 
-class ResourceBaseFileMixin(Orderable):
+class ResourceBaseFileMixin(LockableDraftStateRevisionOrderableModelBaseAbstract):
     """
     A Vector layer file
     """
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to='resources/files/')
     kind = models.CharField(max_length=255, null=True)
 
