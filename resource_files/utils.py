@@ -48,25 +48,20 @@ def get_spatial_data_features(file):
 
 def store_layer_data(file, layer, model):
     try:
-        print("file", file)
-        print("layer", layer)
-        print("model", model)
+        print("store_layer_data file", file)
+        print("store_layer_data layer", layer)
+        print("store_layer_data model", model)
 
-        for feature, crs in get_spatial_data_features(file.file.path):
-            properties = dict(feature['properties'])
-            reprojected_geometry = transform_geom(crs, settings.DATA_FEATURES_SRID, feature['geometry'])
-            print("geometry", feature['geometry'])
-            print("reprojected_geometry", reprojected_geometry)
-            shapely_geometry = shape(reprojected_geometry)
-            print("shapely_geometry", shapely_geometry)
-            print("shapely_geometry wkt", shapely_geometry.wkt)
-            print("properties", properties)
-            print("file", file)
-            print("file", type(file))
-            print("file", dir(file))
-            new_feature = model.objects.create(layer=layer, file=file, geom=shapely_geometry.wkt, data=properties)
-            new_feature.save()
-            print("new_feature", new_feature)
+        if not model.objects.filter(layer=layer, file_uuid=file.uuid).exists():
+            for feature, crs in get_spatial_data_features(file.file.path):
+                properties = dict(feature['properties'])
+                reprojected_geometry = transform_geom(crs, settings.DATA_FEATURES_SRID, feature['geometry'])
+                shapely_geometry = shape(reprojected_geometry)
+                print("store_layer_data file", dir(file))
+
+                new_feature = model(layer=layer, file_uuid=file.uuid, geom=shapely_geometry.wkt, data=properties)
+                new_feature.save()
+                print("new_feature", new_feature)
 
     except Exception as e:
         if hasattr(e, 'message'):

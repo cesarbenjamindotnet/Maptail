@@ -54,9 +54,19 @@ class PointVectorLayerSnippetViewSet(SnippetViewSet):
         FieldPanel('thumbnail'),
     ]
 
+    features_panels = [
+        InlinePanel('points', panels=[
+            FieldPanel('id', heading=' '),
+            FieldPanel('file_uuid'),
+            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
+            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        ], min_num=0),
+    ]
+
     edit_handler = TabbedInterface([
         ObjectList(main_panels, heading='Main'),
         ObjectList(metadata_panels, heading='Metadata'),
-        ObjectList(files_panels, heading='Files'),
         ObjectList(extra_panels, heading='Extra'),
+        ObjectList(files_panels, heading='Files'),
+        ObjectList(features_panels, heading='Features'),
     ])

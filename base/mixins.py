@@ -12,12 +12,12 @@ class LockableRevisionOrderableModelBaseAbstract(LockableMixin, RevisionMixin, O
     class Meta:
         abstract = True
 
+
 class LockableDraftStateRevisionOrderableModelBaseAbstract(LockableMixin, DraftStateMixin, RevisionMixin, Orderable):
     class Meta:
         abstract = True
 
 
-
 LockableWorkFlowDraftStateRevisionModelBaseMixin = LockableWorkFlowDrafStateRevisionModelBaseAbstract if settings.ENABLE_MODELS_REVISIONS else models.Model
 LockableRevisionOrderableModelBaseMixin = LockableRevisionOrderableModelBaseAbstract if settings.ENABLE_MODELS_REVISIONS else Orderable
-LockableDraftStateRevisionOrderableModelBaseAbstract = LockableDraftStateRevisionOrderableModelBaseAbstract if settings.ENABLE_MODELS_REVISIONS else Orderable
+LockableDraftStateRevisionOrderableModelBaseMixin = LockableDraftStateRevisionOrderableModelBaseAbstract if settings.ENABLE_MODELS_REVISIONS else Orderable
