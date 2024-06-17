@@ -1,5 +1,5 @@
 from wagtail.snippets.models import register_snippet
-from .models import PointVectorLayer, RasterLayer, DataTable, RemoteWMS, RemoteWFS
+from .models import PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer, MultiLineStringVectorLayer, MultiPolygonVectorLayer
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultipleChooserPanel, MultiFieldPanel, FieldRowPanel, TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet
 from django_json_widget.widgets import JSONEditorWidget
@@ -7,11 +7,8 @@ from .widgets import CustomOSMWidget
 from resource_attrs.models import ResourceCategory
 
 
-@register_snippet
-class PointVectorLayerSnippetViewSet(SnippetViewSet):
-    model = PointVectorLayer
-    menu_label = "Point Vector Layers"
 
+class VectorLayerSnippetViewSet(SnippetViewSet):
     add_to_admin_menu = False
     search_fields = ("name", "description", "category", "abstract", "purpose")
     list_filter = ("category", "topic_category", "license", "language", "date_type", "maintenance_frequency", "regions", "restriction_code_type", "is_featured", "is_advertised")
@@ -42,17 +39,17 @@ class PointVectorLayerSnippetViewSet(SnippetViewSet):
         FieldPanel('data_quality_statement'),
     ]
 
-    files_panels = [
-        InlinePanel('files', panels=[
-            FieldPanel('file')
-        ], min_num=0),
-    ]
-
     extra_panels = [
         FieldPanel('is_featured'),
         FieldPanel('is_advertised'),
         FieldPanel('thumbnail'),
     ]
+
+
+@register_snippet
+class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
+    model = PointVectorLayer
+    menu_label = "Point Vector Layers"
 
     features_panels = [
         InlinePanel('points', panels=[
@@ -63,10 +60,164 @@ class PointVectorLayerSnippetViewSet(SnippetViewSet):
         ], min_num=0),
     ]
 
+    files_panels = [
+        InlinePanel('point_files', panels=[
+            FieldPanel('file')
+        ], min_num=0),
+    ]
+
     edit_handler = TabbedInterface([
-        ObjectList(main_panels, heading='Main'),
-        ObjectList(metadata_panels, heading='Metadata'),
-        ObjectList(extra_panels, heading='Extra'),
+        ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
+        ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
+        ObjectList(files_panels, heading='Files'),
+        ObjectList(features_panels, heading='Features'),
+    ])
+
+
+@register_snippet
+class LineStringVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
+    model = LineStringVectorLayer
+    menu_label = "LineString Vector Layers"
+
+    features_panels = [
+        InlinePanel('lines', panels=[
+            FieldPanel('id', heading=' '),
+            FieldPanel('file_uuid'),
+            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
+            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        ], min_num=0),
+    ]
+
+    files_panels = [
+        InlinePanel('linestring_files', panels=[
+            FieldPanel('file')
+        ], min_num=0),
+    ]
+
+    edit_handler = TabbedInterface([
+        ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
+        ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
+        ObjectList(files_panels, heading='Files'),
+        ObjectList(features_panels, heading='Features'),
+    ])
+
+
+@register_snippet
+class PolygonVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
+    model = PolygonVectorLayer
+    menu_label = "Polygons Vector Layers"
+
+    features_panels = [
+        InlinePanel('polygons', panels=[
+            FieldPanel('id', heading=' '),
+            FieldPanel('file_uuid'),
+            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
+            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        ], min_num=0),
+    ]
+
+    files_panels = [
+        InlinePanel('polygon_files', panels=[
+            FieldPanel('file')
+        ], min_num=0),
+    ]
+
+    edit_handler = TabbedInterface([
+        ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
+        ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
+        ObjectList(files_panels, heading='Files'),
+        ObjectList(features_panels, heading='Features'),
+    ])
+
+
+
+@register_snippet
+class MultiPointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
+    model = MultiPointVectorLayer
+    menu_label = "MultiPoint Vector Layers"
+
+    features_panels = [
+        InlinePanel('multipoints', panels=[
+            FieldPanel('id', heading=' '),
+            FieldPanel('file_uuid'),
+            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
+            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        ], min_num=0),
+    ]
+
+    files_panels = [
+        InlinePanel('multipoint_files', panels=[
+            FieldPanel('file')
+        ], min_num=0),
+    ]
+
+    edit_handler = TabbedInterface([
+        ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
+        ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
+        ObjectList(files_panels, heading='Files'),
+        ObjectList(features_panels, heading='Features'),
+    ])
+
+
+
+
+@register_snippet
+class MultiLineStringVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
+    model = MultiLineStringVectorLayer
+    menu_label = "MultiLineString Vector Layers"
+
+    features_panels = [
+        InlinePanel('multilines', panels=[
+            FieldPanel('id', heading=' '),
+            FieldPanel('file_uuid'),
+            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
+            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        ], min_num=0),
+    ]
+
+    files_panels = [
+        InlinePanel('multilinestring_files', panels=[
+            FieldPanel('file')
+        ], min_num=0),
+    ]
+
+    edit_handler = TabbedInterface([
+        ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
+        ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
+        ObjectList(files_panels, heading='Files'),
+        ObjectList(features_panels, heading='Features'),
+    ])
+
+
+@register_snippet
+class MultiPolygonVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
+    model = MultiPolygonVectorLayer
+    menu_label = "MultiPolygons Vector Layers"
+
+    features_panels = [
+        InlinePanel('multipolygons', panels=[
+            FieldPanel('id', heading=' '),
+            FieldPanel('file_uuid'),
+            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
+            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        ], min_num=0),
+    ]
+
+    files_panels = [
+        InlinePanel('multipolygon_files', panels=[
+            FieldPanel('file')
+        ], min_num=0),
+    ]
+
+    edit_handler = TabbedInterface([
+        ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
+        ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
         ObjectList(files_panels, heading='Files'),
         ObjectList(features_panels, heading='Features'),
     ])

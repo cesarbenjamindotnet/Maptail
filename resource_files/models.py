@@ -4,11 +4,14 @@ from base.mixins import (LockableWorkFlowDraftStateRevisionModelBaseMixin, Locka
 from modelcluster.fields import ParentalKey
 from wagtail.models import Orderable
 import uuid
-from resources.models import PointVectorLayer
-from features.models import Point
+from resources.models import (PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer,
+                              MultiLineStringVectorLayer, MultiPolygonVectorLayer)
+from features.models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon
 from wagtail.admin.panels import FieldPanel
 from wagtail.models import RevisionMixin, LockableMixin, DraftStateMixin, WorkflowMixin, Orderable
-from .utils import validate_point_vector_file, uuid_file_path, store_layer_data
+from .utils import (uuid_file_path, store_layer_data, validate_point_vector_file, validate_linestring_vector_file,
+                    validate_polygon_vector_file, validate_multipoint_vector_file, validate_multilinestring_vector_file,
+                    validate_multipolygon_vector_file)
 from modelcluster.models import ClusterableModel
 from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_delete, post_delete, pre_save, post_save
@@ -19,25 +22,19 @@ from django.db.models import Q
 
 
 class PointVectorLayerFile(Orderable):
-    """
-    A point dataset.
-    """
-
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_point_vector_file])
-    kind = models.CharField(max_length=255, null=True)
-    layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
+    kind = models.CharField(max_length=50, null=True)
+    layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="point_files")
 
     def __str__(self):
         return f"{self.uuid} - {self.layer.name}"
-
 
     @receiver(post_delete, sender='resource_files.PointVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
         orphans = Point.objects.filter(file_uuid=instance.uuid)
         print("delete_orphan_pointfiles_post_delete")
         # orphans.delete()
-
 
     @receiver(post_save, sender='resource_files.PointVectorLayerFile')
     def store_layer_data_post_save(sender, instance, created, **kwargs):
@@ -49,3 +46,138 @@ class PointVectorLayerFile(Orderable):
     class Meta:
         verbose_name = "Point Vector Layer File"
         verbose_name_plural = "Resource Files: Point Vector Layer Files"
+
+
+class LineStringVectorLayerFile(Orderable):
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    file = models.FileField(upload_to=uuid_file_path, validators=[validate_linestring_vector_file])
+    kind = models.CharField(max_length=50, null=True)
+    layer = ParentalKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="linestring_files")
+
+    def __str__(self):
+        return f"{self.uuid} - {self.layer.name}"
+
+    @receiver(post_delete, sender='resource_files.LineStringVectorLayerFile')
+    def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
+        orphans = Point.objects.filter(file_uuid=instance.uuid)
+        print("delete_orphan_pointfiles_post_delete")
+        # orphans.delete()
+
+    @receiver(post_save, sender='resource_files.LineStringVectorLayerFile')
+    def store_layer_data_post_save(sender, instance, created, **kwargs):
+        if created:
+            print("store_layer_data_post_save")
+            instance.kind = "linestring_vector_file"
+            store_layer_data(instance, instance.layer, LineString)
+
+    class Meta:
+        verbose_name = "LineString Vector Layer File"
+        verbose_name_plural = "Resource Files: LineString Vector Layer Files"
+
+
+class PolygonVectorLayerFile(Orderable):
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    file = models.FileField(upload_to=uuid_file_path, validators=[validate_polygon_vector_file])
+    kind = models.CharField(max_length=50, null=True)
+    layer = ParentalKey(PolygonVectorLayer, on_delete=models.CASCADE, related_name="polygon_files")
+
+    def __str__(self):
+        return f"{self.uuid} - {self.layer.name}"
+
+    @receiver(post_delete, sender='resource_files.PolygonVectorLayerFile')
+    def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
+        orphans = Point.objects.filter(file_uuid=instance.uuid)
+        print("delete_orphan_pointfiles_post_delete")
+        # orphans.delete()
+
+    @receiver(post_save, sender='resource_files.PolygonVectorLayerFile')
+    def store_layer_data_post_save(sender, instance, created, **kwargs):
+        if created:
+            print("store_layer_data_post_save")
+            instance.kind = "polygon_vector_file"
+            store_layer_data(instance, instance.layer, Polygon)
+
+    class Meta:
+        verbose_name = "Polygon Vector Layer File"
+        verbose_name_plural = "Resource Files: Polygon Vector Layer Files"
+
+
+class MultiPointVectorLayerFile(Orderable):
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    file = models.FileField(upload_to=uuid_file_path, validators=[validate_multipoint_vector_file])
+    kind = models.CharField(max_length=50, null=True)
+    layer = ParentalKey(MultiPointVectorLayer, on_delete=models.CASCADE, related_name="multipoint_files")
+
+    def __str__(self):
+        return f"{self.uuid} - {self.layer.name}"
+
+    @receiver(post_delete, sender='resource_files.MultiPointVectorLayerFile')
+    def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
+        orphans = Point.objects.filter(file_uuid=instance.uuid)
+        print("delete_orphan_pointfiles_post_delete")
+        # orphans.delete()
+
+    @receiver(post_save, sender='resource_files.MultiPointVectorLayerFile')
+    def store_layer_data_post_save(sender, instance, created, **kwargs):
+        if created:
+            print("store_layer_data_post_save")
+            instance.kind = "multipoint_vector_file"
+            store_layer_data(instance, instance.layer, MultiPoint)
+
+    class Meta:
+        verbose_name = "MultiPoint Vector Layer File"
+        verbose_name_plural = "Resource Files: MultiPoint Vector Layer Files"
+
+
+class MultiLineStringVectorLayerFile(Orderable):
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    file = models.FileField(upload_to=uuid_file_path, validators=[validate_multilinestring_vector_file])
+    kind = models.CharField(max_length=50, null=True)
+    layer = ParentalKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="multilinestring_files")
+
+    def __str__(self):
+        return f"{self.uuid} - {self.layer.name}"
+
+    @receiver(post_delete, sender='resource_files.MultiLineStringVectorLayerFile')
+    def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
+        orphans = Point.objects.filter(file_uuid=instance.uuid)
+        print("delete_orphan_pointfiles_post_delete")
+        # orphans.delete()
+
+    @receiver(post_save, sender='resource_files.MultiLineStringVectorLayerFile')
+    def store_layer_data_post_save(sender, instance, created, **kwargs):
+        if created:
+            print("store_layer_data_post_save")
+            instance.kind = "multilinestring_vector_file"
+            store_layer_data(instance, instance.layer, MultiLineString)
+
+    class Meta:
+        verbose_name = "MultiLineString Vector Layer File"
+        verbose_name_plural = "Resource Files: MultiLineString Vector Layer Files"
+
+
+class MultiPolygonVectorLayerFile(Orderable):
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    file = models.FileField(upload_to=uuid_file_path, validators=[validate_multipolygon_vector_file])
+    kind = models.CharField(max_length=50, null=True)
+    layer = ParentalKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="multipolygon_files")
+
+    def __str__(self):
+        return f"{self.uuid} - {self.layer.name}"
+
+    @receiver(post_delete, sender='resource_files.MultiPolygonVectorLayerFile')
+    def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
+        orphans = Point.objects.filter(file_uuid=instance.uuid)
+        print("delete_orphan_pointfiles_post_delete")
+        # orphans.delete()
+
+    @receiver(post_save, sender='resource_files.MultiPolygonVectorLayerFile')
+    def store_layer_data_post_save(sender, instance, created, **kwargs):
+        if created:
+            print("store_layer_data_post_save")
+            instance.kind = "multipolygon_vector_file"
+            store_layer_data(instance, instance.layer, MultiPolygon)
+
+    class Meta:
+        verbose_name = "MultiPolygon Vector Layer File"
+        verbose_name_plural = "Resource Files: MultiPolygon Vector Layer Files"

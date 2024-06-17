@@ -107,3 +107,112 @@ def validate_point_vector_file(file):
             raise ValidationError(e.message)
         else:
             raise ValidationError(e)
+
+
+def validate_linestring_vector_file(file):
+    print("validate_point_vector_file", file)
+    try:
+        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+            with fiona.open(file) as file:
+                if file.schema['geometry'] not in ['LineString']:
+                    raise ValidationError("Invalid geometry")
+        elif file.name.split('.').pop() in ['zip']:
+            with fiona.io.ZipMemoryFile(file) as memfile:
+                layers = memfile.listlayers()
+                layer = memfile.open(layer=layers.pop())
+                if layer.schema['geometry'] not in ['LineString']:
+                    raise ValidationError("Invalid geometry")
+        else:
+            raise ValidationError("Invalid format file")
+    except Exception as e:
+        if hasattr(e, 'message'):
+            raise ValidationError(e.message)
+        else:
+            raise ValidationError(e)
+
+def validate_polygon_vector_file(file):
+    print("validate_point_vector_file", file)
+    try:
+        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+            with fiona.open(file) as file:
+                if file.schema['geometry'] not in ['Polygon']:
+                    raise ValidationError("Invalid geometry")
+        elif file.name.split('.').pop() in ['zip']:
+            with fiona.io.ZipMemoryFile(file) as memfile:
+                layers = memfile.listlayers()
+                layer = memfile.open(layer=layers.pop())
+                if layer.schema['geometry'] not in ['Polygon']:
+                    raise ValidationError("Invalid geometry")
+        else:
+            raise ValidationError("Invalid format file")
+    except Exception as e:
+        if hasattr(e, 'message'):
+            raise ValidationError(e.message)
+        else:
+            raise ValidationError(e)
+
+
+
+def validate_multipoint_vector_file(file):
+    print("validate_multipoint_vector_file", file)
+    try:
+        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+            with fiona.open(file) as file:
+                if file.schema['geometry'] not in ['MultiPoint']:
+                    raise ValidationError("Invalid geometry")
+        elif file.name.split('.').pop() in ['zip']:
+            with fiona.io.ZipMemoryFile(file) as memfile:
+                layers = memfile.listlayers()
+                layer = memfile.open(layer=layers.pop())
+                if layer.schema['geometry'] not in ['MultiPoint']:
+                    raise ValidationError("Invalid geometry")
+        else:
+            raise ValidationError("Invalid format file")
+    except Exception as e:
+        if hasattr(e, 'message'):
+            raise ValidationError(e.message)
+        else:
+            raise ValidationError(e)
+
+
+def validate_multilinestring_vector_file(file):
+    print("validate_multipoint_vector_file", file)
+    try:
+        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+            with fiona.open(file) as file:
+                if file.schema['geometry'] not in ['MultiLineString']:
+                    raise ValidationError("Invalid geometry")
+        elif file.name.split('.').pop() in ['zip']:
+            with fiona.io.ZipMemoryFile(file) as memfile:
+                layers = memfile.listlayers()
+                layer = memfile.open(layer=layers.pop())
+                if layer.schema['geometry'] not in ['MultiLineString']:
+                    raise ValidationError("Invalid geometry")
+        else:
+            raise ValidationError("Invalid format file")
+    except Exception as e:
+        if hasattr(e, 'message'):
+            raise ValidationError(e.message)
+        else:
+            raise ValidationError(e)
+
+def validate_multipolygon_vector_file(file):
+    print("validate_multipolygon_vector_file", file)
+    try:
+        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+            with fiona.open(file) as file:
+                if file.schema['geometry'] not in ['MultiPolygon']:
+                    raise ValidationError("Invalid geometry")
+        elif file.name.split('.').pop() in ['zip']:
+            with fiona.io.ZipMemoryFile(file) as memfile:
+                layers = memfile.listlayers()
+                layer = memfile.open(layer=layers.pop())
+                if layer.schema['geometry'] not in ['MultiPolygon']:
+                    raise ValidationError("Invalid geometry")
+        else:
+            raise ValidationError("Invalid format file")
+    except Exception as e:
+        if hasattr(e, 'message'):
+            raise ValidationError(e.message)
+        else:
+            raise ValidationError(e)
