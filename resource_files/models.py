@@ -9,6 +9,7 @@ from features.models import Point
 from wagtail.admin.panels import FieldPanel
 from wagtail.models import RevisionMixin, LockableMixin, DraftStateMixin, WorkflowMixin, Orderable
 from .utils import validate_point_vector_file, uuid_file_path, store_layer_data
+from modelcluster.models import ClusterableModel
 
 # Create your models here.
 
@@ -18,13 +19,11 @@ class ResourceBaseFileMixin(Orderable):
     A Vector layer file
     """
 
-
-
     class Meta:
         abstract = True
 
 
-class PointVectorLayerFile(Orderable):
+class PointVectorLayerFile(Orderable, ClusterableModel):
     """
     A point dataset.
     """
@@ -46,9 +45,8 @@ class PointVectorLayerFile(Orderable):
             print("self.file.path", self.file.path)
             print("self.file.name", self.file.name)
             print("self.layer", self.layer)
-            store_layer_data(self.file.path, self.layer, Point)
-
         super().save(*args, **kwargs)
+        store_layer_data(self, self.layer, Point)
 
     # TODO: implementar delete para eliminar los features de la capa que se relacionan con este archivo
 

@@ -7,6 +7,7 @@ from django.contrib.gis.geos import GEOSGeometry
 import json
 from shapely.geometry import shape
 
+
 # TODO: Create a function that will take a file and readit using fiona to get the crs and convert the data to data able to store in geom field on geodjango
 
 def get_data_from_file(file):
@@ -19,8 +20,8 @@ def get_data_from_file(file):
     #     return crs, feature
 
 
-
 # TODO: create a function to store data in a geodjango model
+
 
 def get_spatial_data_features(file):
     try:
@@ -51,7 +52,7 @@ def store_layer_data(file, layer, model):
         print("layer", layer)
         print("model", model)
 
-        for feature, crs in get_spatial_data_features(file):
+        for feature, crs in get_spatial_data_features(file.file.path):
             properties = dict(feature['properties'])
             reprojected_geometry = transform_geom(crs, settings.DATA_FEATURES_SRID, feature['geometry'])
             print("geometry", feature['geometry'])
@@ -60,7 +61,10 @@ def store_layer_data(file, layer, model):
             print("shapely_geometry", shapely_geometry)
             print("shapely_geometry wkt", shapely_geometry.wkt)
             print("properties", properties)
-            new_feature = model.objects.create(layer=layer, geom=shapely_geometry.wkt, data=properties)
+            print("file", file)
+            print("file", type(file))
+            print("file", dir(file))
+            new_feature = model.objects.create(layer=layer, file=file, geom=shapely_geometry.wkt, data=properties)
             new_feature.save()
             print("new_feature", new_feature)
 
@@ -76,24 +80,29 @@ def uuid_file_path(instance, filename):
     Returns the file path for the FileField upload_to parameter,
     using the UUID of the instance as the filename.
     """
-    ext = filename.split('.')[-1]
+    print("uuid_file_path")
+    ext = filename.split('.').pop()
+    print("ext", ext)
     if not ext:
         raise ValidationError("El archivo debe tener extensión")
     filename = f"{instance.layer.uuid}--{instance.uuid}.{ext}"
+    print("filename", filename)
     file_path = os.path.join('resource_files/', filename)
+    print("file_path", file_path)
     return file_path
 
 
 def validate_point_vector_file(file):
+    print("validate_point_vector_file", file)
     try:
-        if file.name.split('.')[-1] in ['gpkg', 'geojson']:
+        if file.name.split('.').pop() in ['gpkg', 'geojson']:
             with fiona.open(file) as file:
                 if file.schema['geometry'] not in ['Point']:
                     raise ValidationError("Invalid geometry")
-        elif file.name.split('.')[-1] in ['zip']:
+        elif file.name.split('.').pop() in ['zip']:
             with fiona.io.ZipMemoryFile(file) as memfile:
                 layers = memfile.listlayers()
-                layer = memfile.open(layer=layers[0])
+                layer = memfile.open(layer=layers.pop())
                 if layer.schema['geometry'] not in ['Point']:
                     raise ValidationError("Invalid geometry")
         else:
