@@ -21,3 +21,19 @@ djangorestframework-gis
 django-filter
 earthengine-api
 httpx
+# pygeoapi
+pydantic<2.0.0
+Babel
+click
+filelock
+jsonschema
+pygeofilter
+pygeoif
+python-dateutil
+pytz
+PyYAML
+rasterio
+requests
+SQLAlchemy<2.0.0
+tinydb
+unicodecsv
