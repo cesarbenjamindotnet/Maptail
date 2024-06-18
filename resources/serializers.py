@@ -38,3 +38,4 @@ class RemoteWFSSerializer(serializers.ModelSerializer):
     class Meta:
         model = RemoteWFS
         fields = '__all__'
+

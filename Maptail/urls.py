@@ -6,8 +6,11 @@ from django.contrib import admin
 from django.urls import include
 from django.urls import path
 from wagtail.documents import urls as wagtaildocs_urls
+from base.urls import drf_default_router
 
 urlpatterns = [
+    path('', include('features.urls')),
+    path('', include('resources.urls')),
     # Admin
     path("django-admin/", admin.site.urls),
     path("admin/", include(crx_admin_urls)),
@@ -26,6 +29,7 @@ urlpatterns = [
 ]
 
 
+
 # fmt: off
 if settings.DEBUG:
     from django.conf.urls.static import static
@@ -34,3 +38,5 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # type: ignore
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # type: ignore
 # fmt: on
+
+urlpatterns += drf_default_router.urls
