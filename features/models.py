@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 # Create your models here.
 
 
-class Point(Orderable):
+class Point(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     data = models.JSONField(null=True, blank=True)
     geom = models.PointField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="points")

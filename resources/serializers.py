@@ -1,6 +1,10 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from .models import (Resource, VectorLayerMixin, RasterLayer, DataTable, RemoteWMS, RemoteWFS)
+from .models import (Resource, PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer,
+                     MultiLineStringVectorLayer, MultiPolygonVectorLayer, GeometryCollectionVectorLayer,
+                     RasterLayer, DataTable, RemoteWMS, RemoteWFS)
+from features.serializers import PointGeoFeatureSerializer, LineStringGeoFeatureSerializer, PolygonGeoFeatureSerializer, MultiPointGeoFeatureSerializer, MultiLineStringGeoFeatureSerializer, MultiPolygonGeoFeatureSerializer, GeometryCollectionGeoFeatureSerializer
+
 
 # Register your models here.
 
@@ -11,9 +15,47 @@ class ResourceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class VectorLayerSerializer(serializers.ModelSerializer):
+class PointVectorLayerSerializer(serializers.ModelSerializer):
+    points = PointGeoFeatureSerializer(many=True, read_only=True)
+
     class Meta:
-        model = VectorLayerMixin
+        model = PointVectorLayer
+        fields = '__all__'
+
+
+class LineStringVectorLayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LineStringVectorLayer
+        fields = '__all__'
+
+
+class PolygonVectorLayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PolygonVectorLayer
+        fields = '__all__'
+
+
+class MultiPointVectorLayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MultiPointVectorLayer
+        fields = '__all__'
+
+
+class MultiLineStringVectorLayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MultiLineStringVectorLayer
+        fields = '__all__'
+
+
+class MultiPolygonVectorLayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MultiPolygonVectorLayer
+        fields = '__all__'
+
+
+class GeometryCollectionVectorLayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GeometryCollectionVectorLayer
         fields = '__all__'
 
 
