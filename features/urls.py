@@ -1,6 +1,6 @@
-from .viewsets import (PointViewSet, LineStringViewSet, PolygonViewSet, MultiPointViewSet, MultiLineStringViewSet,
-                       MultiPolygonViewSet, GeometryCollectionViewSet)
-from base.urls import drf_default_router
+from .viewsets import (PointViewSet, LineStringViewSet, PolygonViewSet, MultiPointViewSet, MultiLineStringViewSet, MultiPolygonViewSet, GeometryCollectionViewSet)
+from .viewsets import (PointGeoFeatureViewSet, LineStringGeoFeatureViewSet, PolygonGeoFeatureViewSet, MultiPointGeoFeatureViewSet, MultiLineStringGeoFeatureViewSet, MultiPolygonGeoFeatureViewSet, GeometryCollectionGeoFeatureViewSet)
+from base.router import drf_default_router
 
 urlpatterns = []
 
@@ -11,3 +11,15 @@ drf_default_router.register('rest/v1/features/multipoints', MultiPointViewSet, b
 drf_default_router.register('rest/v1/features/multilinestrings', MultiLineStringViewSet, basename='multilinestrings')
 drf_default_router.register('rest/v1/features/multipolygons', MultiPolygonViewSet, basename='multipolygons')
 drf_default_router.register('rest/v1/features/geometrycollections', GeometryCollectionViewSet, basename='geometrycollections')
+
+
+drf_default_router.register('rest/v1/features/geojson/points', PointGeoFeatureViewSet, basename='geojson-points')
+drf_default_router.register('rest/v1/features/geojson/linestrings', LineStringGeoFeatureViewSet, basename='geojson-linestrings')
+drf_default_router.register('rest/v1/features/geojson/polygons', PolygonGeoFeatureViewSet, basename='geojson-polygons')
+drf_default_router.register('rest/v1/features/geojson/multipoints', MultiPointGeoFeatureViewSet, basename='geojson-multipoints')
+drf_default_router.register('rest/v1/features/geojson/multilinestrings', MultiLineStringGeoFeatureViewSet, basename='geojson-multilinestrings')
+drf_default_router.register('rest/v1/features/geojson/multipolygons', MultiPolygonGeoFeatureViewSet, basename='geojson-multipolygons')
+drf_default_router.register('rest/v1/features/geojson/geometrycollections', GeometryCollectionGeoFeatureViewSet, basename='geojson-geometrycollections')
+
+if drf_default_router.urls not in urlpatterns:
+    urlpatterns += drf_default_router.urls

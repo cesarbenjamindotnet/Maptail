@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.urls import include
 from django.urls import path
 from wagtail.documents import urls as wagtaildocs_urls
-from base.urls import drf_default_router
+from base.router import drf_default_router
 
 urlpatterns = [
     path('', include('features.urls')),
@@ -27,8 +27,6 @@ urlpatterns = [
     # of your site, rather than the site root:
     #    path("pages/", include(crx_urls)),
 ]
-
-
 
 # fmt: off
 if settings.DEBUG:

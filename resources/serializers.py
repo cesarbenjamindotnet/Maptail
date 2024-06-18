@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from .models import (Resource, VectorLayerMixin, RasterLayer, DataTable, RemoteWMS, RemoteWFS)
 
 # Register your models here.
@@ -39,3 +40,5 @@ class RemoteWFSSerializer(serializers.ModelSerializer):
         model = RemoteWFS
         fields = '__all__'
 
+
+# GeoFeatureModelSerializer

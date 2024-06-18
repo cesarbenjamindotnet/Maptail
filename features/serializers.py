@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
 
 # Register your serializers here.
@@ -43,4 +44,56 @@ class MultiPolygonSerializer(serializers.ModelSerializer):
 class GeometryCollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = GeometryCollection
+        fields = '__all__'
+
+
+# GeoFeatureModelSerializer
+
+
+class PointGeoFeatureSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = Point
+        geo_field = 'geom'
+        fields = '__all__'
+
+
+class LineStringGeoFeatureSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = LineString
+        geo_field = 'geom'
+        fields = '__all__'
+
+
+class PolygonGeoFeatureSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = Polygon
+        geo_field = 'geom'
+        fields = '__all__'
+
+
+class MultiPointGeoFeatureSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = MultiPoint
+        geo_field = 'geom'
+        fields = '__all__'
+
+
+class MultiLineStringGeoFeatureSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = MultiLineString
+        geo_field = 'geom'
+        fields = '__all__'
+
+
+class MultiPolygonGeoFeatureSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = MultiPolygon
+        geo_field = 'geom'
+        fields = '__all__'
+
+
+class GeometryCollectionGeoFeatureSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = GeometryCollection
+        geo_field = 'geom'
         fields = '__all__'
