@@ -45,7 +45,7 @@ class PointVectorLayerFile(Orderable):
 
     class Meta:
         verbose_name = "Point Vector Layer File"
-        verbose_name_plural = "Resource Files: Point Vector Layer Files"
+        verbose_name_plural = "Files: Point Vector Layer Files"
 
 
 class LineStringVectorLayerFile(Orderable):
@@ -72,7 +72,7 @@ class LineStringVectorLayerFile(Orderable):
 
     class Meta:
         verbose_name = "LineString Vector Layer File"
-        verbose_name_plural = "Resource Files: LineString Vector Layer Files"
+        verbose_name_plural = "Files: LineString Vector Layer Files"
 
 
 class PolygonVectorLayerFile(Orderable):
@@ -99,7 +99,7 @@ class PolygonVectorLayerFile(Orderable):
 
     class Meta:
         verbose_name = "Polygon Vector Layer File"
-        verbose_name_plural = "Resource Files: Polygon Vector Layer Files"
+        verbose_name_plural = "Files: Polygon Vector Layer Files"
 
 
 class MultiPointVectorLayerFile(Orderable):
@@ -126,7 +126,7 @@ class MultiPointVectorLayerFile(Orderable):
 
     class Meta:
         verbose_name = "MultiPoint Vector Layer File"
-        verbose_name_plural = "Resource Files: MultiPoint Vector Layer Files"
+        verbose_name_plural = "Files: MultiPoint Vector Layer Files"
 
 
 class MultiLineStringVectorLayerFile(Orderable):
@@ -153,7 +153,7 @@ class MultiLineStringVectorLayerFile(Orderable):
 
     class Meta:
         verbose_name = "MultiLineString Vector Layer File"
-        verbose_name_plural = "Resource Files: MultiLineString Vector Layer Files"
+        verbose_name_plural = "Files: MultiLineString Vector Layer Files"
 
 
 class MultiPolygonVectorLayerFile(Orderable):
@@ -180,4 +180,4 @@ class MultiPolygonVectorLayerFile(Orderable):
 
     class Meta:
         verbose_name = "MultiPolygon Vector Layer File"
-        verbose_name_plural = "Resource Files: MultiPolygon Vector Layer Files"
+        verbose_name_plural = "Files: MultiPolygon Vector Layer Files"

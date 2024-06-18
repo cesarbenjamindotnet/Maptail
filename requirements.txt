@@ -23,6 +23,7 @@ earthengine-api
 httpx
 # pygeoapi
 pydantic<2.0.0
+jinja2
 Babel
 click
 filelock

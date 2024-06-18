@@ -97,7 +97,7 @@ class LineStringVectorLayer(VectorLayerMixin):
 
     class Meta:
         verbose_name = "LineString Vector Layer"
-        verbose_name_plural = "LineString Vector Layers"
+        verbose_name_plural = "Resources: LineString Vector Layers"
 
 
 class PolygonVectorLayer(VectorLayerMixin):
@@ -107,7 +107,7 @@ class PolygonVectorLayer(VectorLayerMixin):
 
     class Meta:
         verbose_name = "Polygon Vector Layer"
-        verbose_name_plural = "Polygon Vector Layers"
+        verbose_name_plural = "Resources: Polygon Vector Layers"
 
 
 class MultiPointVectorLayer(VectorLayerMixin):
@@ -117,7 +117,7 @@ class MultiPointVectorLayer(VectorLayerMixin):
 
     class Meta:
         verbose_name = "MultiPoint Vector Layer"
-        verbose_name_plural = "MultiPoint Vector Layers"
+        verbose_name_plural = "Resources: MultiPoint Vector Layers"
 
 
 class MultiLineStringVectorLayer(VectorLayerMixin):
@@ -127,7 +127,7 @@ class MultiLineStringVectorLayer(VectorLayerMixin):
 
     class Meta:
         verbose_name = "MultiLineString Vector Layer"
-        verbose_name_plural = "MultiLineString Vector Layers"
+        verbose_name_plural = "Resources: MultiLineString Vector Layers"
 
 
 class MultiPolygonVectorLayer(VectorLayerMixin):
@@ -137,7 +137,7 @@ class MultiPolygonVectorLayer(VectorLayerMixin):
 
     class Meta:
         verbose_name = "MultiPolygon Vector Layer"
-        verbose_name_plural = "MultiPolygon Vector Layers"
+        verbose_name_plural = "Resources: MultiPolygon Vector Layers"
 
 
 class GeometryCollectionVectorLayer(VectorLayerMixin):
@@ -147,7 +147,7 @@ class GeometryCollectionVectorLayer(VectorLayerMixin):
 
     class Meta:
         verbose_name = "GeometryCollection Vector Layer"
-        verbose_name_plural = "GeometryCollection Vector Layers"
+        verbose_name_plural = "Resources: GeometryCollection Vector Layers"
 
 
 class RasterLayer(Resource):
@@ -157,7 +157,7 @@ class RasterLayer(Resource):
 
     class Meta:
         verbose_name = "Raster Layer"
-        verbose_name_plural = "Raster Layers"
+        verbose_name_plural = "Resources: Raster Layers"
 
 
 class DataTable(Resource):
@@ -167,7 +167,7 @@ class DataTable(Resource):
 
     class Meta:
         verbose_name = "Data Table"
-        verbose_name_plural = "Data Tables"
+        verbose_name_plural = "Resources: Data Tables"
 
 
 class RemoteWMS(Resource, ResourceBaseRemoteServiceMixin):
@@ -177,7 +177,7 @@ class RemoteWMS(Resource, ResourceBaseRemoteServiceMixin):
 
     class Meta:
         verbose_name = "WMS Service"
-        verbose_name_plural = "WMS Services"
+        verbose_name_plural = "Resources: WMS Services"
 
 
 class RemoteWFS(Resource, ResourceBaseRemoteServiceMixin):
@@ -187,4 +187,4 @@ class RemoteWFS(Resource, ResourceBaseRemoteServiceMixin):
 
     class Meta:
         verbose_name = "WFS Service"
-        verbose_name_plural = "WFS Services"
+        verbose_name_plural = "Resources: WFS Services"
