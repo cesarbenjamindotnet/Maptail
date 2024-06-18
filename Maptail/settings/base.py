@@ -9,9 +9,12 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
-
+from pygeoapi.models.config import APIRules
+from pygeoapi.config import get_config
+from pygeoapi.openapi import load_openapi_document
+from pygeoapi.util import get_api_rules
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -76,6 +79,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.openid_connect",
+    'pygeoapi',
 ]
 
 MIDDLEWARE = [
@@ -237,3 +241,19 @@ ENABLE_MODELS_REVISIONS = True
 
 DATA_FEATURES_SRID = 4326
 USE_RICHTEXT_TEXTFIELD = True
+
+
+# pygeoapi settings
+PYGEOAPI_CONFIG = get_config()
+OPENAPI_DOCUMENT = load_openapi_document()
+API_RULES = get_api_rules(PYGEOAPI_CONFIG)
+
+print("PYGEOAPI_CONFIG", PYGEOAPI_CONFIG)
+print("OPENAPI_DOCUMENT", OPENAPI_DOCUMENT)
+
+# Defaults to True in Django
+# https://docs.djangoproject.com/en/3.2/ref/settings/#append-slash
+APPEND_SLASH = not API_RULES.strict_slashes
+
+print("APPEND_SLASH", APPEND_SLASH)
+print("PI_RULES.strict_slashes", API_RULES.strict_slashes)

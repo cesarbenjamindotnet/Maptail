@@ -7,11 +7,11 @@ from django.urls import include
 from django.urls import path
 from wagtail.documents import urls as wagtaildocs_urls
 
-
 urlpatterns = [
     # Admin
     path("django-admin/", admin.site.urls),
     path("admin/", include(crx_admin_urls)),
+    path('ogcapi/', include('pygeoapi.django.urls')),
     # Documents
     path("docs/", include(wagtaildocs_urls)),
     # Search
