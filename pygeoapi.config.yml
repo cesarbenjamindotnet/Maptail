@@ -31,7 +31,7 @@ server:
     bind:
         host: 0.0.0.0
         port: 8000
-    url: http://localhost:8000/ogcapi/
+    url: http://localhost:8000/ogcapi
     mimetype: application/json; charset=UTF-8
     encoding: utf-8
     gzip: false
@@ -176,6 +176,22 @@ resources:
               id_field: id
               title_field: name
 
+    ddbc06e1-7f21-493d-b41a-bf147712ac4b:
+        type: collection
+        title: ddbc06e1-7f21-493d-b41a-bf147712ac4b
+        description: Point Vector Layer from Django
+        keywords:
+            - point
+            - vector
+        extents:
+            spatial:
+                bbox: [ -180,-90,180,90 ]
+                crs: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+        providers:
+            - type: feature
+              name: pygeoapi.provider.maptail_points_geojson.GeoJSONProvider
+              data: ddbc06e1-7f21-493d-b41a-bf147712ac4b
+              id_field: id7
 
     hello-world:
         type: process

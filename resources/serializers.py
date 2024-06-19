@@ -24,36 +24,48 @@ class PointVectorLayerSerializer(serializers.ModelSerializer):
 
 
 class LineStringVectorLayerSerializer(serializers.ModelSerializer):
+    lines = LineStringGeoFeatureSerializer(many=True, read_only=True)
+
     class Meta:
         model = LineStringVectorLayer
         fields = '__all__'
 
 
 class PolygonVectorLayerSerializer(serializers.ModelSerializer):
+    polygons = PolygonGeoFeatureSerializer(many=True, read_only=True)
+
     class Meta:
         model = PolygonVectorLayer
         fields = '__all__'
 
 
 class MultiPointVectorLayerSerializer(serializers.ModelSerializer):
+    multipoints = MultiPointGeoFeatureSerializer(many=True, read_only=True)
+
     class Meta:
         model = MultiPointVectorLayer
         fields = '__all__'
 
 
 class MultiLineStringVectorLayerSerializer(serializers.ModelSerializer):
+    multilines = MultiLineStringGeoFeatureSerializer(many=True, read_only=True)
+
     class Meta:
         model = MultiLineStringVectorLayer
         fields = '__all__'
 
 
 class MultiPolygonVectorLayerSerializer(serializers.ModelSerializer):
+    multipolygons = MultiPolygonGeoFeatureSerializer(many=True, read_only=True)
+
     class Meta:
         model = MultiPolygonVectorLayer
         fields = '__all__'
 
 
 class GeometryCollectionVectorLayerSerializer(serializers.ModelSerializer):
+    geometrycollections = GeometryCollectionGeoFeatureSerializer(many=True, read_only=True)
+
     class Meta:
         model = GeometryCollectionVectorLayer
         fields = '__all__'
