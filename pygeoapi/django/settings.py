@@ -175,5 +175,3 @@ API_RULES = get_api_rules(PYGEOAPI_CONFIG)
 # Defaults to True in Django
 # https://docs.djangoproject.com/en/3.2/ref/settings/#append-slash
 APPEND_SLASH = not API_RULES.strict_slashes
-
-
