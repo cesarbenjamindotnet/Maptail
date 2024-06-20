@@ -10,12 +10,14 @@ from features.serializers import PointGeoFeatureSerializer, LineStringGeoFeature
 
 
 class ResourceSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     class Meta:
         model = Resource
         fields = '__all__'
 
 
 class PointVectorLayerSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     points = PointGeoFeatureSerializer(many=True, read_only=True)
 
     class Meta:
@@ -24,6 +26,7 @@ class PointVectorLayerSerializer(serializers.ModelSerializer):
 
 
 class LineStringVectorLayerSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     lines = LineStringGeoFeatureSerializer(many=True, read_only=True)
 
     class Meta:
@@ -32,6 +35,7 @@ class LineStringVectorLayerSerializer(serializers.ModelSerializer):
 
 
 class PolygonVectorLayerSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     polygons = PolygonGeoFeatureSerializer(many=True, read_only=True)
 
     class Meta:
@@ -40,6 +44,7 @@ class PolygonVectorLayerSerializer(serializers.ModelSerializer):
 
 
 class MultiPointVectorLayerSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     multipoints = MultiPointGeoFeatureSerializer(many=True, read_only=True)
 
     class Meta:
@@ -48,6 +53,7 @@ class MultiPointVectorLayerSerializer(serializers.ModelSerializer):
 
 
 class MultiLineStringVectorLayerSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     multilines = MultiLineStringGeoFeatureSerializer(many=True, read_only=True)
 
     class Meta:
@@ -56,6 +62,7 @@ class MultiLineStringVectorLayerSerializer(serializers.ModelSerializer):
 
 
 class MultiPolygonVectorLayerSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     multipolygons = MultiPolygonGeoFeatureSerializer(many=True, read_only=True)
 
     class Meta:
@@ -64,6 +71,7 @@ class MultiPolygonVectorLayerSerializer(serializers.ModelSerializer):
 
 
 class GeometryCollectionVectorLayerSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     geometrycollections = GeometryCollectionGeoFeatureSerializer(many=True, read_only=True)
 
     class Meta:
@@ -72,24 +80,28 @@ class GeometryCollectionVectorLayerSerializer(serializers.ModelSerializer):
 
 
 class RasterLayerSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     class Meta:
         model = RasterLayer
         fields = '__all__'
 
 
 class DataTableSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     class Meta:
         model = DataTable
         fields = '__all__'
 
 
 class RemoteWMSSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     class Meta:
         model = RemoteWMS
         fields = '__all__'
 
 
 class RemoteWFSSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField(format='hex')
     class Meta:
         model = RemoteWFS
         fields = '__all__'
