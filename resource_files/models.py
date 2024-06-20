@@ -32,7 +32,7 @@ class PointVectorLayerFile(Orderable):
 
     @receiver(post_delete, sender='resource_files.PointVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
-        orphans = Point.objects.filter(file_id=instance.pk)
+        orphans = Point.objects.filter(file_uuid=instance.pk)
         print("delete_orphan_pointfiles_post_delete")
         # orphans.delete()
 
@@ -59,7 +59,7 @@ class LineStringVectorLayerFile(Orderable):
 
     @receiver(post_delete, sender='resource_files.LineStringVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
-        orphans = Point.objects.filter(file_id=instance.uuid)
+        orphans = Point.objects.filter(file_uuid=instance.uuid)
         print("delete_orphan_pointfiles_post_delete")
         # orphans.delete()
 
@@ -86,7 +86,7 @@ class PolygonVectorLayerFile(Orderable):
 
     @receiver(post_delete, sender='resource_files.PolygonVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
-        orphans = Point.objects.filter(file_id=instance.uuid)
+        orphans = Point.objects.filter(file_uuid=instance.uuid)
         print("delete_orphan_pointfiles_post_delete")
         # orphans.delete()
 
@@ -113,7 +113,7 @@ class MultiPointVectorLayerFile(Orderable):
 
     @receiver(post_delete, sender='resource_files.MultiPointVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
-        orphans = Point.objects.filter(file_id=instance.uuid)
+        orphans = Point.objects.filter(file_uuid=instance.uuid)
         print("delete_orphan_pointfiles_post_delete")
         orphans.delete()
 
@@ -140,7 +140,7 @@ class MultiLineStringVectorLayerFile(Orderable):
 
     @receiver(post_delete, sender='resource_files.MultiLineStringVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
-        orphans = Point.objects.filter(file_id=instance.uuid)
+        orphans = Point.objects.filter(file_uuid=instance.uuid)
         print("delete_orphan_pointfiles_post_delete")
         # orphans.delete()
 
@@ -167,7 +167,7 @@ class MultiPolygonVectorLayerFile(Orderable):
 
     @receiver(post_delete, sender='resource_files.MultiPolygonVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
-        orphans = Point.objects.filter(file_id=instance.uuid)
+        orphans = Point.objects.filter(file_uuid=instance.uuid)
         print("delete_orphan_pointfiles_post_delete")
         # orphans.delete()
 
