@@ -76,15 +76,11 @@ def uuid_file_path(instance, filename):
     Returns the file path for the FileField upload_to parameter,
     using the UUID of the instance as the filename.
     """
-    print("uuid_file_path")
     ext = filename.split('.').pop()
-    print("ext", ext)
     if not ext:
         raise ValidationError("El archivo debe tener extensión")
     filename = f"{instance.layer.uuid}--{instance.uuid}.{ext}"
-    print("filename", filename)
     file_path = os.path.join('resource_files/', filename)
-    print("file_path", file_path)
     return file_path
 
 

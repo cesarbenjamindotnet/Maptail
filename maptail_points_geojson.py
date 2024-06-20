@@ -31,7 +31,6 @@
 import json
 import logging
 import os
-import uuid
 
 from pygeoapi.provider.base import BaseProvider, ProviderItemNotFoundError
 from pygeoapi.util import crs_transform
@@ -85,9 +84,9 @@ class GeoJSONProvider(BaseProvider):
         from resources.serializers import PointVectorLayerSerializer
 
 
-        if PointVectorLayer.objects.filter(uuid=self.data).exists():
+        if PointVectorLayer.objects.filter(id=self.data).exists():
             print("si existe")
-            data = PointVectorLayerSerializer(PointVectorLayer.objects.get(uuid=self.data)).data
+            data = PointVectorLayerSerializer(PointVectorLayer.objects.get(id=self.data)).data
             print("data", data)
             print("data", type(data))
             print("data", dir(data))
@@ -205,9 +204,9 @@ class GeoJSONProvider(BaseProvider):
 
         all_data = self._load()
 
-        if self.id_field not in new_feature and\
-           self.id_field not in new_feature['properties']:
-            new_feature['properties'][self.id_field] = str(uuid.uuid4())
+        if self.id_field not in new_feature and self.id_field not in new_feature['properties']:
+            # new_feature['properties'][self.id_field] = str(uuid.uuid4())
+            pass
 
         all_data['features'].append(new_feature)
 

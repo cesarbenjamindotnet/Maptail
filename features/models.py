@@ -22,7 +22,7 @@ class Point(LockableWorkFlowDraftStateRevisionModelBaseMixin):
 
     def delete(self, *args, **kwargs):
         print("Point delete")
-        if self.layer.files.filter(uuid=self.file_id).exists():
+        if self.layer.files.filter(pk=self.file_id).exists():
             raise ValidationError("The file is still in use")
         else:
             super(Point, self).delete(*args, **kwargs)

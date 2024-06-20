@@ -22,7 +22,7 @@ from wagtail.admin.ui.tables import (
 class PointVectorLayerFileSnippetViewSet(SnippetViewSet):
     model = PointVectorLayerFile
     menu_label = "Point Vector Layer Files"
-    # list_display = ("uuid", "layer", "kind", "status_string")
+    # list_display = ("id", "layer", "kind", "status_string")
     add_to_admin_menu = False
     search_fields = ("name",)
     list_filter = ("kind",)
@@ -30,13 +30,13 @@ class PointVectorLayerFileSnippetViewSet(SnippetViewSet):
     @cached_property
     def list_display(self):
         # list_display = super().list_display.copy()
-        list_display = ["uuid", "layer", "kind"]
+        list_display = ["id", "layer", "kind"]
         if self.draftstate_enabled:
             list_display.append(LiveStatusTagColumn())
         return list_display
 
     panels = [
-        FieldPanel('uuid', read_only=True),
+        FieldPanel('id', read_only=True),
         FieldPanel('file'),
         FieldPanel('kind', read_only=True),
         FieldPanel('layer'),
@@ -47,7 +47,7 @@ class PointVectorLayerFileSnippetViewSet(SnippetViewSet):
 class LineStringVectorLayerFileSnippetViewSet(SnippetViewSet):
     model = LineStringVectorLayerFile
     menu_label = "LineString Vector Layer Files"
-    # list_display = ("uuid", "layer", "kind", "status_string")
+    # list_display = ("id", "layer", "kind", "status_string")
     add_to_admin_menu = False
     search_fields = ("name",)
     list_filter = ("kind",)
@@ -55,13 +55,13 @@ class LineStringVectorLayerFileSnippetViewSet(SnippetViewSet):
     @cached_property
     def list_display(self):
         # list_display = super().list_display.copy()
-        list_display = ["uuid", "layer", "kind"]
+        list_display = ["id", "layer", "kind"]
         if self.draftstate_enabled:
             list_display.append(LiveStatusTagColumn())
         return list_display
 
     panels = [
-        FieldPanel('uuid', read_only=True),
+        FieldPanel('id', read_only=True),
         FieldPanel('file'),
         FieldPanel('kind', read_only=True),
         FieldPanel('layer'),
@@ -72,7 +72,7 @@ class LineStringVectorLayerFileSnippetViewSet(SnippetViewSet):
 class PolygonVectorLayerFileSnippetViewSet(SnippetViewSet):
     model = PolygonVectorLayerFile
     menu_label = "Polygon Vector Layer Files"
-    # list_display = ("uuid", "layer", "kind", "status_string")
+    # list_display = ("id", "layer", "kind", "status_string")
     add_to_admin_menu = False
     search_fields = ("name",)
     list_filter = ("kind",)
@@ -80,13 +80,13 @@ class PolygonVectorLayerFileSnippetViewSet(SnippetViewSet):
     @cached_property
     def list_display(self):
         # list_display = super().list_display.copy()
-        list_display = ["uuid", "layer", "kind"]
+        list_display = ["id", "layer", "kind"]
         if self.draftstate_enabled:
             list_display.append(LiveStatusTagColumn())
         return list_display
 
     panels = [
-        FieldPanel('uuid', read_only=True),
+        FieldPanel('id', read_only=True),
         FieldPanel('file'),
         FieldPanel('kind', read_only=True),
         FieldPanel('layer'),
@@ -97,7 +97,7 @@ class PolygonVectorLayerFileSnippetViewSet(SnippetViewSet):
 class MultiPointVectorLayerFileSnippetViewSet(SnippetViewSet):
     model = MultiPointVectorLayerFile
     menu_label = "MultiPoint Vector Layer Files"
-    # list_display = ("uuid", "layer", "kind", "status_string")
+    # list_display = ("id", "layer", "kind", "status_string")
     add_to_admin_menu = False
     search_fields = ("name",)
     list_filter = ("kind",)
@@ -105,13 +105,13 @@ class MultiPointVectorLayerFileSnippetViewSet(SnippetViewSet):
     @cached_property
     def list_display(self):
         # list_display = super().list_display.copy()
-        list_display = ["uuid", "layer", "kind"]
+        list_display = ["id", "layer", "kind"]
         if self.draftstate_enabled:
             list_display.append(LiveStatusTagColumn())
         return list_display
 
     panels = [
-        FieldPanel('uuid', read_only=True),
+        FieldPanel('id', read_only=True),
         FieldPanel('file'),
         FieldPanel('kind', read_only=True),
         FieldPanel('layer'),
@@ -122,7 +122,7 @@ class MultiPointVectorLayerFileSnippetViewSet(SnippetViewSet):
 class MultiLineStringVectorLayerFileSnippetViewSet(SnippetViewSet):
     model = MultiLineStringVectorLayerFile
     menu_label = "MultiLineString Vector Layer Files"
-    # list_display = ("uuid", "layer", "kind", "status_string")
+    # list_display = ("id", "layer", "kind", "status_string")
     add_to_admin_menu = False
     search_fields = ("name",)
     list_filter = ("kind",)
@@ -130,13 +130,13 @@ class MultiLineStringVectorLayerFileSnippetViewSet(SnippetViewSet):
     @cached_property
     def list_display(self):
         # list_display = super().list_display.copy()
-        list_display = ["uuid", "layer", "kind"]
+        list_display = ["id", "layer", "kind"]
         if self.draftstate_enabled:
             list_display.append(LiveStatusTagColumn())
         return list_display
 
     panels = [
-        FieldPanel('uuid', read_only=True),
+        FieldPanel('id', read_only=True),
         FieldPanel('file'),
         FieldPanel('kind', read_only=True),
         FieldPanel('layer'),
@@ -147,7 +147,7 @@ class MultiLineStringVectorLayerFileSnippetViewSet(SnippetViewSet):
 class MultiPolygonVectorLayerFileSnippetViewSet(SnippetViewSet):
     model = MultiPolygonVectorLayerFile
     menu_label = "MultiPolygon Vector Layer Files"
-    # list_display = ("uuid", "layer", "kind", "status_string")
+    # list_display = ("id", "layer", "kind", "status_string")
     add_to_admin_menu = False
     search_fields = ("name",)
     list_filter = ("kind",)
@@ -155,13 +155,13 @@ class MultiPolygonVectorLayerFileSnippetViewSet(SnippetViewSet):
     @cached_property
     def list_display(self):
         # list_display = super().list_display.copy()
-        list_display = ["uuid", "layer", "kind"]
+        list_display = ["id", "layer", "kind"]
         if self.draftstate_enabled:
             list_display.append(LiveStatusTagColumn())
         return list_display
 
     panels = [
-        FieldPanel('uuid', read_only=True),
+        FieldPanel('id', read_only=True),
         FieldPanel('file'),
         FieldPanel('kind', read_only=True),
         FieldPanel('layer'),

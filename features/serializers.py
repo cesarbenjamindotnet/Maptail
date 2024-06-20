@@ -65,7 +65,6 @@ class LineStringGeoFeatureSerializer(GeoFeatureModelSerializer):
 
 
 class PolygonGeoFeatureSerializer(GeoFeatureModelSerializer):
-    layer = serializers.UUIDField(format='hex')
     class Meta:
         model = Polygon
         geo_field = 'geom'

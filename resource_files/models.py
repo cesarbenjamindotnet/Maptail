@@ -3,7 +3,6 @@ from base.mixins import (LockableWorkFlowDraftStateRevisionModelBaseMixin, Locka
                          LockableDraftStateRevisionOrderableModelBaseMixin)
 from modelcluster.fields import ParentalKey
 from wagtail.models import Orderable
-import uuid
 from resources.models import (PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer,
                               MultiLineStringVectorLayer, MultiPolygonVectorLayer)
 from features.models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon
@@ -115,7 +114,7 @@ class MultiPointVectorLayerFile(Orderable):
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
         orphans = Point.objects.filter(file_id=instance.uuid)
         print("delete_orphan_pointfiles_post_delete")
-        # orphans.delete()
+        orphans.delete()
 
     @receiver(post_save, sender='resource_files.MultiPointVectorLayerFile')
     def store_layer_data_post_save(sender, instance, created, **kwargs):
