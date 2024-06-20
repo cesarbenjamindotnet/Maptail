@@ -54,7 +54,7 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     features_panels = [
         InlinePanel('points', panels=[
             FieldPanel('id', heading=' '),
-            FieldPanel('file_uuid'),
+            FieldPanel('file_id'),
             FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
             FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
         ], min_num=0),
@@ -83,7 +83,7 @@ class LineStringVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     features_panels = [
         InlinePanel('lines', panels=[
             FieldPanel('id', heading=' '),
-            FieldPanel('file_uuid'),
+            FieldPanel('file_id'),
             FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
             FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
         ], min_num=0),
@@ -112,7 +112,7 @@ class PolygonVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     features_panels = [
         InlinePanel('polygons', panels=[
             FieldPanel('id', heading=' '),
-            FieldPanel('file_uuid'),
+            FieldPanel('file_id'),
             FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
             FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
         ], min_num=0),
@@ -142,7 +142,7 @@ class MultiPointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     features_panels = [
         InlinePanel('multipoints', panels=[
             FieldPanel('id', heading=' '),
-            FieldPanel('file_uuid'),
+            FieldPanel('file_id'),
             FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
             FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
         ], min_num=0),
@@ -173,7 +173,7 @@ class MultiLineStringVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     features_panels = [
         InlinePanel('multilines', panels=[
             FieldPanel('id', heading=' '),
-            FieldPanel('file_uuid'),
+            FieldPanel('file_id'),
             FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
             FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
         ], min_num=0),
@@ -202,7 +202,7 @@ class MultiPolygonVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     features_panels = [
         InlinePanel('multipolygons', panels=[
             FieldPanel('id', heading=' '),
-            FieldPanel('file_uuid'),
+            FieldPanel('file_id'),
             FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 400})),
             FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
         ], min_num=0),

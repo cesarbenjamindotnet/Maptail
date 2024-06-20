@@ -25,7 +25,7 @@ class ResourceBase(LockableWorkFlowDraftStateRevisionModelBaseMixin, ResourceMet
     Base model for all resources.
     """
 
-    # uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     name = models.CharField(max_length=255, unique=True)
     slug = AutoSlugField(populate_from='name', always_update=True, unique=True, editable=False)
     description = GeoKnotTextField(null=True, blank=True)
@@ -35,8 +35,6 @@ class ResourceBase(LockableWorkFlowDraftStateRevisionModelBaseMixin, ResourceMet
     thumbnail = models.ImageField(upload_to='resources/thumbnails/', null=True, blank=True)
     popular_count = models.IntegerField(default=0)
     share_count = models.IntegerField(default=0)
-    # rating = models.IntegerField(default=0, null=True, blank=True)
-    # state = models.CharField(max_length=255, choices=enumerations.PROCESSING_STATES, default='running', editable=False)
 
     objects = ResourceBaseManager()
 

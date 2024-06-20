@@ -16,12 +16,13 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_delete, post_delete, pre_save, post_save
 from django.dispatch import receiver
 from django.db.models import Q
+import uuid
 
 # Create your models here.
 
 
 class PointVectorLayerFile(Orderable):
-    # uid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_point_vector_file])
     kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="point_files")
@@ -48,7 +49,7 @@ class PointVectorLayerFile(Orderable):
 
 
 class LineStringVectorLayerFile(Orderable):
-    # uid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_linestring_vector_file])
     kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="linestring_files")
@@ -75,7 +76,7 @@ class LineStringVectorLayerFile(Orderable):
 
 
 class PolygonVectorLayerFile(Orderable):
-    # uid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_polygon_vector_file])
     kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(PolygonVectorLayer, on_delete=models.CASCADE, related_name="polygon_files")
@@ -102,7 +103,7 @@ class PolygonVectorLayerFile(Orderable):
 
 
 class MultiPointVectorLayerFile(Orderable):
-    # uid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_multipoint_vector_file])
     kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(MultiPointVectorLayer, on_delete=models.CASCADE, related_name="multipoint_files")
@@ -129,7 +130,7 @@ class MultiPointVectorLayerFile(Orderable):
 
 
 class MultiLineStringVectorLayerFile(Orderable):
-    # uid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_multilinestring_vector_file])
     kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="multilinestring_files")
@@ -156,7 +157,7 @@ class MultiLineStringVectorLayerFile(Orderable):
 
 
 class MultiPolygonVectorLayerFile(Orderable):
-    # uid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_multipolygon_vector_file])
     kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="multipolygon_files")
