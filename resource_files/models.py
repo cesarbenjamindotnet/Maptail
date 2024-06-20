@@ -82,7 +82,7 @@ class PolygonVectorLayerFile(Orderable):
     layer = ParentalKey(PolygonVectorLayer, on_delete=models.CASCADE, related_name="polygon_files")
 
     def __str__(self):
-        return f"{self.id} - {self.layer.name}"
+        return f"{self.uuid} - {self.layer.name}"
 
     @receiver(post_delete, sender='resource_files.PolygonVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
