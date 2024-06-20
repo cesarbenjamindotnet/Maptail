@@ -248,12 +248,12 @@ PYGEOAPI_CONFIG = get_config()
 OPENAPI_DOCUMENT = load_openapi_document()
 API_RULES = get_api_rules(PYGEOAPI_CONFIG)
 
-print("PYGEOAPI_CONFIG", PYGEOAPI_CONFIG)
-print("OPENAPI_DOCUMENT", OPENAPI_DOCUMENT)
+# print("PYGEOAPI_CONFIG", PYGEOAPI_CONFIG)
+# print("OPENAPI_DOCUMENT", OPENAPI_DOCUMENT)
 
 # Defaults to True in Django
 # https://docs.djangoproject.com/en/3.2/ref/settings/#append-slash
 APPEND_SLASH = not API_RULES.strict_slashes
 
-print("APPEND_SLASH", APPEND_SLASH)
-print("PI_RULES.strict_slashes", API_RULES.strict_slashes)
+# print("APPEND_SLASH", APPEND_SLASH)
+# print("PI_RULES.strict_slashes", API_RULES.strict_slashes)
