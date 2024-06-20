@@ -35,7 +35,7 @@ class LineStringVectorLayerSerializer(serializers.ModelSerializer):
 
 
 class PolygonVectorLayerSerializer(serializers.ModelSerializer):
-    uuid = serializers.UUIDField(uuid_format='hex')
+    uuid = serializers.UUIDField(format='hex_verbose')
     polygons = PolygonGeoFeatureSerializer(many=True, read_only=True)
 
     class Meta:
