@@ -15,14 +15,14 @@ class Point(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     data = models.JSONField(null=True, blank=True)
     geom = models.PointField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="points")
-    file_id = models.CharField(max_length=40, null=True, blank=True)
+    file_uuid = models.CharField(max_length=40, null=True, blank=True)
 
     def __str__(self):
         return f"{self.layer.name}: {self.id}"
 
     def delete(self, *args, **kwargs):
         print("Point delete")
-        if self.layer.files.filter(pk=self.file_id).exists():
+        if self.layer.files.filter(pk=self.file_uuid).exists():
             raise ValidationError("The file is still in use")
         else:
             super(Point, self).delete(*args, **kwargs)
