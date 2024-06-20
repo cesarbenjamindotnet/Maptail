@@ -58,7 +58,7 @@ def store_layer_data(file, layer, model):
                 reprojected_geometry = transform_geom(crs, settings.DATA_FEATURES_SRID, feature['geometry'])
                 shapely_geometry = shape(reprojected_geometry)
                 if layer and file.uuid and shapely_geometry and properties:
-                    new_feature = model(layer=layer, file_id=file.id, geom=shapely_geometry.wkt, data=properties)
+                    new_feature = model(layer=layer, file_uuid=file.uuid, geom=shapely_geometry.wkt, data=properties)
                     new_feature.save()
                     print("new_feature", new_feature)
                 else:
