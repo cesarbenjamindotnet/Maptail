@@ -34,7 +34,7 @@ class PointVectorLayerFile(Orderable):
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
         orphans = Point.objects.filter(file_uuid=instance.pk)
         print("delete_orphan_pointfiles_post_delete")
-        # orphans.delete()
+        orphans.delete()
 
     @receiver(post_save, sender='resource_files.PointVectorLayerFile')
     def store_layer_data_post_save(sender, instance, created, **kwargs):
@@ -55,7 +55,7 @@ class LineStringVectorLayerFile(Orderable):
     layer = ParentalKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="linestring_files")
 
     def __str__(self):
-        return f"{self.id} - {self.layer.name}"
+        return f"{self.uuid} - {self.layer.name}"
 
     @receiver(post_delete, sender='resource_files.LineStringVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
@@ -109,7 +109,7 @@ class MultiPointVectorLayerFile(Orderable):
     layer = ParentalKey(MultiPointVectorLayer, on_delete=models.CASCADE, related_name="multipoint_files")
 
     def __str__(self):
-        return f"{self.id} - {self.layer.name}"
+        return f"{self.uuid} - {self.layer.name}"
 
     @receiver(post_delete, sender='resource_files.MultiPointVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
@@ -136,13 +136,13 @@ class MultiLineStringVectorLayerFile(Orderable):
     layer = ParentalKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="multilinestring_files")
 
     def __str__(self):
-        return f"{self.id} - {self.layer.name}"
+        return f"{self.uuid} - {self.layer.name}"
 
     @receiver(post_delete, sender='resource_files.MultiLineStringVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
         orphans = Point.objects.filter(file_uuid=instance.uuid)
         print("delete_orphan_pointfiles_post_delete")
-        # orphans.delete()
+        orphans.delete()
 
     @receiver(post_save, sender='resource_files.MultiLineStringVectorLayerFile')
     def store_layer_data_post_save(sender, instance, created, **kwargs):
@@ -163,13 +163,13 @@ class MultiPolygonVectorLayerFile(Orderable):
     layer = ParentalKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="multipolygon_files")
 
     def __str__(self):
-        return f"{self.id} - {self.layer.name}"
+        return f"{self.uuid} - {self.layer.name}"
 
     @receiver(post_delete, sender='resource_files.MultiPolygonVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
         orphans = Point.objects.filter(file_uuid=instance.uuid)
         print("delete_orphan_pointfiles_post_delete")
-        # orphans.delete()
+        orphans.delete()
 
     @receiver(post_save, sender='resource_files.MultiPolygonVectorLayerFile')
     def store_layer_data_post_save(sender, instance, created, **kwargs):
