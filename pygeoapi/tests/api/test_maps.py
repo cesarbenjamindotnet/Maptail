@@ -1,8 +1,12 @@
 # =================================================================
 #
-# Authors: Bernhard Mallinger <bernhard.mallinger@eox.at>
+# Authors: Tom Kralidis <tomkralidis@gmail.com>
+#          John A Stevenson <jostev@bgs.ac.uk>
+#          Colin Blackburn <colb@bgs.ac.uk>
+#          Bernhard Mallinger <bernhard.mallinger@eox.at>
 #
-# Copyright (c) 2024 Bernhard Mallinger
+# Copyright (c) 2024 Tom Kralidis
+# Copyright (c) 2022 John A Stevenson and Colin Blackburn
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation
@@ -27,26 +31,22 @@
 #
 # =================================================================
 
-import pytest
 
-from pygeoapi.api import API
-from pygeoapi.util import yaml_load
+from http import HTTPStatus
 
-from tests.util import get_test_file_path
+from pygeoapi.api.maps import get_collection_map
 
-
-@pytest.fixture()
-def config():
-    with open(get_test_file_path('pygeoapi-test-config.yml')) as fh:
-        return yaml_load(fh)
+from pygeoapi.tests import mock_api_request
 
 
-@pytest.fixture()
-def openapi():
-    with open(get_test_file_path('pygeoapi-test-openapi.yml')) as fh:
-        return yaml_load(fh)
+def test_get_collection_map(config, api_):
+    req = mock_api_request()
+    rsp_headers, code, response = get_collection_map(api_, req, 'notfound')
+    assert code == HTTPStatus.NOT_FOUND
 
-
-@pytest.fixture()
-def api_(config, openapi):
-    return API(config, openapi)
+    req = mock_api_request()
+    rsp_headers, code, response = get_collection_map(
+        api_, req, 'mapserver_world_map')
+    assert code == HTTPStatus.OK
+    assert isinstance(response, bytes)
+    assert response[1:4] == b'PNG'

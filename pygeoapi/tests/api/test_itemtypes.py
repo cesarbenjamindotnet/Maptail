@@ -47,7 +47,7 @@ from pygeoapi.api.itemtypes import (
     get_collection_items, manage_collection_item)
 from pygeoapi.util import yaml_load, get_crs_from_uri
 
-from tests.util import get_test_file_path, mock_api_request
+from pygeoapi.tests import get_test_file_path, mock_api_request
 
 
 @pytest.fixture()

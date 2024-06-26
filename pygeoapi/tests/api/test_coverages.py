@@ -38,7 +38,7 @@ import pytest
 from pygeoapi.api.coverages import get_collection_coverage
 from pygeoapi.util import yaml_load
 
-from tests.util import get_test_file_path, mock_request, mock_api_request
+from pygeoapi.tests import get_test_file_path, mock_request, mock_api_request
 
 
 @pytest.fixture()

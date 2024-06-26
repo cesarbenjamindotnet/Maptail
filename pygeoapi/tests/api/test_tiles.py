@@ -41,7 +41,7 @@ from pygeoapi.api.tiles import (
 )
 from pygeoapi.models.provider.base import TileMatrixSetEnum
 
-from tests.util import mock_api_request
+from pygeoapi.tests import mock_api_request
 
 
 def test_get_collection_tiles(config, api_):

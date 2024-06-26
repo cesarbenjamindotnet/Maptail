@@ -45,8 +45,8 @@ from pygeoapi.api import (
 )
 from pygeoapi.util import yaml_load, get_api_rules, get_base_url
 
-from tests.util import (get_test_file_path, mock_flask, mock_starlette,
-                        mock_request)
+from pygeoapi.tests import (get_test_file_path, mock_flask, mock_starlette,
+                            mock_request)
 
 
 @pytest.fixture()

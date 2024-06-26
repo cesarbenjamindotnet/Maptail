@@ -42,7 +42,7 @@ from pygeoapi.api.processes import (
     describe_processes, execute_process, delete_job, get_job_result,
 )
 
-from tests.util import mock_api_request
+from pygeoapi.tests import mock_api_request
 
 
 def test_describe_processes(config, api_):

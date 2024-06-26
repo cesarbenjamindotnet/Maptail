@@ -37,7 +37,7 @@ from http import HTTPStatus
 
 from pygeoapi.api.environmental_data_retrieval import get_collection_edr_query
 
-from tests.util import mock_api_request
+from pygeoapi.tests import mock_api_request
 
 
 def test_get_collection_edr_query(config, api_):

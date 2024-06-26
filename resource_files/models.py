@@ -17,8 +17,31 @@ from django.db.models.signals import pre_delete, post_delete, pre_save, post_sav
 from django.dispatch import receiver
 from django.db.models import Q
 import uuid
+from wagtail.documents import get_document_model
+from wagtail.documents.models import Document
+from django.conf import settings
+from django.core.validators import FileExtensionValidator
+
+
+class SpatialVectorFile(Document):
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+
+    def clean(self):
+        self.title = 'poner titulo, tal vez uuid?'
+        allowed_extensions = getattr(settings, "SPATIAL_VECTORFILE_EXTENSIONS", None)
+        if allowed_extensions:
+            validate = FileExtensionValidator(allowed_extensions)
+            validate(self.file)
+
 
 # Create your models here.
+
+
+class PointVectorLayerDocument(SpatialVectorFile, Orderable):
+    layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="point_documents")
+
+    def __str__(self):
+        return f"{self.pk} - {self.layer.name}"
 
 
 class PointVectorLayerFile(Orderable):
