@@ -11,6 +11,7 @@ from features.serializers import PointGeoFeatureSerializer, LineStringGeoFeature
 
 class ResourceSerializer(serializers.ModelSerializer):
     uuid = serializers.UUIDField(format='hex_verbose')
+
     class Meta:
         model = Resource
         fields = '__all__'
