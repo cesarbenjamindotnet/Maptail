@@ -15,10 +15,13 @@ from pygeoapi.models.config import APIRules
 from pygeoapi.config import get_config
 from pygeoapi.openapi import load_openapi_document
 from pygeoapi.util import get_api_rules
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+dotenv_path = os.path.join(str(BASE_DIR), '.env')
+load_dotenv(dotenv_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/

@@ -1,7 +1,8 @@
 # Consult release notes for supported versions of Django, Wagtail, and Python.
 # https://docs.coderedcorp.com/wagtail-crx/releases/
 coderedcms==4.0.*
-wagtail==6.1.*
+wagtail==6.2.*
+setuptools
 fiona
 pyproj
 geos
@@ -21,6 +22,8 @@ djangorestframework-gis
 django-filter
 earthengine-api
 httpx
+python-dotenv
+
 # pygeoapi
 pydantic<2.0.0
 jinja2
@@ -39,4 +42,3 @@ SQLAlchemy<2.0.0
 tinydb
 unicodecsv
 jsonpatch
-python-dotenv
