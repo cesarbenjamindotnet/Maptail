@@ -125,7 +125,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "Maptail.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -135,7 +134,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.spatialite",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -157,7 +155,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "custom_user.User"
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -168,7 +165,6 @@ TIME_ZONE = "America/New_York"
 USE_I18N = False
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -184,12 +180,10 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
 
-
 # Login
 
 LOGIN_URL = "wagtailadmin_login"
 LOGIN_REDIRECT_URL = "wagtailadmin_home"
-
 
 # Wagtail settings
 
@@ -207,22 +201,18 @@ WAGTAILIMAGES_EXTENSIONS = ["gif", "jpg", "jpeg", "png", "webp", "svg"]
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://maptail.maptitud.xyz"
 
-
 # Tags
 
 TAGGIT_CASE_INSENSITIVE = True
-
 
 # Sets default for primary key IDs
 # See https://docs.djangoproject.com/en/5.0/ref/models/fields/#bigautofield
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 # Disable built-in CRX Navbar and Footer since this project has a
 # custom implementation.
 CRX_DISABLE_NAVBAR = True
 CRX_DISABLE_FOOTER = True
-
 
 # Maptail settings
 
@@ -232,7 +222,6 @@ if USE_AUDITLOG:
     INSTALLED_APPS.append("auditlog")
     MIDDLEWARE.append("auditlog.middleware.AuditlogMiddleware")
     AUDITLOG_INCLUDE_ALL_MODELS = True
-
 
 OL_MAP_ZOOM = 11
 OL_MAP_CENTER = [-101.2, 24.8]
@@ -244,7 +233,6 @@ ENABLE_MODELS_REVISIONS = True
 
 DATA_FEATURES_SRID = 4326
 USE_RICHTEXT_TEXTFIELD = True
-
 
 # pygeoapi settings
 PYGEOAPI_CONFIG = get_config()
@@ -260,3 +248,8 @@ APPEND_SLASH = not API_RULES.strict_slashes
 
 # print("APPEND_SLASH", APPEND_SLASH)
 # print("PI_RULES.strict_slashes", API_RULES.strict_slashes)
+
+
+# Custom
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = None

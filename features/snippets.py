@@ -16,8 +16,8 @@ class PointSnippetViewSet(SnippetViewSet):
 
     panels = [
         FieldPanel('layer'),
-        FieldPanel('data', widget=JSONEditorWidget(options={})),
-        FieldPanel('geom', widget=CustomOSMWidget),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
     ]
 
 
@@ -30,8 +30,8 @@ class LineStringSnippetViewSet(SnippetViewSet):
     list_filter = ("id",)
 
     panels = [
-        FieldPanel('data', widget=JSONEditorWidget(options={})),
-        FieldPanel('geom', widget=CustomOSMWidget),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
     ]
 
 
@@ -44,8 +44,8 @@ class PolygonSnippetViewSet(SnippetViewSet):
     list_filter = ("id",)
 
     panels = [
-        FieldPanel('data', widget=JSONEditorWidget(options={})),
-        FieldPanel('geom', widget=CustomOSMWidget),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
     ]
 
 
@@ -58,8 +58,8 @@ class MultiPointSnippetViewSet(SnippetViewSet):
     list_filter = ("id",)
 
     panels = [
-        FieldPanel('data', widget=JSONEditorWidget(options={})),
-        FieldPanel('geom', widget=CustomOSMWidget),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
     ]
 
 
@@ -72,8 +72,8 @@ class MultiLineStringSnippetViewSet(SnippetViewSet):
     list_filter = ("id",)
 
     panels = [
-        FieldPanel('data', widget=JSONEditorWidget(options={})),
-        FieldPanel('geom', widget=CustomOSMWidget),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
     ]
 
 
@@ -86,8 +86,8 @@ class MultiPolygonSnippetViewSet(SnippetViewSet):
     list_filter = ("id",)
 
     panels = [
-        FieldPanel('data', widget=JSONEditorWidget(options={})),
-        FieldPanel('geom', widget=CustomOSMWidget),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
     ]
 
 
@@ -100,6 +100,6 @@ class GeometryCollectionSnippetViewSet(SnippetViewSet):
     list_filter = ("id",)
 
     panels = [
-        FieldPanel('data', widget=JSONEditorWidget(options={})),
-        FieldPanel('geom', widget=CustomOSMWidget),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
     ]
