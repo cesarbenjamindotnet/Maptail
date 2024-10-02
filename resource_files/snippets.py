@@ -5,7 +5,7 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, Tabbe
 from wagtail.snippets.views.snippets import SnippetViewSet
 from django_json_widget.widgets import JSONEditorWidget
 from resource_attrs.models import ResourceCategory
-
+from django.utils.translation import gettext_lazy as _
 from django.utils.functional import cached_property
 from wagtail.admin.ui.tables import (
     BulkActionsCheckboxColumn,
@@ -22,7 +22,6 @@ from wagtail.admin.ui.tables import (
 class PointVectorLayerFileSnippetViewSet(SnippetViewSet):
     model = PointVectorLayerFile
     menu_label = "Point Vector Layer Files"
-    # list_display = ("uuid", "layer", "kind", "status_string")
     add_to_admin_menu = False
     search_fields = ("name",)
     list_filter = ("kind",)
@@ -30,13 +29,13 @@ class PointVectorLayerFileSnippetViewSet(SnippetViewSet):
     @cached_property
     def list_display(self):
         # list_display = super().list_display.copy()
-        list_display = ["uuid", "layer", "kind"]
+        list_display = ["id", "layer", "kind"]
         if self.draftstate_enabled:
             list_display.append(LiveStatusTagColumn())
         return list_display
 
     panels = [
-        FieldPanel('uuid', read_only=True),
+        FieldPanel('id', read_only=True),
         FieldPanel('file'),
         FieldPanel('kind', read_only=True),
         FieldPanel('layer'),
