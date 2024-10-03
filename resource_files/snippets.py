@@ -1,5 +1,5 @@
 from wagtail.snippets.models import register_snippet
-from .models import (PointVectorLayerFileDocument,
+from .models import (PointVectorLayerFile,
                      LineStringVectorLayerFile, PolygonVectorLayerFile, MultiPointVectorLayerFile,
                      MultiPolygonVectorLayerFile, MultiLineStringVectorLayerFile)
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
@@ -21,15 +21,14 @@ from wagtail.admin.ui.tables import (
 
 @register_snippet
 class PointVectorLayerFileDocumentSnippetViewSet(SnippetViewSet):
-    model = PointVectorLayerFileDocument
+    model = PointVectorLayerFile
     menu_label = "Point Vector Layer Files"
-    add_to_admin_menu = True
+    add_to_admin_menu = False
     search_fields = ("title", "layer",)
     list_filter = ("layer",)
 
     @cached_property
     def list_display(self):
-        # list_display = super().list_display.copy()
         list_display = ["title", "layer"]
         if self.draftstate_enabled:
             list_display.append(LiveStatusTagColumn())

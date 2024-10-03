@@ -151,20 +151,20 @@ class MultiPolygonVectorLayerFile(Orderable):
 ## TODO: to improve with Wagtail documents
 
 
-class PointVectorLayerFileDocument(AbstractDocument, Orderable):
+class PointVectorLayerFile(AbstractDocument, Orderable):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_point_vector_file])
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="point_files")
 
     def __str__(self):
         return f"{self.pk} - {self.layer.name}"
 
-    @receiver(post_delete, sender='resource_files.PointVectorLayerFileDocument')
+    @receiver(post_delete, sender='resource_files.PointVectorLayerFile')
     def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
         orphans = Point.objects.filter(file_id=instance.pk)
         print("delete_orphan_pointfiles_post_delete")
         orphans.delete()
 
-    @receiver(post_save, sender='resource_files.PointVectorLayerFileDocument')
+    @receiver(post_save, sender='resource_files.PointVectorLayerFile')
     def store_layer_data_post_save(sender, instance, created, **kwargs):
         if created:
             print("store_layer_data_post_save")
