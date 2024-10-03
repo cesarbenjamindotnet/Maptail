@@ -23,36 +23,9 @@ import uuid
 # Create your models here.
 
 
-class PointVectorLayerFile(Orderable):
-    file = models.FileField(upload_to=uuid_file_path, validators=[validate_point_vector_file])
-    kind = models.CharField(max_length=50, null=True)
-    layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="point_files1")
-
-    def __str__(self):
-        return f"{self.pk} - {self.layer.name}"
-
-    @receiver(post_delete, sender='resource_files.PointVectorLayerFile')
-    def delete_orphan_pointfiles_post_delete(sender, instance, **kwargs):
-        orphans = Point.objects.filter(file_id=instance.pk)
-        print("delete_orphan_pointfiles_post_delete")
-        orphans.delete()
-
-    @receiver(post_save, sender='resource_files.PointVectorLayerFile')
-    def store_layer_data_post_save(sender, instance, created, **kwargs):
-        if created:
-            print("store_layer_data_post_save")
-            instance.kind = "point_vector_file"
-            store_layer_data(instance, instance.layer, Point)
-
-    class Meta:
-        verbose_name = "Point Vector Layer File"
-        verbose_name_plural = "Files: Point Vector Layer Files"
-
-
 class LineStringVectorLayerFile(Orderable):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_linestring_vector_file])
-    kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="linestring_files")
 
     def __str__(self):
@@ -68,7 +41,6 @@ class LineStringVectorLayerFile(Orderable):
     def store_layer_data_post_save(sender, instance, created, **kwargs):
         if created:
             print("store_layer_data_post_save")
-            instance.kind = "linestring_vector_file"
             store_layer_data(instance, instance.layer, LineString)
 
     class Meta:
@@ -79,7 +51,6 @@ class LineStringVectorLayerFile(Orderable):
 class PolygonVectorLayerFile(Orderable):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_polygon_vector_file])
-    kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(PolygonVectorLayer, on_delete=models.CASCADE, related_name="polygon_files")
 
     def __str__(self):
@@ -95,7 +66,6 @@ class PolygonVectorLayerFile(Orderable):
     def store_layer_data_post_save(sender, instance, created, **kwargs):
         if created:
             print("store_layer_data_post_save")
-            instance.kind = "polygon_vector_file"
             store_layer_data(instance, instance.layer, Polygon)
 
     class Meta:
@@ -106,7 +76,6 @@ class PolygonVectorLayerFile(Orderable):
 class MultiPointVectorLayerFile(Orderable):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_multipoint_vector_file])
-    kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(MultiPointVectorLayer, on_delete=models.CASCADE, related_name="multipoint_files")
 
     def __str__(self):
@@ -122,7 +91,6 @@ class MultiPointVectorLayerFile(Orderable):
     def store_layer_data_post_save(sender, instance, created, **kwargs):
         if created:
             print("store_layer_data_post_save")
-            instance.kind = "multipoint_vector_file"
             store_layer_data(instance, instance.layer, MultiPoint)
 
     class Meta:
@@ -133,7 +101,6 @@ class MultiPointVectorLayerFile(Orderable):
 class MultiLineStringVectorLayerFile(Orderable):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_multilinestring_vector_file])
-    kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="multilinestring_files")
 
     def __str__(self):
@@ -149,7 +116,6 @@ class MultiLineStringVectorLayerFile(Orderable):
     def store_layer_data_post_save(sender, instance, created, **kwargs):
         if created:
             print("store_layer_data_post_save")
-            instance.kind = "multilinestring_vector_file"
             store_layer_data(instance, instance.layer, MultiLineString)
 
     class Meta:
@@ -160,7 +126,6 @@ class MultiLineStringVectorLayerFile(Orderable):
 class MultiPolygonVectorLayerFile(Orderable):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_multipolygon_vector_file])
-    kind = models.CharField(max_length=50, null=True)
     layer = ParentalKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="multipolygon_files")
 
     def __str__(self):
@@ -176,7 +141,6 @@ class MultiPolygonVectorLayerFile(Orderable):
     def store_layer_data_post_save(sender, instance, created, **kwargs):
         if created:
             print("store_layer_data_post_save")
-            instance.kind = "multipolygon_vector_file"
             store_layer_data(instance, instance.layer, MultiPolygon)
 
     class Meta:
@@ -187,10 +151,8 @@ class MultiPolygonVectorLayerFile(Orderable):
 ## TODO: to improve with Wagtail documents
 
 
-@register_snippet
 class PointVectorLayerFileDocument(AbstractDocument, Orderable):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_point_vector_file])
-    kind = models.CharField(max_length=50, null=True)  # point_vector_file, tal vez podria quitar este campo e inferirlo por el tipo de layer a partir de la clase
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="point_files")
 
     def __str__(self):
@@ -206,7 +168,6 @@ class PointVectorLayerFileDocument(AbstractDocument, Orderable):
     def store_layer_data_post_save(sender, instance, created, **kwargs):
         if created:
             print("store_layer_data_post_save")
-            instance.kind = "point_vector_file"
             store_layer_data(instance, instance.layer, Point)
 
     class Meta(AbstractDocument.Meta):
@@ -215,6 +176,5 @@ class PointVectorLayerFileDocument(AbstractDocument, Orderable):
         ]
 
     class Meta:
-        abstract = True
-        verbose_name = _("PointVectorLayerFileDocument")
-        verbose_name_plural = _("documents")
+        verbose_name = "Point Vector Layer File Document"
+        verbose_name_plural = "Files: Point Vector Layer File Documents"

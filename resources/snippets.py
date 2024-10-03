@@ -4,8 +4,6 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultipleChooserPanel, 
 from wagtail.snippets.views.snippets import SnippetViewSet
 from django_json_widget.widgets import JSONEditorWidget
 from .widgets import CustomOSMWidget
-from resource_attrs.models import ResourceCategory
-from wagtail.admin.forms import WagtailAdminModelForm
 
 
 class VectorLayerSnippetViewSet(SnippetViewSet):
