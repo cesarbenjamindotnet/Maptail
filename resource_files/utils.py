@@ -88,11 +88,11 @@ def uuid_file_path(instance, filename):
 def validate_point_vector_file(file):
     print("validate_point_vector_file", file)
     try:
-        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+        if file.title.split('.').pop() in ['gpkg', 'geojson']:
             with fiona.open(file) as file:
                 if file.schema['geometry'] not in ['Point']:
                     raise ValidationError("Invalid geometry")
-        elif file.name.split('.').pop() in ['zip']:
+        elif file.title.split('.').pop() in ['zip']:
             with fiona.io.ZipMemoryFile(file) as memfile:
                 layers = memfile.listlayers()
                 layer = memfile.open(layer=layers.pop())
@@ -110,11 +110,11 @@ def validate_point_vector_file(file):
 def validate_linestring_vector_file(file):
     print("validate_point_vector_file", file)
     try:
-        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+        if file.title.split('.').pop() in ['gpkg', 'geojson']:
             with fiona.open(file) as file:
                 if file.schema['geometry'] not in ['LineString']:
                     raise ValidationError("Invalid geometry")
-        elif file.name.split('.').pop() in ['zip']:
+        elif file.title.split('.').pop() in ['zip']:
             with fiona.io.ZipMemoryFile(file) as memfile:
                 layers = memfile.listlayers()
                 layer = memfile.open(layer=layers.pop())
@@ -131,11 +131,11 @@ def validate_linestring_vector_file(file):
 def validate_polygon_vector_file(file):
     print("validate_point_vector_file", file)
     try:
-        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+        if file.title.split('.').pop() in ['gpkg', 'geojson']:
             with fiona.open(file) as file:
                 if file.schema['geometry'] not in ['Polygon']:
                     raise ValidationError("Invalid geometry")
-        elif file.name.split('.').pop() in ['zip']:
+        elif file.title.split('.').pop() in ['zip']:
             with fiona.io.ZipMemoryFile(file) as memfile:
                 layers = memfile.listlayers()
                 layer = memfile.open(layer=layers.pop())
@@ -154,11 +154,11 @@ def validate_polygon_vector_file(file):
 def validate_multipoint_vector_file(file):
     print("validate_multipoint_vector_file", file)
     try:
-        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+        if file.title.split('.').pop() in ['gpkg', 'geojson']:
             with fiona.open(file) as file:
                 if file.schema['geometry'] not in ['MultiPoint']:
                     raise ValidationError("Invalid geometry")
-        elif file.name.split('.').pop() in ['zip']:
+        elif file.title.split('.').pop() in ['zip']:
             with fiona.io.ZipMemoryFile(file) as memfile:
                 layers = memfile.listlayers()
                 layer = memfile.open(layer=layers.pop())
@@ -176,11 +176,11 @@ def validate_multipoint_vector_file(file):
 def validate_multilinestring_vector_file(file):
     print("validate_multipoint_vector_file", file)
     try:
-        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+        if file.title.split('.').pop() in ['gpkg', 'geojson']:
             with fiona.open(file) as file:
                 if file.schema['geometry'] not in ['MultiLineString']:
                     raise ValidationError("Invalid geometry")
-        elif file.name.split('.').pop() in ['zip']:
+        elif file.title.split('.').pop() in ['zip']:
             with fiona.io.ZipMemoryFile(file) as memfile:
                 layers = memfile.listlayers()
                 layer = memfile.open(layer=layers.pop())
@@ -197,11 +197,11 @@ def validate_multilinestring_vector_file(file):
 def validate_multipolygon_vector_file(file):
     print("validate_multipolygon_vector_file", file)
     try:
-        if file.name.split('.').pop() in ['gpkg', 'geojson']:
+        if file.title.split('.').pop() in ['gpkg', 'geojson']:
             with fiona.open(file) as file:
                 if file.schema['geometry'] not in ['MultiPolygon']:
                     raise ValidationError("Invalid geometry")
-        elif file.name.split('.').pop() in ['zip']:
+        elif file.title.split('.').pop() in ['zip']:
             with fiona.io.ZipMemoryFile(file) as memfile:
                 layers = memfile.listlayers()
                 layer = memfile.open(layer=layers.pop())

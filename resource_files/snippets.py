@@ -5,7 +5,7 @@ from .models import (PointVectorLayerFile,
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet
 from django_json_widget.widgets import JSONEditorWidget
-from resource_attrs.models import ResourceCategory
+from resource_attributes.models import ResourceCategory
 from django.utils.translation import gettext_lazy as _
 from django.utils.functional import cached_property
 from wagtail.admin.ui.tables import (

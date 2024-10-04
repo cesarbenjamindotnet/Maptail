@@ -226,11 +226,11 @@ class PostgreSQLProvider(BaseProvider):
                     return default_value
 
         return {
-            str(column.name): {
+            str(column.title): {
                 'type': _column_type_to_json_schema_type(column.type)
             }
             for column in self.table_model.__table__.columns
-            if column.name != self.geom  # Exclude geometry column
+            if column.title != self.geom  # Exclude geometry column
         }
 
     def get(self, identifier, crs_transform_spec=None, **kwargs):

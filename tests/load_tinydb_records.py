@@ -68,7 +68,7 @@ def contact2party(ci: CI_ResponsibleParty) -> dict:
         }
     }
 
-    party['name'] = ci.name or ci.position
+    party['name'] = ci.title or ci.position
 
     if ci.phone:
         party['contactInfo']['phone'] = {
@@ -92,7 +92,7 @@ def contact2party(ci: CI_ResponsibleParty) -> dict:
         party['contactInfo']['url'] = {
             'href': ci.onlineresource.url,
             'rel': ci.onlineresource.protocol,
-            'title': ci.onlineresource.name,
+            'title': ci.onlineresource.title,
             'description': ci.onlineresource.description,
         }
 
@@ -149,8 +149,8 @@ for xml_file in xml_dir.glob('*.xml'):
                 'href': ln.url,
                 'rel': 'item'
             }
-            if hasattr(ln, 'name') and ln.name is not None:
-                lnk['title'] = ln.name
+            if hasattr(ln, 'name') and ln.title is not None:
+                lnk['title'] = ln.title
             if hasattr(ln, 'protocol') and ln.protocol is not None:
                 lnk['type'] = ln.protocol
             links.append(lnk)
@@ -163,7 +163,7 @@ for xml_file in xml_dir.glob('*.xml'):
 
         for kw in keyword_set.keywords:
             theme['concepts'].append({
-                'id': kw.name
+                'id': kw.title
             })
 
         try:

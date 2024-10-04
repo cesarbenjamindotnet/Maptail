@@ -9,9 +9,9 @@ class ResourceCategorySnippetViewSet(SnippetViewSet):
     model = ResourceCategory
     menu_label = "Resource Attribute: Categories"
     add_to_admin_menu = False
-    search_fields = ("name",)
+    search_fields = ("title",)
 
     panels = [
-        FieldPanel('name'),
+        FieldPanel('title'),
     ]
 

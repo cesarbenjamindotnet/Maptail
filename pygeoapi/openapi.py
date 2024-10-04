@@ -940,7 +940,7 @@ def generate(ctx, config_file, output_file, format_='yaml',
     if output_file is None:
         click.echo(content)
     else:
-        click.echo(f'Generating {output_file.name}')
+        click.echo(f'Generating {output_file.title}')
         output_file.write(content)
         click.echo('Done')
 

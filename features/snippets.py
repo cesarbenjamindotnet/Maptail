@@ -9,7 +9,6 @@ from .widgets import CustomOSMWidget
 class PointSnippetViewSet(SnippetViewSet):
     model = Point
     menu_label = "Points"
-    add_to_admin_menu = False
     search_fields = ("data",)
     list_filter = ("id",)
 
@@ -25,6 +24,7 @@ class FeaturesSnippetViewSetGroup(SnippetViewSetGroup):
     menu_icon = "folder-inverse"
     menu_label = "Features"
     menu_name = "features"
+
 
 
 """

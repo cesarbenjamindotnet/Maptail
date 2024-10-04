@@ -859,7 +859,7 @@ def post_collection_items(
             'InvalidParameterValue', msg)
 
     # FIXME: remove testing backend in use once CQL support is normalized
-    if p.name == 'PostgreSQL':
+    if p.title == 'PostgreSQL':
         LOGGER.debug('processing PostgreSQL CQL_JSON data')
         try:
             filter_ = parse_cql_json(data)

@@ -5,7 +5,7 @@ from base.fields import GeoKnotTextField
 from polymorphic.models import PolymorphicModel
 from .managers import ResourceBaseManager
 from metadata.models import ResourceMetadataMixin
-from resource_attrs.models import ResourceCategory
+from resource_attributes.models import ResourceCategory
 from autoslug import AutoSlugField
 from base import enumerations
 from modelcluster.models import ClusterableModel

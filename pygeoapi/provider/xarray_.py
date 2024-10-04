@@ -100,7 +100,7 @@ class XarrayProvider(BaseProvider):
             if len(value.shape) >= 3:
                 LOGGER.debug('Adding variable')
                 dtype = value.dtype
-                if dtype.name.startswith('float'):
+                if dtype.title.startswith('float'):
                     dtype = 'number'
 
                 fields[key] = {

@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     "base",
     "features",
     "resources",
-    "resource_attrs",
+    "resource_attributes",
     "resource_files",
     "metadata",
 

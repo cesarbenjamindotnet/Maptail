@@ -172,11 +172,11 @@ class AzureBlobStorageProvider(BaseProvider):
             LOGGER.debug(f'DATA PATH: {data_path}')
             for dc in self.container_client.walk_blobs(
                     name_starts_with=data_path, prefix='/'):
-                fullpath = dc.name
+                fullpath = dc.title
 
                 LOGGER.debug(f'FULLPATH: {fullpath}')
                 if fullpath.endswith('/'):
-                    newpath = os.path.join(baseurl, urlpath, str(dc.name))
+                    newpath = os.path.join(baseurl, urlpath, str(dc.title))
                     child_links.append({
                         'rel': 'child',
                         'href': newpath,
@@ -185,11 +185,11 @@ class AzureBlobStorageProvider(BaseProvider):
                     })
 
                 else:
-                    basename, extension = os.path.splitext(dc.name)
+                    basename, extension = os.path.splitext(dc.title)
                     newpath = os.path.join(baseurl, urlpath, basename)
                     newpath2 = f'{newpath}{extension}'
                     if extension in self.file_types:
-                        fullpath = os.path.join(data_path, dc.name)
+                        fullpath = os.path.join(data_path, dc.title)
                         child_links.append({
                             'rel': 'item',
                             'href': newpath,
