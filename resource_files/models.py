@@ -14,22 +14,26 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_delete, post_delete, pre_save, post_save
 from django.dispatch import receiver
 from wagtail.documents.models import AbstractDocument
+from modelcluster.fields import ParentalKey
 from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
 
 
-class PointVectorLayerFile(AbstractDocument, ClusterableModel):
+class PointVectorLayerFile(AbstractDocument, Orderable):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_point_vector_file])
-    layer = ForeignKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
+    layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
         return f"{self.pk} - {self.layer.name}"
 
     @receiver(post_delete, sender='resource_files.PointVectorLayerFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
-        orphans = Point.objects.filter(file__id=instance.pk)
+        print("delete_orphans_post_delete instance", instance)
+        print("delete_orphans_post_delete instance.pk", instance.pk)
+        orphans = Point.objects.filter(source_file=instance)
+        print("orphans", orphans)
         print("delete_orphans_post_delete")
         orphans.delete()
 

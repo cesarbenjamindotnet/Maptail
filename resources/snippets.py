@@ -52,15 +52,22 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     features_panels = [
         InlinePanel('points', panels=[
             FieldPanel('id', heading=' '),
-            FieldPanel('source_file'),
+            FieldPanel('source_file', read_only=True),
             FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
             FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
         ], min_num=0),
     ]
 
+    files_panels1 = [
+        MultipleChooserPanel('files', chooser_field_name='file'),
+    ]
+
     files_panels = [
-        InlinePanel('files', panels=[
-            FieldPanel('file')
+        InlinePanel('files',  panels=[
+            FieldPanel('title', read_only=True),
+            FieldPanel('file', read_only=True),
+            FieldPanel('created_at', read_only=True),
+            FieldPanel('uploaded_by_user', read_only=True),
         ], min_num=0),
     ]
 
@@ -73,6 +80,7 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     ])
 
 
+"""
 @register_snippet
 class LineStringVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     model = LineStringVectorLayer
@@ -219,3 +227,4 @@ class MultiPolygonVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
         ObjectList(files_panels, heading='Files'),
         ObjectList(features_panels, heading='Features'),
     ])
+"""

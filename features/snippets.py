@@ -1,12 +1,11 @@
 from wagtail.snippets.models import register_snippet
 from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
 from wagtail.admin.panels import FieldPanel
-from wagtail.snippets.views.snippets import SnippetViewSet
+from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget
 from .widgets import CustomOSMWidget
 
 
-@register_snippet
 class PointSnippetViewSet(SnippetViewSet):
     model = Point
     menu_label = "Points"
@@ -21,6 +20,14 @@ class PointSnippetViewSet(SnippetViewSet):
     ]
 
 
+class FeaturesSnippetViewSetGroup(SnippetViewSetGroup):
+    items = [PointSnippetViewSet]
+    menu_icon = "folder-inverse"
+    menu_label = "Features"
+    menu_name = "features"
+
+
+"""
 @register_snippet
 class LineStringSnippetViewSet(SnippetViewSet):
     model = LineString
@@ -103,3 +110,4 @@ class GeometryCollectionSnippetViewSet(SnippetViewSet):
         FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
         FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
     ]
+"""

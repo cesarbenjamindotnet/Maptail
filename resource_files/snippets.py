@@ -43,6 +43,7 @@ class PointVectorLayerFileDocumentSnippetViewSet(SnippetViewSet):
     ]
 
 
+"""
 @register_snippet
 class LineStringVectorLayerFileSnippetViewSet(SnippetViewSet):
     model = LineStringVectorLayerFile
@@ -166,3 +167,4 @@ class MultiPolygonVectorLayerFileSnippetViewSet(SnippetViewSet):
         FieldPanel('kind', read_only=True),
         FieldPanel('layer'),
     ]
+"""

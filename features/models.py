@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.contrib.gis.db import models
+from django.db.models import ForeignKey
+
 from base.mixins import LockableWorkFlowDraftStateRevisionModelBaseMixin
 from wagtail.models import RevisionMixin, LockableMixin, DraftStateMixin, Orderable
 from modelcluster.fields import ParentalKey
@@ -15,7 +17,7 @@ class Point(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     data = models.JSONField(null=True, blank=True)
     geom = models.PointField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="points")
-    source_file = ParentalKey("resource_files.PointVectorLayerFile", on_delete=models.CASCADE, null=True, blank=True)
+    source_file = ForeignKey("resource_files.PointVectorLayerFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.layer.name}: {self.id}"

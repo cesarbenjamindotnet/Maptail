@@ -52,13 +52,13 @@ def store_layer_data(file, layer, model):
         print("store_layer_data layer", layer)
         print("store_layer_data model", model)
 
-        if not model.objects.filter(layer=layer, file__id=file.id).exists():
+        if not model.objects.filter(layer=layer, source_file=file).exists():
             for feature, crs in get_spatial_data_features(file.file.path):
                 properties = dict(feature['properties'])
                 reprojected_geometry = transform_geom(crs, settings.DATA_FEATURES_SRID, feature['geometry'])
                 shapely_geometry = shape(reprojected_geometry)
                 if layer and file.id and shapely_geometry and properties:
-                    new_feature = model(layer=layer, file__id=file.id, geom=shapely_geometry.wkt, data=properties)
+                    new_feature = model(layer=layer, source_file=file, geom=shapely_geometry.wkt, data=properties)
                     new_feature.save()
                     print("new_feature", new_feature)
                 else:
@@ -79,7 +79,8 @@ def uuid_file_path(instance, filename):
     ext = filename.split('.').pop()
     if not ext:
         raise ValidationError("El archivo debe tener extensión")
-    filename = f"{instance.layer.uuid}--{instance.pk}.{ext}"
+    file_name = filename.replace(' ', '_')
+    filename = f"{instance.layer.uuid}--{file_name}"
     file_path = os.path.join('resource_files/', filename)
     return file_path
 
