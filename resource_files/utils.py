@@ -52,13 +52,13 @@ def store_layer_data(file, layer, model):
         print("store_layer_data layer", layer)
         print("store_layer_data model", model)
 
-        if not model.objects.filter(layer=layer, file_id=file.id).exists():
+        if not model.objects.filter(layer=layer, file__id=file.id).exists():
             for feature, crs in get_spatial_data_features(file.file.path):
                 properties = dict(feature['properties'])
                 reprojected_geometry = transform_geom(crs, settings.DATA_FEATURES_SRID, feature['geometry'])
                 shapely_geometry = shape(reprojected_geometry)
                 if layer and file.id and shapely_geometry and properties:
-                    new_feature = model(layer=layer, file_id=file.id, geom=shapely_geometry.wkt, data=properties)
+                    new_feature = model(layer=layer, file__id=file.id, geom=shapely_geometry.wkt, data=properties)
                     new_feature.save()
                     print("new_feature", new_feature)
                 else:
