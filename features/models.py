@@ -7,6 +7,8 @@ from resources.models import (VectorLayerMixin, PointVectorLayer, LineStringVect
                               MultiPointVectorLayer, MultiLineStringVectorLayer, MultiPolygonVectorLayer,
                               GeometryCollectionVectorLayer, RasterLayer, DataTable, RemoteWMS, RemoteWFS)
 from django.core.exceptions import ValidationError
+from resource_files.models import (PointVectorLayerFile, LineStringVectorLayerFile, PolygonVectorLayerFile,
+                                   MultiPointVectorLayerFile, MultiLineStringVectorLayerFile, MultiPolygonVectorLayerFile)
 
 # Create your models here.
 
@@ -15,13 +17,13 @@ class Point(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     data = models.JSONField(null=True, blank=True)
     geom = models.PointField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="points")
-    file_id = models.IntegerField(null=True, blank=True)
+    source_file = ParentalKey(PointVectorLayerFile, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.layer.name}: {self.id}"
 
     def delete(self, *args, **kwargs):
-        if self.layer.files.filter(pk=self.file_id).exists():
+        if self.layer.files.filter(pk=self.source_file).exists():
             raise ValidationError("The file is still in use")
         else:
             super(Point, self).delete(*args, **kwargs)
