@@ -4,20 +4,29 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget
 from .widgets import CustomOSMWidget
+from django.utils.functional import cached_property
+from wagtail.admin.ui.tables import (
+    BulkActionsCheckboxColumn,
+    Column,
+    DateColumn,
+    # InlineActionsTable,
+    LiveStatusTagColumn,
+    TitleColumn,
+    UserColumn,
+)
 
 
 class PointSnippetViewSet(SnippetViewSet):
     model = Point
     menu_label = "Points"
     add_to_admin_menu = False
-    menu_icon = "pick"
-    search_fields = ("data",)
-    list_filter = ("layer", "source_file")
+    search_fields = ("data", "layer",)
+    list_filter = ("layer", "source_file",)
 
     panels = [
         FieldPanel('layer'),
-        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
         FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 500})),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
         FieldPanel('source_file', read_only=True),
     ]
 

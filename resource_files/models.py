@@ -26,7 +26,8 @@ class PointVectorLayerFile(AbstractDocument, Orderable):
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.pk} - {self.layer.name}"
+        # return f"{self.pk}: {self.title} ({self.layer.__class__.__name__}: {self.layer.name})"
+        return f"{self.pk}: {self.title} ({self.layer.pk}: {self.layer.name})"
 
     @receiver(post_delete, sender='resource_files.PointVectorLayerFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -47,8 +48,8 @@ class PointVectorLayerFile(AbstractDocument, Orderable):
         permissions = [
             ("choose_document", "Can choose document"),
         ]
-        verbose_name = "Point Vector Layer File Document"
-        verbose_name_plural = "Files: Point Vector Layer File Documents"
+        verbose_name = "Point Vector Layer File"
+        verbose_name_plural = "Point Vector Layer Files"
 
 
 class LineStringVectorLayerFile(AbstractDocument, ClusterableModel):

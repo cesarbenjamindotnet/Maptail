@@ -1,7 +1,7 @@
 from wagtail.snippets.models import register_snippet
 from .models import (PointVectorLayerFile, LineStringVectorLayerFile, PolygonVectorLayerFile, MultiPointVectorLayerFile, MultiPolygonVectorLayerFile, MultiLineStringVectorLayerFile)
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
-from wagtail.snippets.views.snippets import SnippetViewSet
+from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget
 from resource_attributes.models import ResourceCategory
 from django.utils.translation import gettext_lazy as _
@@ -17,19 +17,13 @@ from wagtail.admin.ui.tables import (
 )
 
 
-class PointVectorLayerFileDocumentSnippetViewSet(SnippetViewSet):
+class PointVectorLayerFileSnippetViewSet(SnippetViewSet):
     model = PointVectorLayerFile
     menu_label = "Point Vector Layer Files"
     add_to_admin_menu = False
     search_fields = ("title", "layer",)
-    list_filter = ("layer",)
-
-    @cached_property
-    def list_display(self):
-        list_display = ["title", "layer"]
-        if self.draftstate_enabled:
-            list_display.append(LiveStatusTagColumn())
-        return list_display
+    # list_filter = ("layer", "collection", "tags", )  # TODO: Add collection and tags to PointVectorLayerFile
+    list_filter = ("layer", "collection",)
 
     panels = [
         FieldPanel('collection'),
@@ -38,6 +32,15 @@ class PointVectorLayerFileDocumentSnippetViewSet(SnippetViewSet):
         FieldPanel('layer'),
         FieldPanel('tags'),
     ]
+
+
+class LayerFilesSnippetViewSetGroup(SnippetViewSetGroup):
+    items = [PointVectorLayerFileSnippetViewSet]
+    menu_icon = "folder-open-inverse"
+    menu_label = "Layer Files"
+    menu_name = "layer-files"
+
+
 
 
 """
