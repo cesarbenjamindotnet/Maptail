@@ -1,7 +1,5 @@
 from wagtail.snippets.models import register_snippet
-from .models import (PointVectorLayerFile,
-                     LineStringVectorLayerFile, PolygonVectorLayerFile, MultiPointVectorLayerFile,
-                     MultiPolygonVectorLayerFile, MultiLineStringVectorLayerFile)
+from .models import (PointVectorLayerFile, LineStringVectorLayerFile, PolygonVectorLayerFile, MultiPointVectorLayerFile, MultiPolygonVectorLayerFile, MultiLineStringVectorLayerFile)
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet
 from django_json_widget.widgets import JSONEditorWidget

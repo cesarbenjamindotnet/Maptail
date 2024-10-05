@@ -1,5 +1,6 @@
 from django.contrib.gis import forms as gis_forms
 
+# Create your widgets here.
 
 
 class CustomOSMWidget(gis_forms.OSMWidget):

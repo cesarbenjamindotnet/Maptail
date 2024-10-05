@@ -1,4 +1,4 @@
-from wagtail.snippets.models import register_snippet
+# from wagtail.snippets.models import register_snippet
 from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
 from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
@@ -9,6 +9,8 @@ from .widgets import CustomOSMWidget
 class PointSnippetViewSet(SnippetViewSet):
     model = Point
     menu_label = "Points"
+    add_to_admin_menu = False
+    menu_icon = "pick"
     search_fields = ("data",)
     list_filter = ("layer", "source_file")
 
@@ -22,7 +24,7 @@ class PointSnippetViewSet(SnippetViewSet):
 
 class FeaturesSnippetViewSetGroup(SnippetViewSetGroup):
     items = [PointSnippetViewSet]
-    menu_icon = "folder-inverse"
+    menu_icon = "folder-open-inverse"
     menu_label = "Features"
     menu_name = "features"
 
