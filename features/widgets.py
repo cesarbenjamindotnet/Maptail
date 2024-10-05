@@ -1,6 +1,7 @@
 from django.contrib.gis import forms as gis_forms
 
 
+
 class CustomOSMWidget(gis_forms.OSMWidget):
     default_lat = 27.5  # Latitud predeterminada
     default_lon = -100.1  # Longitud predeterminada
