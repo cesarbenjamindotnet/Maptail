@@ -10,7 +10,7 @@ class PointSnippetViewSet(SnippetViewSet):
     model = Point
     menu_label = "Points"
     search_fields = ("data",)
-    list_filter = ("id",)
+    list_filter = ("layer", "source_file")
 
     panels = [
         FieldPanel('layer'),

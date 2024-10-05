@@ -19,7 +19,6 @@ from wagtail.admin.ui.tables import (
 )
 
 
-@register_snippet
 class PointVectorLayerFileDocumentSnippetViewSet(SnippetViewSet):
     model = PointVectorLayerFile
     menu_label = "Point Vector Layer Files"
