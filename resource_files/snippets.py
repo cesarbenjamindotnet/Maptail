@@ -1,5 +1,5 @@
 from wagtail.snippets.models import register_snippet
-from .models import (PointVectorLayerFile, LineStringVectorLayerFile, PolygonVectorLayerFile, MultiPointVectorLayerFile, MultiPolygonVectorLayerFile, MultiLineStringVectorLayerFile)
+from .models import (ResourcePointsFile, LineStringVectorLayerFile, PolygonVectorLayerFile, MultiPointVectorLayerFile, MultiPolygonVectorLayerFile, MultiLineStringVectorLayerFile)
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget
@@ -18,20 +18,14 @@ from wagtail.admin.ui.tables import (
 
 
 class PointVectorLayerFileSnippetViewSet(SnippetViewSet):
-    model = PointVectorLayerFile
+    model = ResourcePointsFile
     menu_label = "Point Vector Layer Files"
     add_to_admin_menu = False
     search_fields = ("title", "layer",)
     # list_filter = ("layer", "collection", "tags", )  # TODO: Add collection and tags to PointVectorLayerFile
-    list_filter = ("layer", "collection",)
+    list_filter = ("layer",)
 
-    panels = [
-        FieldPanel('collection'),
-        FieldPanel('title'),
-        FieldPanel('file'),
-        FieldPanel('layer'),
-        FieldPanel('tags'),
-    ]
+
 
 
 class LayerFilesSnippetViewSetGroup(SnippetViewSetGroup):

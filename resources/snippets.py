@@ -1,15 +1,20 @@
-from wagtail.snippets.models import register_snippet
-from .models import PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer, MultiLineStringVectorLayer, MultiPolygonVectorLayer
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultipleChooserPanel, MultiFieldPanel, FieldRowPanel, TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
+from .models import PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer, \
+    MultiLineStringVectorLayer, MultiPolygonVectorLayer
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultipleChooserPanel, MultiFieldPanel, FieldRowPanel, \
+    TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget
 from .widgets import CustomOSMWidget
 
 
+#
+
+
 class VectorLayerSnippetViewSet(SnippetViewSet):
     add_to_admin_menu = False
     search_fields = ("name", "description", "category", "abstract", "purpose")
-    list_filter = ("category", "topic_category", "license", "language", "date_type", "maintenance_frequency", "regions", "restriction_code_type", "is_featured", "is_advertised")
+    list_filter = ("category", "topic_category", "license", "language", "date_type", "maintenance_frequency", "regions",
+                   "restriction_code_type", "is_featured", "is_advertised")
 
     main_panels = [
         FieldPanel('name'),
@@ -49,33 +54,37 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     menu_label = "Point Vector Layers"
 
     features_panels = [
-        InlinePanel('points', panels=[
-            FieldPanel('id', heading=' '),
-            FieldPanel('source_file', read_only=True),
-            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
-            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
-        ], min_num=0),
-    ]
-
-    files_panels1 = [
-        MultipleChooserPanel('files', chooser_field_name='file'),
+        InlinePanel(
+            relation_name='points',
+            label="Features",
+            classname="collapsed",
+            panels=[
+                FieldPanel('id', heading=' '),
+                FieldPanel('source_file', read_only=True),
+                FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
+                FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+            ]),
     ]
 
     files_panels = [
-        InlinePanel('files',  panels=[
-            FieldPanel('collection', read_only=True),
-            FieldPanel('title', read_only=True),
-            FieldPanel('file', read_only=True),
-            FieldPanel('created_at', read_only=True),
-        ], min_num=0),
+        InlinePanel(
+            relation_name='files',
+            label="Resource Files",
+            classname="collapsed",
+            panels=[
+                FieldPanel('collection'),
+                FieldPanel('title'),
+                FieldPanel('file'),
+            ]
+        ),
     ]
 
     edit_handler = TabbedInterface([
         ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(features_panels, heading='Features'),
         ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
         ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
         ObjectList(files_panels, heading='Files'),
-        ObjectList(features_panels, heading='Features'),
     ])
 
 

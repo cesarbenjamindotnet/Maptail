@@ -21,15 +21,14 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
-class PointVectorLayerFile(AbstractDocument, Orderable):
+class ResourcePointsFile(AbstractDocument):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_point_vector_file])
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        # return f"{self.pk}: {self.title} ({self.layer.__class__.__name__}: {self.layer.name})"
-        return f"{self.pk}: {self.title} ({self.layer.pk}: {self.layer.name})"
+        return f"{self.title}: {self.file.name} ({self.layer.name})"
 
-    @receiver(post_delete, sender='resource_files.PointVectorLayerFile')
+    @receiver(post_delete, sender='resource_files.ResourcePointsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
         print("delete_orphans_post_delete instance", instance)
         print("delete_orphans_post_delete instance.pk", instance.pk)
@@ -38,7 +37,7 @@ class PointVectorLayerFile(AbstractDocument, Orderable):
         print("delete_orphans_post_delete")
         orphans.delete()
 
-    @receiver(post_save, sender='resource_files.PointVectorLayerFile')
+    @receiver(post_save, sender='resource_files.ResourcePointsFile')
     def store_layer_data_post_save(sender, instance, created, **kwargs):
         if created:
             print("store_layer_data_post_save")

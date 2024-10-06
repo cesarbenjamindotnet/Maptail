@@ -17,7 +17,7 @@ class Point(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     data = models.JSONField(null=True, blank=True)
     geom = models.PointField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="points")
-    source_file = ForeignKey("resource_files.PointVectorLayerFile", on_delete=models.CASCADE, null=True, blank=True)
+    source_file = ForeignKey("resource_files.ResourcePointsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.layer.name}: {self.id}"
