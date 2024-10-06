@@ -1,13 +1,115 @@
 from .models import PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer, \
     MultiLineStringVectorLayer, MultiPolygonVectorLayer
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultipleChooserPanel, MultiFieldPanel, FieldRowPanel, \
+from wagtail.admin.panels import Panel, FieldPanel, InlinePanel, MultipleChooserPanel, MultiFieldPanel, FieldRowPanel, \
     TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget
 from .widgets import CustomOSMWidget
-
+from django.forms.formsets import DELETION_FIELD_NAME, ORDERING_FIELD_NAME
+from django import forms
+from wagtail.admin import compare
+import functools
 
 #
+
+class FilesInlinePanel(InlinePanel):
+    class BoundPanel(Panel.BoundPanel):
+        template_name = "panels/files_inline_panel.html"
+
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+
+            self.label = self.panel.label
+
+            if self.form is None:
+                return
+
+            self.formset = self.form.formsets[self.panel.relation_name]
+            self.child_edit_handler = self.panel.child_edit_handler
+
+            self.children = []
+            for index, subform in enumerate(self.formset.forms):
+                # override the DELETE field to have a hidden input
+                subform.fields[DELETION_FIELD_NAME].widget = forms.HiddenInput()
+
+                # ditto for the ORDER field, if present
+                if self.formset.can_order:
+                    subform.fields[ORDERING_FIELD_NAME].widget = forms.HiddenInput()
+
+                self.children.append(
+                    self.child_edit_handler.get_bound_panel(
+                        instance=subform.instance,
+                        request=self.request,
+                        form=subform,
+                        prefix=("%s-%d" % (self.prefix, index)),
+                    )
+                )
+
+            # if this formset is valid, it may have been re-ordered; respect that
+            # in case the parent form errored, and we need to re-render
+            if self.formset.can_order and self.formset.is_valid():
+                self.children.sort(
+                    key=lambda child: child.form.cleaned_data[ORDERING_FIELD_NAME] or 1
+                )
+
+            empty_form = self.formset.empty_form
+            empty_form.fields[DELETION_FIELD_NAME].widget = forms.HiddenInput()
+            if self.formset.can_order:
+                empty_form.fields[ORDERING_FIELD_NAME].widget = forms.HiddenInput()
+
+            self.empty_child = self.child_edit_handler.get_bound_panel(
+                instance=empty_form.instance,
+                request=self.request,
+                form=empty_form,
+                prefix=("%s-__prefix__" % self.prefix),
+            )
+
+        def get_comparison(self):
+            field_comparisons = []
+
+            for index, panel in enumerate(self.panel.child_edit_handler.children):
+                field_comparisons.extend(
+                    panel.get_bound_panel(
+                        instance=None,
+                        request=self.request,
+                        form=None,
+                        prefix=("%s-%d" % (self.prefix, index)),
+                    ).get_comparison()
+                )
+
+            return [
+                functools.partial(
+                    compare.ChildRelationComparison,
+                    self.panel.db_field,
+                    field_comparisons,
+                    label=self.label,
+                )
+            ]
+
+        def get_context_data(self, parent_context=None):
+            context = super().get_context_data(parent_context)
+            context["can_order"] = self.formset.can_order
+            return context
+
+
+class FileFieldPanel(FieldPanel):
+    def __init__(
+            self,
+            field_name,
+            widget=None,
+            disable_comments=None,
+            permission=None,
+            read_only=False,
+            **kwargs,
+    ):
+        super().__init__(field_name, **kwargs)
+        self.field_name = field_name
+        self.widget = widget
+        self.disable_comments = disable_comments
+        self.permission = permission
+        self.read_only = read_only
+        print("FileFieldPanel kwargs", kwargs)
+        print("FileFieldPanel self", self)
 
 
 class VectorLayerSnippetViewSet(SnippetViewSet):
@@ -67,14 +169,14 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     ]
 
     files_panels = [
-        InlinePanel(
+        FilesInlinePanel(
             relation_name='files',
-            label="Resource Files",
-            classname="collapsed",
+            label="Files",
+            classname="collapsed1",
             panels=[
-                FieldPanel('collection'),
-                FieldPanel('title'),
-                FieldPanel('file'),
+                FieldPanel('collection', read_only=True),
+                FieldPanel('title', read_only=True),
+                FileFieldPanel('file', read_only=True),
             ]
         ),
     ]
@@ -84,7 +186,7 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
         ObjectList(features_panels, heading='Features'),
         ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
         ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
-        ObjectList(files_panels, heading='Files'),
+        ObjectList(files_panels, heading='Source Data Files'),
     ])
 
 

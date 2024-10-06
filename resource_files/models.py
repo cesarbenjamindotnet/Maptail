@@ -31,10 +31,7 @@ class ResourcePointsFile(AbstractDocument):
     @receiver(post_delete, sender='resource_files.ResourcePointsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
         print("delete_orphans_post_delete instance", instance)
-        print("delete_orphans_post_delete instance.pk", instance.pk)
         orphans = Point.objects.filter(source_file=instance)
-        print("orphans", orphans)
-        print("delete_orphans_post_delete")
         orphans.delete()
 
     @receiver(post_save, sender='resource_files.ResourcePointsFile')
@@ -44,9 +41,6 @@ class ResourcePointsFile(AbstractDocument):
             store_layer_data(instance, instance.layer, Point)
 
     class Meta(AbstractDocument.Meta):
-        permissions = [
-            ("choose_document", "Can choose document"),
-        ]
         verbose_name = "Point Vector Layer File"
         verbose_name_plural = "Point Vector Layer Files"
 

@@ -31,8 +31,8 @@ class PointVectorLayerFileSnippetViewSet(SnippetViewSet):
 class LayerFilesSnippetViewSetGroup(SnippetViewSetGroup):
     items = [PointVectorLayerFileSnippetViewSet]
     menu_icon = "folder-open-inverse"
-    menu_label = "Layer Files"
-    menu_name = "layer-files"
+    menu_label = "Source Data Files"
+    menu_name = "data-files"
 
 
 
