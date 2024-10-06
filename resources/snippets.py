@@ -1,7 +1,7 @@
 from wagtail.snippets.models import register_snippet
 from .models import PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer, MultiLineStringVectorLayer, MultiPolygonVectorLayer
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultipleChooserPanel, MultiFieldPanel, FieldRowPanel, TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
-from wagtail.snippets.views.snippets import SnippetViewSet
+from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget
 from .widgets import CustomOSMWidget
 
@@ -44,7 +44,6 @@ class VectorLayerSnippetViewSet(SnippetViewSet):
     ]
 
 
-@register_snippet
 class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     model = PointVectorLayer
     menu_label = "Point Vector Layers"
@@ -64,10 +63,10 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
 
     files_panels = [
         InlinePanel('files',  panels=[
+            FieldPanel('collection', read_only=True),
             FieldPanel('title', read_only=True),
             FieldPanel('file', read_only=True),
             FieldPanel('created_at', read_only=True),
-            FieldPanel('uploaded_by_user', read_only=True),
         ], min_num=0),
     ]
 
@@ -78,6 +77,13 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
         ObjectList(files_panels, heading='Files'),
         ObjectList(features_panels, heading='Features'),
     ])
+
+
+class ResourcesSnippetViewSetGroup(SnippetViewSetGroup):
+    items = [PointVectorLayerSnippetViewSet]
+    menu_icon = "folder-open-inverse"
+    menu_label = "Resources"
+    menu_name = "resources"
 
 
 """
