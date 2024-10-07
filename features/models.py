@@ -5,7 +5,7 @@ from django.db.models import ForeignKey
 from base.mixins import LockableWorkFlowDraftStateRevisionModelBaseMixin
 from wagtail.models import RevisionMixin, LockableMixin, DraftStateMixin, Orderable
 from modelcluster.fields import ParentalKey
-from resources.models import (VectorLayerMixin, PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer,
+from resources.models import (VectorLayer, PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer,
                               MultiPointVectorLayer, MultiLineStringVectorLayer, MultiPolygonVectorLayer,
                               GeometryCollectionVectorLayer, RasterLayer, DataTable, RemoteWMS, RemoteWFS)
 from django.core.exceptions import ValidationError
@@ -21,12 +21,6 @@ class Point(LockableWorkFlowDraftStateRevisionModelBaseMixin):
 
     def __str__(self):
         return f"{self.layer.name}: {self.id}"
-
-    def delete(self, *args, **kwargs):
-        if self.layer.files.filter(pk=self.source_file).exists():
-            raise ValidationError("The file is still in use")
-        else:
-            super(Point, self).delete(*args, **kwargs)
 
     class Meta:
         verbose_name = "Point"

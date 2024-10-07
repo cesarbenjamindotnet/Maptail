@@ -1,15 +1,15 @@
 from django.contrib import admin
-from .models import (DatasetMetadataDateType, DatasetMetadataLanguage, DatasetMetadataLicense,
-                     DatasetMetadataMaintenanceFrequency, DatasetMetadataRegion, DatasetMetadataRestrictionCodeType,
-                     DatasetMetadataSpatialRepresentationType, DatasetMetadataTopicCategory)
+from .models import (ResourceMetadataDateType, ResourceMetadataLanguage, ResourceMetadataLicense,
+                     ResourceMetadataMaintenanceFrequency, ResourceMetadataRegion, ResourceMetadataRestrictionCodeType,
+                     ResourceMetadataSpatialRepresentationType, ResourceMetadataTopicCategory)
 
 # Register your models here.
 
-admin.site.register(DatasetMetadataDateType)
-admin.site.register(DatasetMetadataLanguage)
-admin.site.register(DatasetMetadataLicense)
-admin.site.register(DatasetMetadataMaintenanceFrequency)
-admin.site.register(DatasetMetadataRegion)
-admin.site.register(DatasetMetadataRestrictionCodeType)
-admin.site.register(DatasetMetadataSpatialRepresentationType)
-admin.site.register(DatasetMetadataTopicCategory)
+admin.site.register(ResourceMetadataDateType)
+admin.site.register(ResourceMetadataLanguage)
+admin.site.register(ResourceMetadataLicense)
+admin.site.register(ResourceMetadataMaintenanceFrequency)
+admin.site.register(ResourceMetadataRegion)
+admin.site.register(ResourceMetadataRestrictionCodeType)
+admin.site.register(ResourceMetadataSpatialRepresentationType)
+admin.site.register(ResourceMetadataTopicCategory)

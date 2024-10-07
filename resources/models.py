@@ -4,7 +4,7 @@ from base.mixins import LockableWorkFlowDraftStateRevisionModelBaseMixin
 from base.fields import GeoKnotTextField
 from polymorphic.models import PolymorphicModel
 from .managers import ResourceBaseManager
-from metadata.models import ResourceMetadataMixin
+from metadata.models import ResourceMetadataBaseMixin
 from resource_attributes.models import ResourceCategory
 from autoslug import AutoSlugField
 from base import enumerations
@@ -20,7 +20,7 @@ def is_resourcecategory_live(pk):
         raise ValidationError('The resource category must be live.')
 
 
-class ResourceBase(LockableWorkFlowDraftStateRevisionModelBaseMixin, ResourceMetadataMixin):
+class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, ResourceMetadataBaseMixin):
     """
     Base model for all resources.
     """
@@ -45,7 +45,7 @@ class ResourceBase(LockableWorkFlowDraftStateRevisionModelBaseMixin, ResourceMet
         abstract = True
 
 
-class ResourceBaseRemoteServiceMixin(models.Model):
+class ResourceRemoteServiceMixin(models.Model):
     """
     Mixin for resources that have a remote URL.
     """
@@ -57,7 +57,7 @@ class ResourceBaseRemoteServiceMixin(models.Model):
         abstract = True
 
 
-class Resource(PolymorphicModel, ResourceBase):
+class Resource(PolymorphicModel, ResourceBaseAbstract):
     """
     A resource.
     """
@@ -67,7 +67,7 @@ class Resource(PolymorphicModel, ResourceBase):
         verbose_name_plural = "Resources"
 
 
-class VectorLayerMixin(ClusterableModel, Resource):
+class VectorLayer(ClusterableModel, Resource):
     """
     A dataset.
     """
@@ -78,7 +78,7 @@ class VectorLayerMixin(ClusterableModel, Resource):
         verbose_name_plural = "Vector Layers"
 
 
-class PointVectorLayer(VectorLayerMixin):
+class PointVectorLayer(VectorLayer):
     """
     A point dataset.
     """
@@ -88,7 +88,7 @@ class PointVectorLayer(VectorLayerMixin):
         verbose_name_plural = "Resources: Point Vector Layers"
 
 
-class LineStringVectorLayer(VectorLayerMixin):
+class LineStringVectorLayer(VectorLayer):
     """
     A line dataset.
     """
@@ -98,7 +98,7 @@ class LineStringVectorLayer(VectorLayerMixin):
         verbose_name_plural = "Resources: LineString Vector Layers"
 
 
-class PolygonVectorLayer(VectorLayerMixin):
+class PolygonVectorLayer(VectorLayer):
     """
     A polygon dataset.
     """
@@ -108,7 +108,7 @@ class PolygonVectorLayer(VectorLayerMixin):
         verbose_name_plural = "Resources: Polygon Vector Layers"
 
 
-class MultiPointVectorLayer(VectorLayerMixin):
+class MultiPointVectorLayer(VectorLayer):
     """
     A multipoint dataset.
     """
@@ -118,7 +118,7 @@ class MultiPointVectorLayer(VectorLayerMixin):
         verbose_name_plural = "Resources: MultiPoint Vector Layers"
 
 
-class MultiLineStringVectorLayer(VectorLayerMixin):
+class MultiLineStringVectorLayer(VectorLayer):
     """
     A multilinestring dataset.
     """
@@ -128,7 +128,7 @@ class MultiLineStringVectorLayer(VectorLayerMixin):
         verbose_name_plural = "Resources: MultiLineString Vector Layers"
 
 
-class MultiPolygonVectorLayer(VectorLayerMixin):
+class MultiPolygonVectorLayer(VectorLayer):
     """
     A multipolygon dataset.
     """
@@ -138,7 +138,7 @@ class MultiPolygonVectorLayer(VectorLayerMixin):
         verbose_name_plural = "Resources: MultiPolygon Vector Layers"
 
 
-class GeometryCollectionVectorLayer(VectorLayerMixin):
+class GeometryCollectionVectorLayer(VectorLayer):
     """
     A geometry collection dataset.
     """
@@ -168,7 +168,7 @@ class DataTable(Resource):
         verbose_name_plural = "Resources: Data Tables"
 
 
-class RemoteWMS(Resource, ResourceBaseRemoteServiceMixin):
+class RemoteWMS(Resource, ResourceRemoteServiceMixin):
     """
     A WMS service.
     """
@@ -178,7 +178,7 @@ class RemoteWMS(Resource, ResourceBaseRemoteServiceMixin):
         verbose_name_plural = "Resources: WMS Services"
 
 
-class RemoteWFS(Resource, ResourceBaseRemoteServiceMixin):
+class RemoteWFS(Resource, ResourceRemoteServiceMixin):
     """
     A WFS service.
     """

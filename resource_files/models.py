@@ -1,3 +1,4 @@
+import django_filters
 from django.contrib.gis.db import models
 from modelcluster.fields import ForeignKey
 from wagtail.models import Orderable
@@ -15,6 +16,7 @@ from django.db.models.signals import pre_delete, post_delete, pre_save, post_sav
 from django.dispatch import receiver
 from wagtail.documents.models import AbstractDocument
 from modelcluster.fields import ParentalKey
+from taggit.managers import TaggableManager
 from django.utils.translation import gettext_lazy as _
 
 
@@ -24,6 +26,7 @@ from django.utils.translation import gettext_lazy as _
 class ResourcePointsFile(AbstractDocument):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_point_vector_file])
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
+    # remove_orphans = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.title}: {self.file.name} ({self.layer.name})"

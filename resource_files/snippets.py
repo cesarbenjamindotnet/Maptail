@@ -1,6 +1,11 @@
+from cgitb import handler
+
 from wagtail.snippets.models import register_snippet
-from .models import (ResourcePointsFile, LineStringVectorLayerFile, PolygonVectorLayerFile, MultiPointVectorLayerFile, MultiPolygonVectorLayerFile, MultiLineStringVectorLayerFile)
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList, AdminPageChooser, TitleFieldPanel
+from .models import (ResourcePointsFile, LineStringVectorLayerFile, PolygonVectorLayerFile, MultiPointVectorLayerFile,
+                     MultiPolygonVectorLayerFile, MultiLineStringVectorLayerFile)
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList, \
+    AdminPageChooser, TitleFieldPanel
+
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget
 from resource_attributes.models import ResourceCategory
@@ -15,26 +20,52 @@ from wagtail.admin.ui.tables import (
     TitleColumn,
     UserColumn,
 )
+from django import forms
+from resources.models import PointVectorLayer
+from wagtail.admin.forms import WagtailAdminModelForm
+from wagtail.admin.forms.collections import CollectionChoiceField, SelectWithDisabledOptions
+#
 
 
-class PointVectorLayerFileSnippetViewSet(SnippetViewSet):
+class ResourcePointsFileWagtailAdminModelForm(WagtailAdminModelForm):
+    class Meta:
+        model = ResourcePointsFile
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.instance.pk:  # Si estamos editando (la instancia ya tiene una pk)
+            self.fields['collection'].widget.attrs['readonly'] = True
+            self.fields['collection'].disabled = True
+            self.fields['file'].widget.attrs['readonly'] = True
+            self.fields['file'].disabled = True
+            self.fields['layer'].widget.attrs['readonly'] = True
+            self.fields['layer'].disabled = True
+        else:
+            #  pass
+            print("nuevo")
+
+
+class ResourcePointsFileSnippetViewSet(SnippetViewSet):
     model = ResourcePointsFile
     menu_label = "Point Vector Layer Files"
     add_to_admin_menu = False
     search_fields = ("title", "layer",)
-    # list_filter = ("layer", "collection", "tags", )  # TODO: Add collection and tags to PointVectorLayerFile
-    list_filter = ("layer",)
+    list_filter = ("layer", "collection", "uploaded_by_user")
 
-
+    def get_form_class(self, for_update=False):
+        print("ResourcePointsFileSnippetViewSet get_form_class self", self)
+        print("ResourcePointsFileSnippetViewSet get_form_class self", dir(self))
+        # super().get_form_class(for_update)
+        return ResourcePointsFileWagtailAdminModelForm
 
 
 class LayerFilesSnippetViewSetGroup(SnippetViewSetGroup):
-    items = [PointVectorLayerFileSnippetViewSet]
+    items = [ResourcePointsFileSnippetViewSet]
     menu_icon = "folder-open-inverse"
     menu_label = "Source Data Files"
     menu_name = "data-files"
-
-
 
 
 """

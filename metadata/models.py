@@ -9,7 +9,7 @@ from django.utils.html import strip_tags
 # Create your models here.
 
 
-class DatasetMetadataTopicCategory(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class ResourceMetadataTopicCategory(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     """
     Topic categories for dataset metadata.
     """
@@ -21,7 +21,7 @@ class DatasetMetadataTopicCategory(LockableWorkFlowDraftStateRevisionModelBaseMi
         return self.name
 
 
-class DatasetMetadataDateType(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class ResourceMetadataDateType(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     """
     Date types for dataset metadata.
     """
@@ -33,7 +33,7 @@ class DatasetMetadataDateType(LockableWorkFlowDraftStateRevisionModelBaseMixin):
         return self.name
 
 
-class DatasetMetadataMaintenanceFrequency(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class ResourceMetadataMaintenanceFrequency(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     """
     Maintenance frequencies for dataset metadata.
     """
@@ -45,7 +45,7 @@ class DatasetMetadataMaintenanceFrequency(LockableWorkFlowDraftStateRevisionMode
         return self.name
 
 
-class DatasetMetadataRegion(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class ResourceMetadataRegion(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     """
     Regions for dataset metadata.
     """
@@ -57,7 +57,7 @@ class DatasetMetadataRegion(LockableWorkFlowDraftStateRevisionModelBaseMixin):
         return self.name
 
 
-class DatasetMetadataRestrictionCodeType(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class ResourceMetadataRestrictionCodeType(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     """
     Restriction code types for dataset metadata.
     """
@@ -69,7 +69,7 @@ class DatasetMetadataRestrictionCodeType(LockableWorkFlowDraftStateRevisionModel
         return self.name
 
 
-class DatasetMetadataLicense(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class ResourceMetadataLicense(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     """
     Licenses for dataset metadata.
     """
@@ -81,7 +81,7 @@ class DatasetMetadataLicense(LockableWorkFlowDraftStateRevisionModelBaseMixin):
         return self.name
 
 
-class DatasetMetadataLanguage(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class ResourceMetadataLanguage(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     """
     Languages for dataset metadata.
     """
@@ -93,7 +93,7 @@ class DatasetMetadataLanguage(LockableWorkFlowDraftStateRevisionModelBaseMixin):
         return self.name
 
 
-class DatasetMetadataSpatialRepresentationType(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class ResourceMetadataSpatialRepresentationType(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     """
     Spatial representation types for dataset metadata.
     """
@@ -105,26 +105,26 @@ class DatasetMetadataSpatialRepresentationType(LockableWorkFlowDraftStateRevisio
         return self.name
 
 
-class ResourceMetadataMixin(models.Model):
+class ResourceMetadataBaseMixin(models.Model):
     """
     Base class for resource metadata.
     """
 
     abstract = GeoKnotTextField(null=True, blank=True)
     purpose = GeoKnotTextField(null=True, blank=True)
-    topic_category = models.ForeignKey(DatasetMetadataTopicCategory, on_delete=models.PROTECT, null=True, blank=True)
+    topic_category = models.ForeignKey(ResourceMetadataTopicCategory, on_delete=models.PROTECT, null=True, blank=True)
     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
-    date_type = models.ForeignKey(DatasetMetadataDateType, on_delete=models.PROTECT, null=True, blank=True)
+    date_type = models.ForeignKey(ResourceMetadataDateType, on_delete=models.PROTECT, null=True, blank=True)
     edition = models.CharField(max_length=255, null=True, blank=True)
     attribution = models.CharField(max_length=255, null=True, blank=True)
     doi = models.URLField(null=True, blank=True)
-    maintenance_frequency = models.ForeignKey(DatasetMetadataMaintenanceFrequency, on_delete=models.PROTECT, null=True, blank=True)
-    regions = models.ManyToManyField(DatasetMetadataRegion, blank=True)
-    restriction_code_type = models.ForeignKey(DatasetMetadataRestrictionCodeType, on_delete=models.PROTECT, null=True, blank=True)
+    maintenance_frequency = models.ForeignKey(ResourceMetadataMaintenanceFrequency, on_delete=models.PROTECT, null=True, blank=True)
+    regions = models.ManyToManyField(ResourceMetadataRegion, blank=True)
+    restriction_code_type = models.ForeignKey(ResourceMetadataRestrictionCodeType, on_delete=models.PROTECT, null=True, blank=True)
     other_constraints = GeoKnotTextField(null=True, blank=True)
-    license = models.ForeignKey(DatasetMetadataLicense, on_delete=models.PROTECT, null=True, blank=True)
-    language = models.ForeignKey(DatasetMetadataLanguage, on_delete=models.PROTECT, null=True, blank=True)
-    spatial_representation_type = models.ForeignKey(DatasetMetadataSpatialRepresentationType, on_delete=models.PROTECT, null=True, blank=True)
+    license = models.ForeignKey(ResourceMetadataLicense, on_delete=models.PROTECT, null=True, blank=True)
+    language = models.ForeignKey(ResourceMetadataLanguage, on_delete=models.PROTECT, null=True, blank=True)
+    spatial_representation_type = models.ForeignKey(ResourceMetadataSpatialRepresentationType, on_delete=models.PROTECT, null=True, blank=True)
     supplemental_information = GeoKnotTextField(null=True, blank=True)
     data_quality_statement = GeoKnotTextField(null=True, blank=True)
 

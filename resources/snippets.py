@@ -108,8 +108,6 @@ class FileFieldPanel(FieldPanel):
         self.disable_comments = disable_comments
         self.permission = permission
         self.read_only = read_only
-        print("FileFieldPanel kwargs", kwargs)
-        print("FileFieldPanel self", self)
 
 
 class VectorLayerSnippetViewSet(SnippetViewSet):
@@ -159,7 +157,7 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
         InlinePanel(
             relation_name='points',
             label="Features",
-            classname="collapsed",
+            classname="collapsed1",
             panels=[
                 FieldPanel('id', heading=' '),
                 FieldPanel('source_file', read_only=True),
@@ -176,7 +174,7 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
             panels=[
                 FieldPanel('collection', read_only=True),
                 FieldPanel('title', read_only=True),
-                FileFieldPanel('file', read_only=True),
+                FieldPanel('file', read_only=True),
             ]
         ),
     ]
