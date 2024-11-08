@@ -1,5 +1,6 @@
 # from wagtail.snippets.models import register_snippet
-from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
+from .models import Point
+# from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
 from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget

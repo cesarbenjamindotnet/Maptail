@@ -27,7 +27,7 @@ class Point(LockableWorkFlowDraftStateRevisionModelBaseMixin):
         verbose_name_plural = "Points"
         ordering = ["-id"]
 
-
+"""
 class LineString(LockableWorkFlowDraftStateRevisionModelBaseMixin):
     data = models.JSONField(null=True, blank=True)
     geom = models.LineStringField(srid=settings.DATA_FEATURES_SRID)
@@ -85,3 +85,4 @@ class GeometryCollection(LockableWorkFlowDraftStateRevisionModelBaseMixin):
 
     def __str__(self):
         return f"{self.layer.name}: {self.id}"
+"""

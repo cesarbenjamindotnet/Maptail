@@ -80,7 +80,7 @@ def uuid_file_path(instance, filename):
     if not ext:
         raise ValidationError("El archivo debe tener extensión")
     file_name = filename.replace(' ', '_')
-    filename = f"{instance.layer.uuid}--{file_name}"
+    filename = f"{instance.layer.pk}--{file_name}"
     file_path = os.path.join('resource_files/', filename)
     return file_path
 

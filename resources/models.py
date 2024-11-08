@@ -25,11 +25,12 @@ class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, Res
     Base model for all resources.
     """
 
-    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    # uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     name = models.CharField(max_length=255, unique=True)
     slug = AutoSlugField(populate_from='name', always_update=True, unique=True, editable=False)
     description = GeoKnotTextField(null=True, blank=True)
-    category = models.ForeignKey(ResourceCategory, on_delete=models.PROTECT, validators=[is_resourcecategory_live])
+    # category = models.ForeignKey(ResourceCategory, on_delete=models.PROTECT, validators=[is_resourcecategory_live])
+    category = models.ForeignKey(ResourceCategory, on_delete=models.PROTECT)
     is_featured = models.BooleanField(default=False)
     is_advertised = models.BooleanField(default=False)
     thumbnail = models.ImageField(upload_to='resources/thumbnails/', null=True, blank=True)

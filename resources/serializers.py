@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from .models import (Resource, PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer,
-                     MultiLineStringVectorLayer, MultiPolygonVectorLayer, GeometryCollectionVectorLayer,
-                     RasterLayer, DataTable, RemoteWMS, RemoteWFS)
-from features.serializers import PointGeoFeatureSerializer, LineStringGeoFeatureSerializer, PolygonGeoFeatureSerializer, MultiPointGeoFeatureSerializer, MultiLineStringGeoFeatureSerializer, MultiPolygonGeoFeatureSerializer, GeometryCollectionGeoFeatureSerializer
+from .models import (Resource, PointVectorLayer)
+# from .models import (Resource, PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer, MultiLineStringVectorLayer, MultiPolygonVectorLayer, GeometryCollectionVectorLayer, RasterLayer, DataTable, RemoteWMS, RemoteWFS)
+from features.serializers import PointGeoFeatureSerializer
+# from features.serializers import PointGeoFeatureSerializer, LineStringGeoFeatureSerializer, PolygonGeoFeatureSerializer, MultiPointGeoFeatureSerializer, MultiLineStringGeoFeatureSerializer, MultiPolygonGeoFeatureSerializer, GeometryCollectionGeoFeatureSerializer
 
 
 # Register your models here.
@@ -11,6 +11,7 @@ from features.serializers import PointGeoFeatureSerializer, LineStringGeoFeature
 
 class ResourceSerializer(serializers.ModelSerializer):
     uuid = serializers.UUIDField(format='hex_verbose')
+
     class Meta:
         model = Resource
         fields = '__all__'
@@ -24,7 +25,7 @@ class PointVectorLayerSerializer(serializers.ModelSerializer):
         model = PointVectorLayer
         fields = '__all__'
 
-
+"""
 class LineStringVectorLayerSerializer(serializers.ModelSerializer):
     lines = LineStringGeoFeatureSerializer(many=True, read_only=True)
 
@@ -98,3 +99,4 @@ class RemoteWFSSerializer(serializers.ModelSerializer):
 
 
 # GeoFeatureModelSerializer
+"""

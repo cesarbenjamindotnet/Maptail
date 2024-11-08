@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
+from .models import Point
+# from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
 
 # Register your serializers here.
 
@@ -11,6 +12,14 @@ class PointSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PointGeoFeatureSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = Point
+        geo_field = 'geom'
+        fields = '__all__'
+
+
+"""
 class LineStringSerializer(serializers.ModelSerializer):
     class Meta:
         model = LineString
@@ -97,3 +106,4 @@ class GeometryCollectionGeoFeatureSerializer(GeoFeatureModelSerializer):
         model = GeometryCollection
         geo_field = 'geom'
         fields = '__all__'
+"""

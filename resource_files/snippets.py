@@ -1,10 +1,12 @@
 from cgitb import handler
 
 from wagtail.snippets.models import register_snippet
-from .models import (ResourcePointsFile, LineStringVectorLayerFile, PolygonVectorLayerFile, MultiPointVectorLayerFile,
-                     MultiPolygonVectorLayerFile, MultiLineStringVectorLayerFile)
+from .models import (ResourcePointsFile, )
+# from .models import (ResourcePointsFile, LineStringVectorLayerFile, PolygonVectorLayerFile, MultiPointVectorLayerFile, MultiPolygonVectorLayerFile, MultiLineStringVectorLayerFile)
+
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList, \
-    AdminPageChooser, TitleFieldPanel
+    AdminPageChooser, TitleFieldPanel, MultipleChooserPanel
+from wagtail.admin.forms.collections import CollectionChoiceField
 
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget
@@ -23,28 +25,29 @@ from wagtail.admin.ui.tables import (
 from django import forms
 from resources.models import PointVectorLayer
 from wagtail.admin.forms import WagtailAdminModelForm
+from taggit.forms import TagWidget
 from wagtail.admin.forms.collections import CollectionChoiceField, SelectWithDisabledOptions
+from wagtail.models import Collection
+from wagtail.documents.forms import BaseDocumentForm
+
 #
 
 
-class ResourcePointsFileWagtailAdminModelForm(WagtailAdminModelForm):
+from wagtail.snippets.widgets import AdminSnippetChooser
+
+class ResourcePointsFileForm(WagtailAdminModelForm):
+    collection = CollectionChoiceField(
+        queryset=Collection.objects.all(),
+        widget=SelectWithDisabledOptions,
+    )
+    layer = forms.ModelChoiceField(
+        queryset=PointVectorLayer.objects.all(),
+        widget=AdminSnippetChooser(PointVectorLayer)
+    )
+
     class Meta:
         model = ResourcePointsFile
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        if self.instance.pk:  # Si estamos editando (la instancia ya tiene una pk)
-            self.fields['collection'].widget.attrs['readonly'] = True
-            self.fields['collection'].disabled = True
-            self.fields['file'].widget.attrs['readonly'] = True
-            self.fields['file'].disabled = True
-            self.fields['layer'].widget.attrs['readonly'] = True
-            self.fields['layer'].disabled = True
-        else:
-            #  pass
-            print("nuevo")
+        fields = ['collection', 'title', 'file', 'layer']
 
 
 class ResourcePointsFileSnippetViewSet(SnippetViewSet):
@@ -55,10 +58,14 @@ class ResourcePointsFileSnippetViewSet(SnippetViewSet):
     list_filter = ("layer", "collection", "uploaded_by_user")
 
     def get_form_class(self, for_update=False):
-        print("ResourcePointsFileSnippetViewSet get_form_class self", self)
-        print("ResourcePointsFileSnippetViewSet get_form_class self", dir(self))
-        # super().get_form_class(for_update)
-        return ResourcePointsFileWagtailAdminModelForm
+        return ResourcePointsFileForm
+
+    panels = [
+        FieldPanel('collection'),
+        FieldPanel('title'),
+        FieldPanel('file'),
+        FieldPanel('layer'),
+    ]
 
 
 class LayerFilesSnippetViewSetGroup(SnippetViewSetGroup):

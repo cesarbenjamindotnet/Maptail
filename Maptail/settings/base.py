@@ -216,7 +216,7 @@ CRX_DISABLE_FOOTER = True
 
 # Maptail settings
 
-USE_AUDITLOG = True
+USE_AUDITLOG = False
 
 if USE_AUDITLOG:
     INSTALLED_APPS.append("auditlog")

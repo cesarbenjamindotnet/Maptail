@@ -4,7 +4,8 @@ from modelcluster.fields import ForeignKey
 from wagtail.models import Orderable
 from resources.models import (PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer,
                               MultiLineStringVectorLayer, MultiPolygonVectorLayer)
-from features.models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon
+from features.models import Point
+# from features.models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon
 from wagtail.admin.panels import FieldPanel
 from wagtail.models import RevisionMixin, LockableMixin, DraftStateMixin, WorkflowMixin, ClusterableModel
 from .utils import (uuid_file_path, store_layer_data, validate_point_vector_file, validate_linestring_vector_file,
@@ -14,7 +15,7 @@ from modelcluster.models import ClusterableModel
 from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_delete, post_delete, pre_save, post_save
 from django.dispatch import receiver
-from wagtail.documents.models import AbstractDocument
+from wagtail.documents.models import AbstractDocument, Document
 from modelcluster.fields import ParentalKey
 from taggit.managers import TaggableManager
 from django.utils.translation import gettext_lazy as _
@@ -26,7 +27,8 @@ from django.utils.translation import gettext_lazy as _
 class ResourcePointsFile(AbstractDocument):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_point_vector_file])
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
-    # remove_orphans = models.BooleanField(default=False)
+
+    admin_form_fields = ("title", "file", "collection", "layer")
 
     def __str__(self):
         return f"{self.title}: {self.file.name} ({self.layer.name})"
@@ -46,8 +48,12 @@ class ResourcePointsFile(AbstractDocument):
     class Meta(AbstractDocument.Meta):
         verbose_name = "Point Vector Layer File"
         verbose_name_plural = "Point Vector Layer Files"
+        permissions = [
+            ("choose_document", "Can choose document"),
+        ]
 
 
+"""
 class LineStringVectorLayerFile(AbstractDocument, ClusterableModel):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_linestring_vector_file])
     layer = ForeignKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="files")
@@ -168,3 +174,4 @@ class MultiPolygonVectorLayerFile(AbstractDocument, ClusterableModel):
         ]
         verbose_name = "MultiPolygon Vector Layer File"
         verbose_name_plural = "Files: MultiPolygon Vector Layer Files"
+"""

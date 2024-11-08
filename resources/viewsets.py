@@ -1,12 +1,18 @@
 from rest_framework import viewsets
+from .models import (Resource, PointVectorLayer)
+"""
 from .models import (Resource, PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer, MultiPointVectorLayer,
                      MultiLineStringVectorLayer, MultiPolygonVectorLayer, GeometryCollectionVectorLayer,
                      RasterLayer, DataTable, RemoteWMS, RemoteWFS)
+"""
+from .serializers import (ResourceSerializer, PointVectorLayerSerializer)
+"""
 from .serializers import (ResourceSerializer, PointVectorLayerSerializer, LineStringVectorLayerSerializer,
                           PolygonVectorLayerSerializer, MultiPointVectorLayerSerializer, MultiLineStringVectorLayerSerializer,
                           MultiPolygonVectorLayerSerializer, GeometryCollectionVectorLayerSerializer,
                           RasterLayerSerializer, DataTableSerializer,
                           RemoteWMSSerializer, RemoteWFSSerializer)
+"""
 
 # Register your models here.
 
@@ -20,7 +26,7 @@ class PointVectorLayerViewSet(viewsets.ModelViewSet):
     queryset = PointVectorLayer.objects.all()
     serializer_class = PointVectorLayerSerializer
 
-
+"""
 class LineStringVectorLayerViewSet(viewsets.ModelViewSet):
     queryset = LineStringVectorLayer.objects.all()
     serializer_class = LineStringVectorLayerSerializer
@@ -69,3 +75,4 @@ class RemoteWMSViewSet(viewsets.ModelViewSet):
 class RemoteWFSViewSet(viewsets.ModelViewSet):
     queryset = RemoteWFS.objects.all()
     serializer_class = RemoteWFSSerializer
+"""

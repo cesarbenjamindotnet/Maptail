@@ -1,7 +1,10 @@
 from rest_framework import viewsets
-from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
-from .serializers import (PointSerializer, LineStringSerializer, PolygonSerializer, MultiPointSerializer, MultiLineStringSerializer, MultiPolygonSerializer, GeometryCollectionSerializer)
-from .serializers import (PointGeoFeatureSerializer, LineStringGeoFeatureSerializer, PolygonGeoFeatureSerializer, MultiPointGeoFeatureSerializer, MultiLineStringGeoFeatureSerializer, MultiPolygonGeoFeatureSerializer, GeometryCollectionGeoFeatureSerializer)
+from .models import Point
+# from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
+from .serializers import (PointSerializer, )
+# from .serializers import (PointSerializer, LineStringSerializer, PolygonSerializer, MultiPointSerializer, MultiLineStringSerializer, MultiPolygonSerializer, GeometryCollectionSerializer)
+from .serializers import (PointGeoFeatureSerializer, )
+# from .serializers import (PointGeoFeatureSerializer, LineStringGeoFeatureSerializer, PolygonGeoFeatureSerializer, MultiPointGeoFeatureSerializer, MultiLineStringGeoFeatureSerializer, MultiPolygonGeoFeatureSerializer, GeometryCollectionGeoFeatureSerializer)
 
 # Register your viewsets here.
 
@@ -11,6 +14,12 @@ class PointViewSet(viewsets.ModelViewSet):
     serializer_class = PointSerializer
 
 
+class PointGeoFeatureViewSet(viewsets.ModelViewSet):
+    queryset = Point.objects.all()
+    serializer_class = PointGeoFeatureSerializer
+
+
+"""
 class LineStringViewSet(viewsets.ModelViewSet):
     queryset = LineString.objects.all()
     serializer_class = LineStringSerializer
@@ -77,3 +86,4 @@ class MultiPolygonGeoFeatureViewSet(viewsets.ModelViewSet):
 class GeometryCollectionGeoFeatureViewSet(viewsets.ModelViewSet):
     queryset = GeometryCollection.objects.all()
     serializer_class = GeometryCollectionGeoFeatureSerializer
+"""

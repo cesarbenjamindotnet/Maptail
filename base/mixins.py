@@ -3,7 +3,7 @@ from wagtail.models import RevisionMixin, LockableMixin, DraftStateMixin, Workfl
 from django.conf import settings
 
 
-class LockableWorkFlowDrafStateRevisionModelBaseAbstract(LockableMixin, WorkflowMixin, DraftStateMixin, RevisionMixin, models.Model):
+class LockableWorkFlowDrafStateRevisionModelBaseAbstract(LockableMixin, WorkflowMixin, DraftStateMixin, RevisionMixin, Orderable):
     class Meta:
         abstract = True
 
@@ -18,6 +18,12 @@ class LockableDraftStateRevisionOrderableModelBaseAbstract(LockableMixin, DraftS
         abstract = True
 
 
-LockableWorkFlowDraftStateRevisionModelBaseMixin = LockableWorkFlowDrafStateRevisionModelBaseAbstract if settings.ENABLE_MODELS_REVISIONS else models.Model
+class LockableRevisionModelBaseAbstract(LockableMixin, RevisionMixin, Orderable):
+    class Meta:
+        abstract = True
+
+
+LockableWorkFlowDraftStateRevisionModelBaseMixin = LockableWorkFlowDrafStateRevisionModelBaseAbstract if settings.ENABLE_MODELS_REVISIONS else Orderable
 LockableRevisionOrderableModelBaseMixin = LockableRevisionOrderableModelBaseAbstract if settings.ENABLE_MODELS_REVISIONS else Orderable
 LockableDraftStateRevisionOrderableModelBaseMixin = LockableDraftStateRevisionOrderableModelBaseAbstract if settings.ENABLE_MODELS_REVISIONS else Orderable
+LockableRevisionModelBaseAbstract = LockableRevisionModelBaseAbstract if settings.ENABLE_MODELS_REVISIONS else Orderable
