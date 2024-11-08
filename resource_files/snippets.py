@@ -25,15 +25,14 @@ from wagtail.admin.ui.tables import (
 from django import forms
 from resources.models import PointVectorLayer
 from wagtail.admin.forms import WagtailAdminModelForm
-from taggit.forms import TagWidget
 from wagtail.admin.forms.collections import CollectionChoiceField, SelectWithDisabledOptions
 from wagtail.models import Collection
-from wagtail.documents.forms import BaseDocumentForm
-
+from wagtail.snippets.widgets import AdminSnippetChooser
 #
 
 
-from wagtail.snippets.widgets import AdminSnippetChooser
+
+
 
 class ResourcePointsFileForm(WagtailAdminModelForm):
     collection = CollectionChoiceField(
