@@ -1,5 +1,5 @@
 # from wagtail.snippets.models import register_snippet
-from .models import Point
+from .models import Feature, Point
 # from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
 from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
@@ -15,6 +15,21 @@ from wagtail.admin.ui.tables import (
     TitleColumn,
     UserColumn,
 )
+
+
+class FeatureSnippetViewSet(SnippetViewSet):
+    model = Feature
+    menu_label = "All Features"
+    add_to_admin_menu = False
+    search_fields = ("data", "layer",)
+    list_filter = ("layer", "source_file",)
+
+    panels = [
+        # FieldPanel('layer'),
+        # FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 500})),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('source_file', read_only=True),
+    ]
 
 
 class PointSnippetViewSet(SnippetViewSet):
@@ -33,7 +48,7 @@ class PointSnippetViewSet(SnippetViewSet):
 
 
 class FeaturesSnippetViewSetGroup(SnippetViewSetGroup):
-    items = [PointSnippetViewSet]
+    items = [FeatureSnippetViewSet, PointSnippetViewSet]
     menu_icon = "folder-open-inverse"
     menu_label = "Features"
     menu_name = "features"

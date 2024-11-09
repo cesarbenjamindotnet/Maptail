@@ -25,7 +25,6 @@ class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, Res
     Base model for all resources.
     """
 
-    # uuid = models.UUIDField(default=uuid.uuid4, primary_key=True)
     name = models.CharField(max_length=255, unique=True)
     slug = AutoSlugField(populate_from='name', always_update=True, unique=True, editable=False)
     description = GeoKnotTextField(null=True, blank=True)
