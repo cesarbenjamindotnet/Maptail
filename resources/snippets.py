@@ -12,6 +12,7 @@ import functools
 
 #
 
+
 class FilesInlinePanel(InlinePanel):
     class BoundPanel(Panel.BoundPanel):
         template_name = "panels/files_inline_panel.html"

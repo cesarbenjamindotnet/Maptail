@@ -22,31 +22,12 @@ from wagtail.admin.ui.tables import (
     TitleColumn,
     UserColumn,
 )
-from django import forms
+
 from resources.models import PointVectorLayer
 from wagtail.admin.forms import WagtailAdminModelForm
-from wagtail.admin.forms.collections import CollectionChoiceField, SelectWithDisabledOptions
-from wagtail.models import Collection
-from wagtail.snippets.widgets import AdminSnippetChooser
+from .forms import NewResourcePointsFileForm, EditResourcePointsFileForm
+
 #
-
-
-
-
-
-class ResourcePointsFileForm(WagtailAdminModelForm):
-    collection = CollectionChoiceField(
-        queryset=Collection.objects.all(),
-        widget=SelectWithDisabledOptions,
-    )
-    layer = forms.ModelChoiceField(
-        queryset=PointVectorLayer.objects.all(),
-        widget=AdminSnippetChooser(PointVectorLayer)
-    )
-
-    class Meta:
-        model = ResourcePointsFile
-        fields = ['collection', 'title', 'file', 'layer']
 
 
 class ResourcePointsFileSnippetViewSet(SnippetViewSet):
@@ -57,7 +38,9 @@ class ResourcePointsFileSnippetViewSet(SnippetViewSet):
     list_filter = ("layer", "collection", "uploaded_by_user")
 
     def get_form_class(self, for_update=False):
-        return ResourcePointsFileForm
+        if for_update:
+            return EditResourcePointsFileForm
+        return NewResourcePointsFileForm
 
     panels = [
         FieldPanel('collection'),
