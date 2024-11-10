@@ -1,6 +1,5 @@
 # from wagtail.snippets.models import register_snippet
-from .models import Feature, Point
-# from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
+from .models import Feature, Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon
 from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.views.snippets import SnippetViewSet, SnippetViewSetGroup
 from django_json_widget.widgets import JSONEditorWidget
@@ -47,12 +46,87 @@ class PointSnippetViewSet(SnippetViewSet):
     ]
 
 
+class LineStringSnippetViewSet(SnippetViewSet):
+    model = LineString
+    menu_label = "LineStrings"
+    add_to_admin_menu = False
+    search_fields = ("data", "layer",)
+    list_filter = ("layer", "source_file",)
+
+    panels = [
+        FieldPanel('layer'),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 500})),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('source_file', read_only=True),
+    ]
+
+
+class PolygonSnippetViewSet(SnippetViewSet):
+    model = Polygon
+    menu_label = "Polygons"
+    add_to_admin_menu = False
+    search_fields = ("data", "layer",)
+    list_filter = ("layer", "source_file",)
+
+    panels = [
+        FieldPanel('layer'),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 500})),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('source_file', read_only=True),
+    ]
+
+
+class MultiPointSnippetViewSet(SnippetViewSet):
+    model = MultiPoint
+    menu_label = "MultiPoints"
+    add_to_admin_menu = False
+    search_fields = ("data", "layer",)
+    list_filter = ("layer", "source_file",)
+
+    panels = [
+        FieldPanel('layer'),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 500})),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('source_file', read_only=True),
+    ]
+
+
+class MultiLineStringSnippetViewSet(SnippetViewSet):
+    model = MultiLineString
+    menu_label = "MultiLineStrings"
+    add_to_admin_menu = False
+    search_fields = ("data", "layer",)
+    list_filter = ("layer", "source_file",)
+
+    panels = [
+        FieldPanel('layer'),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 500})),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('source_file', read_only=True),
+    ]
+
+
+class MultiPolygonSnippetViewSet(SnippetViewSet):
+    model = MultiPolygon
+    menu_label = "MultiPolygons"
+    add_to_admin_menu = False
+    search_fields = ("data", "layer",)
+    list_filter = ("layer", "source_file",)
+
+    panels = [
+        FieldPanel('layer'),
+        FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'map_height': 500})),
+        FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+        FieldPanel('source_file', read_only=True),
+    ]
+
+
 class FeaturesSnippetViewSetGroup(SnippetViewSetGroup):
-    items = [FeatureSnippetViewSet, PointSnippetViewSet]
+    items = [FeatureSnippetViewSet, PointSnippetViewSet, LineStringSnippetViewSet, PolygonSnippetViewSet,
+             MultiPointSnippetViewSet, MultiLineStringSnippetViewSet, MultiPolygonSnippetViewSet]
     menu_icon = "folder-open-inverse"
     menu_label = "Features"
     menu_name = "features"
-
 
 
 """

@@ -37,7 +37,7 @@ class Point(Feature):
         verbose_name_plural = "Points"
 
 
-class LineString(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class LineString(Feature):
     geom = models.LineStringField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="lines")
     source_file = ParentalKey("resource_files.ResourceLineStringsFile", on_delete=models.CASCADE, null=True, blank=True)
@@ -46,7 +46,7 @@ class LineString(LockableWorkFlowDraftStateRevisionModelBaseMixin):
         return f"{self.layer.name}: {self.id}"
 
 
-class Polygon(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class Polygon(Feature):
     geom = models.PolygonField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(PolygonVectorLayer, on_delete=models.CASCADE, related_name="polygons")
     source_file = ParentalKey("resource_files.ResourcePolygonsFile", on_delete=models.CASCADE, null=True, blank=True)
@@ -55,7 +55,7 @@ class Polygon(LockableWorkFlowDraftStateRevisionModelBaseMixin):
         return f"{self.layer.name}: {self.id}"
 
 
-class MultiPoint(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class MultiPoint(Feature):
     geom = models.MultiPointField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(MultiPointVectorLayer, on_delete=models.CASCADE, related_name="multipoints")
     source_file = ParentalKey("resource_files.ResourceMultiPointsFile", on_delete=models.CASCADE, null=True, blank=True)
@@ -64,7 +64,7 @@ class MultiPoint(LockableWorkFlowDraftStateRevisionModelBaseMixin):
         return f"{self.layer.name}: {self.id}"
 
 
-class MultiLineString(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class MultiLineString(Feature):
     geom = models.MultiLineStringField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="multilines")
     source_file = ParentalKey("resource_files.ResourceMultiLineStringsFile", on_delete=models.CASCADE, null=True, blank=True)
@@ -73,7 +73,7 @@ class MultiLineString(LockableWorkFlowDraftStateRevisionModelBaseMixin):
         return f"{self.layer.name}: {self.id}"
 
 
-class MultiPolygon(LockableWorkFlowDraftStateRevisionModelBaseMixin):
+class MultiPolygon(Feature):
     geom = models.MultiPolygonField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="multipolygons")
     source_file = ParentalKey("resource_files.ResourceMultiPolygonsFile", on_delete=models.CASCADE, null=True, blank=True)
