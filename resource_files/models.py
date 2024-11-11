@@ -23,14 +23,11 @@ class ResourcePointsFile(AbstractDocument, ClusterableModel):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_point_vector_file])
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
 
-    # admin_form_fields = ("title", "file", "collection", "layer")
-
     def __str__(self):
         return f"{self.title}: {self.file.name} ({self.layer.name})"
 
     @receiver(post_delete, sender='resource_files.ResourcePointsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
-        print("delete_orphans_post_delete instance", instance)
         orphans = Point.objects.filter(source_file=instance)
         orphans.delete()
 
@@ -57,7 +54,7 @@ class ResourceLineStringsFile(AbstractDocument, ClusterableModel):
 
     @receiver(post_delete, sender='resource_files.ResourceLineStringsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
-        orphans = LineString.objects.filter(file__id=instance.pk)
+        orphans = LineString.objects.filter(source_file=instance)
         orphans.delete()
 
     @receiver(post_save, sender='resource_files.ResourceLineStringsFile')
@@ -66,11 +63,11 @@ class ResourceLineStringsFile(AbstractDocument, ClusterableModel):
             store_layer_data(instance, instance.layer, LineString)
 
     class Meta(AbstractDocument.Meta):
+        verbose_name = "LineString Vector Layer File"
+        verbose_name_plural = "LineString Vector Layer Files"
         permissions = [
             ("choose_document", "Can choose document"),
         ]
-        verbose_name = "LineString Vector Layer File"
-        verbose_name_plural = "Files: LineString Vector Layer Files"
 
 
 class ResourcePolygonsFile(AbstractDocument, ClusterableModel):
@@ -82,7 +79,7 @@ class ResourcePolygonsFile(AbstractDocument, ClusterableModel):
 
     @receiver(post_delete, sender='resource_files.ResourcePolygonsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
-        orphans = Polygon.objects.filter(file__id=instance.pk)
+        orphans = Polygon.objects.filter(source_file=instance)
         orphans.delete()
 
     @receiver(post_save, sender='resource_files.ResourcePolygonsFile')
@@ -92,7 +89,10 @@ class ResourcePolygonsFile(AbstractDocument, ClusterableModel):
 
     class Meta:
         verbose_name = "Polygon Vector Layer File"
-        verbose_name_plural = "Files: Polygon Vector Layer Files"
+        verbose_name_plural = "Polygon Vector Layer Files"
+        permissions = [
+            ("choose_document", "Can choose document"),
+        ]
 
 
 class ResourceMultiPointsFile(AbstractDocument, ClusterableModel):
@@ -104,7 +104,7 @@ class ResourceMultiPointsFile(AbstractDocument, ClusterableModel):
 
     @receiver(post_delete, sender='resource_files.ResourceMultiPointsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
-        orphans = MultiPoint.objects.filter(file__id=instance.pk)
+        orphans = MultiPoint.objects.filter(source_file=instance)
         orphans.delete()
 
     @receiver(post_save, sender='resource_files.ResourceMultiPointsFile')
@@ -113,11 +113,11 @@ class ResourceMultiPointsFile(AbstractDocument, ClusterableModel):
             store_layer_data(instance, instance.layer, MultiPoint)
 
     class Meta(AbstractDocument.Meta):
+        verbose_name = "MultiPoint Vector Layer File"
+        verbose_name_plural = "MultiPoint Vector Layer Files"
         permissions = [
             ("choose_document", "Can choose document"),
         ]
-        verbose_name = "MultiPoint Vector Layer File"
-        verbose_name_plural = "Files: MultiPoint Vector Layer Files"
 
 
 class ResourceMultiLineStringsFile(AbstractDocument, ClusterableModel):
@@ -129,7 +129,7 @@ class ResourceMultiLineStringsFile(AbstractDocument, ClusterableModel):
 
     @receiver(post_delete, sender='resource_files.ResourceMultiLineStringsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
-        orphans = MultiLineString.objects.filter(file__id=instance.pk)
+        orphans = MultiLineString.objects.filter(source_file=instance)
         orphans.delete()
 
     @receiver(post_save, sender='resource_files.ResourceMultiLineStringsFile')
@@ -138,11 +138,11 @@ class ResourceMultiLineStringsFile(AbstractDocument, ClusterableModel):
             store_layer_data(instance, instance.layer, MultiLineString)
 
     class Meta(AbstractDocument.Meta):
+        verbose_name = "MultiLineString Vector Layer File"
+        verbose_name_plural = "MultiLineString Vector Layer Files"
         permissions = [
             ("choose_document", "Can choose document"),
         ]
-        verbose_name = "MultiLineString Vector Layer File"
-        verbose_name_plural = "Files: MultiLineString Vector Layer Files"
 
 
 class ResourceMultiPolygonsFile(AbstractDocument, ClusterableModel):
@@ -154,7 +154,7 @@ class ResourceMultiPolygonsFile(AbstractDocument, ClusterableModel):
 
     @receiver(post_delete, sender='resource_files.ResourceMultiPolygonsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
-        orphans = MultiPolygon.objects.filter(file__id=instance.pk)
+        orphans = MultiPolygon.objects.filter(source_file=instance)
         orphans.delete()
 
     @receiver(post_save, sender='resource_files.ResourceMultiPolygonsFile')
@@ -163,8 +163,8 @@ class ResourceMultiPolygonsFile(AbstractDocument, ClusterableModel):
             store_layer_data(instance, instance.layer, MultiPolygon)
 
     class Meta(AbstractDocument.Meta):
+        verbose_name = "MultiPolygon Vector Layer File"
+        verbose_name_plural = "MultiPolygon Vector Layer Files"
         permissions = [
             ("choose_document", "Can choose document"),
         ]
-        verbose_name = "MultiPolygon Vector Layer File"
-        verbose_name_plural = "Files: MultiPolygon Vector Layer Files"

@@ -9,6 +9,8 @@ pyproj
 geos
 gdal
 shapely
+djangorestframework
+djangorestframework-gis
 django-auditlog
 django-autoslug
 django-sass
@@ -17,10 +19,10 @@ django-guardian
 django-allauth
 django-polymorphic
 django-modelcluster
-djoser
-djangorestframework
-djangorestframework-gis
+django-admin-rangefilter
 django-filter
+wagtail-rangefilter
+djoser
 earthengine-api
 httpx
 python-dotenv

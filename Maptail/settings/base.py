@@ -78,6 +78,8 @@ INSTALLED_APPS = [
     "rest_framework_gis",
     "django_json_widget",
     "polymorphic",
+    "wagtail_rangefilter",
+    "rangefilter",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
