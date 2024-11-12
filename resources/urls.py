@@ -1,6 +1,6 @@
 from django.urls import path
 from .viewsets import (ResourceViewSet,)
-from .views import DynamicPygeoapiConfigView
+from .views import DynamicPygeoapiResourcesView
 """
 from .viewsets import (ResourceViewSet, RasterLayerViewSet, DataTableViewSet, RemoteWMSViewSet,
                         PointVectorLayerViewSet, LineStringVectorLayerViewSet, PolygonVectorLayerViewSet,
@@ -11,7 +11,7 @@ from .viewsets import (ResourceViewSet, RasterLayerViewSet, DataTableViewSet, Re
 from base.router import drf_default_router
 
 urlpatterns = [
-    path('dynamic_pygeoapi_config/', DynamicPygeoapiConfigView.as_view(), name='dynamic_pygeoapi_config'),
+    path('dynamic_pygeoapi_config/', DynamicPygeoapiResourcesView.as_view(), name='dynamic_pygeoapi_config'),
 ]
 
 drf_default_router.register('rest/v1/resources/resources', ResourceViewSet, basename='resources-resources')

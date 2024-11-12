@@ -1,30 +1,38 @@
 from django.views.generic.base import View
 from django.http import JsonResponse
+from django.contrib.gis.db.models import Extent
+from django.db.models import Min, Max
 from .models import Resource
 
 
-class DynamicPygeoapiConfigView(View):
+class DynamicPygeoapiResourcesView(View):
     def get(self, request, *args, **kwargs):
 
         config = {
-            "metadata": {
-                "name": "Dynamic PyGeoAPI",
-                "description": "Django-powered dynamic configuration for pygeoapi",
-                "api_version": "1.0.0"
-            },
             "resources": {}
         }
 
         for resource in Resource.objects.all():
-            config["resources"][resource.title] = {
+            config["resources"][resource.slug] = {
                 "type": "collection",
                 "title": resource.title,
                 "description": resource.description,
-                "keywords": resource.tags.all().values_list('name', flat=True),
-                "providers": {
-                    "name": "pygeoapi_providers.DjangoResourceProvider",
-                    "data": resource.id
-                }
+                "keywords": list(resource.tags.all().values_list('name', flat=True)),
+                "extents": {
+                  "spatial": {
+                    "bbox": resource.features.aggregate(Extent('geom'))['geom__extent'],
+                    'crs': 'http://www.opengis.net/def/crs/OGC/1.3/CRS84'
+                  },
+                  "temporal": {
+                    "begin": resource.features.aggregate(begin=Min('last_published_at'))['begin'],
+                    "end": resource.features.aggregate(end=Max('last_published_at'))['end']
+                  }
+                },
+                "providers": [{
+                    "type": "feature",
+                    "name": "pygeoapi_wagtail_provider.WagtailProvider",
+                    "data": resource.id,
+                }]
             }
 
         return JsonResponse(config)
