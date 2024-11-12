@@ -30,7 +30,7 @@ class Point(Feature):
     source_file = ParentalKey("resource_files.ResourcePointsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.layer.name}: {self.id}"
+        return f"{self.layer.title}: {self.id}"
 
     class Meta:
         verbose_name = "Point"
@@ -43,7 +43,7 @@ class LineString(Feature):
     source_file = ParentalKey("resource_files.ResourceLineStringsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.layer.name}: {self.id}"
+        return f"{self.layer.title}: {self.id}"
 
 
 class Polygon(Feature):
@@ -52,7 +52,7 @@ class Polygon(Feature):
     source_file = ParentalKey("resource_files.ResourcePolygonsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.layer.name}: {self.id}"
+        return f"{self.layer.title}: {self.id}"
 
 
 class MultiPoint(Feature):
@@ -61,7 +61,7 @@ class MultiPoint(Feature):
     source_file = ParentalKey("resource_files.ResourceMultiPointsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.layer.name}: {self.id}"
+        return f"{self.layer.title}: {self.id}"
 
 
 class MultiLineString(Feature):
@@ -70,7 +70,7 @@ class MultiLineString(Feature):
     source_file = ParentalKey("resource_files.ResourceMultiLineStringsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.layer.name}: {self.id}"
+        return f"{self.layer.title}: {self.id}"
 
 
 class MultiPolygon(Feature):
@@ -79,4 +79,4 @@ class MultiPolygon(Feature):
     source_file = ParentalKey("resource_files.ResourceMultiPolygonsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.layer.name}: {self.id}"
+        return f"{self.layer.title}: {self.id}"

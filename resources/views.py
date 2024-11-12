@@ -28,4 +28,3 @@ class DynamicPygeoapiConfigView(View):
             }
 
         return JsonResponse(config)
-mm

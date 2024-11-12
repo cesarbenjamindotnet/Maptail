@@ -24,7 +24,7 @@ class ResourcePointsFile(AbstractDocument, ClusterableModel):
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title} ({self.layer.title})"
+        return f"{self.title} ({self.file})"
 
     @receiver(post_delete, sender='resource_files.ResourcePointsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -50,7 +50,7 @@ class ResourceLineStringsFile(AbstractDocument, ClusterableModel):
     layer = ParentalKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title} ({self.layer.title})"
+        return f"{self.title} ({self.file})"
 
     @receiver(post_delete, sender='resource_files.ResourceLineStringsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -75,7 +75,7 @@ class ResourcePolygonsFile(AbstractDocument, ClusterableModel):
     layer = ParentalKey(PolygonVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title} ({self.layer.title})"
+        return f"{self.title} ({self.file})"
 
     @receiver(post_delete, sender='resource_files.ResourcePolygonsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -100,7 +100,7 @@ class ResourceMultiPointsFile(AbstractDocument, ClusterableModel):
     layer = ParentalKey(MultiPointVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title} ({self.layer.title})"
+        return f"{self.title} ({self.file})"
 
     @receiver(post_delete, sender='resource_files.ResourceMultiPointsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -125,7 +125,7 @@ class ResourceMultiLineStringsFile(AbstractDocument, ClusterableModel):
     layer = ParentalKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title} ({self.layer.title})"
+        return f"{self.title} ({self.file})"
 
     @receiver(post_delete, sender='resource_files.ResourceMultiLineStringsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -150,7 +150,7 @@ class ResourceMultiPolygonsFile(AbstractDocument, ClusterableModel):
     layer = ParentalKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title} ({self.layer.title})"
+        return f"{self.title} ({self.file})"
 
     @receiver(post_delete, sender='resource_files.ResourceMultiPolygonsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):

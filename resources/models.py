@@ -88,6 +88,7 @@ class PointVectorLayer(VectorLayer):
         verbose_name = "Point Vector Layer"
         verbose_name_plural = "Resources: Point Vector Layers"
 
+
 class LineStringVectorLayer(VectorLayer):
     """
     A line dataset.
