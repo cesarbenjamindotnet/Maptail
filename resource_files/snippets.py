@@ -142,4 +142,3 @@ class LayerFilesSnippetViewSetGroup(SnippetViewSetGroup):
     menu_icon = "folder-open-inverse"
     menu_label = "Source Data Files"
     menu_name = "data-files"
-
