@@ -9,6 +9,7 @@ from django.forms.formsets import DELETION_FIELD_NAME, ORDERING_FIELD_NAME
 from django import forms
 from wagtail.admin import compare
 import functools
+from taggit.forms import TagWidget
 
 #
 
@@ -121,6 +122,7 @@ class VectorLayerSnippetViewSet(SnippetViewSet):
         FieldPanel('title'),
         FieldPanel('description'),
         FieldPanel('category'),
+        FieldPanel('tags'),
     ]
 
     metadata_panels = [

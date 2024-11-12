@@ -11,6 +11,8 @@ from base import enumerations
 from modelcluster.models import ClusterableModel
 from django.core.exceptions import ValidationError
 from modelcluster.fields import ParentalKey
+from taggit.managers import TaggableManager
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
@@ -20,7 +22,7 @@ def is_resourcecategory_live(pk):
         raise ValidationError('The resource category must be live.')
 
 
-class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, ResourceMetadataBaseMixin):
+class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, ClusterableModel, ResourceMetadataBaseMixin):
     """
     Base model for all resources.
     """
@@ -28,15 +30,13 @@ class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, Res
     title = models.CharField(max_length=255, unique=True)
     slug = AutoSlugField(populate_from='title', always_update=True, unique=True, editable=False)
     description = GeoKnotTextField(null=True, blank=True)
-    # category = models.ForeignKey(ResourceCategory, on_delete=models.PROTECT, validators=[is_resourcecategory_live])
     category = models.ForeignKey(ResourceCategory, on_delete=models.PROTECT)
+    tags = TaggableManager(help_text=None, blank=True, verbose_name=_("tags"))
     is_featured = models.BooleanField(default=False)
     is_advertised = models.BooleanField(default=False)
     thumbnail = models.ImageField(upload_to='resources/thumbnails/', null=True, blank=True)
     popular_count = models.IntegerField(default=0)
     share_count = models.IntegerField(default=0)
-
-    objects = ResourceBaseManager()
 
     def __str__(self):
         return self.title
@@ -62,18 +62,19 @@ class Resource(PolymorphicModel, ResourceBaseAbstract):
     A resource.
     """
 
+    # objects = ResourceBaseManager()  # TODO: Uncomment when the manager is implemented
+
     class Meta:
         verbose_name = "Resource"
         verbose_name_plural = "Resources"
 
 
-class VectorLayer(ClusterableModel, Resource):
+class VectorLayer(Resource):
     """
     A dataset.
     """
 
     class Meta:
-        abstract = True
         verbose_name = "Vector Layer"
         verbose_name_plural = "Vector Layers"
 
@@ -86,7 +87,6 @@ class PointVectorLayer(VectorLayer):
     class Meta:
         verbose_name = "Point Vector Layer"
         verbose_name_plural = "Resources: Point Vector Layers"
-
 
 class LineStringVectorLayer(VectorLayer):
     """

@@ -14,7 +14,7 @@ urlpatterns = [
     # Admin
     path("django-admin/", admin.site.urls),
     path("admin/", include(crx_admin_urls)),
-    path('ogcapi/', include('pygeoapi.django.urls')),
+    path('ogcapi/', include('pygeoapi.django_.urls')),
     # Documents
     path("docs/", include(wagtaildocs_urls)),
     # Search

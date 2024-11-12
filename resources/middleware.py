@@ -11,17 +11,24 @@ class DynamicPygeoapiConfigMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.path.startswith('/ogcapi'):
+        if request.path.startswith('/ogcapi/'):
             base_url = request.build_absolute_uri('/')
             config_url = f'{base_url}dynamic_pygeoapi_config/'
+            print(f'Fetching dynamic config from {config_url}')
             response = httpx.get(config_url)
+            print(f'Response status code: {response.status_code}')
+            print(f'Response: {response}')
+
             if response.status_code == 200:
                 dynamic_config = response.json()
+                print(f'Dynamic config: {dynamic_config}')
                 # Cargar la configuración original desde config.yml
                 with open(getenv('PYGEOAPI_CONFIG', 'pygeoapi.config.yml'), 'r') as f:
                     original_config = yaml_load(f)
                 # Actualizar solo la sección de resources
+                print("original_config", original_config)
                 original_config['resources'] = dynamic_config.get('resources', {})
+                print("resources config", original_config)
                 settings.PYGEOAPI_CONFIG = original_config
         response = self.get_response(request)
         return response

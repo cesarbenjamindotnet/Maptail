@@ -20,10 +20,12 @@ class DynamicPygeoapiConfigView(View):
                 "type": "collection",
                 "title": resource.title,
                 "description": resource.description,
-                "provider": {
+                "keywords": resource.tags.all().values_list('name', flat=True),
+                "providers": {
                     "name": "pygeoapi_providers.DjangoResourceProvider",
                     "data": resource.id
                 }
             }
 
         return JsonResponse(config)
+mm
