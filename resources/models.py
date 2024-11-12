@@ -25,8 +25,8 @@ class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, Res
     Base model for all resources.
     """
 
-    name = models.CharField(max_length=255, unique=True)
-    slug = AutoSlugField(populate_from='name', always_update=True, unique=True, editable=False)
+    title = models.CharField(max_length=255, unique=True)
+    slug = AutoSlugField(populate_from='title', always_update=True, unique=True, editable=False)
     description = GeoKnotTextField(null=True, blank=True)
     # category = models.ForeignKey(ResourceCategory, on_delete=models.PROTECT, validators=[is_resourcecategory_live])
     category = models.ForeignKey(ResourceCategory, on_delete=models.PROTECT)
@@ -39,7 +39,7 @@ class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, Res
     objects = ResourceBaseManager()
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         abstract = True

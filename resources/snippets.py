@@ -113,12 +113,12 @@ class FileFieldPanel(FieldPanel):
 
 class VectorLayerSnippetViewSet(SnippetViewSet):
     add_to_admin_menu = False
-    search_fields = ("name", "description", "category", "abstract", "purpose")
+    search_fields = ("title", "description", "category", "abstract", "purpose")
     list_filter = ("category", "topic_category", "license", "language", "date_type", "maintenance_frequency", "regions",
                    "restriction_code_type", "is_featured", "is_advertised")
 
     main_panels = [
-        FieldPanel('name'),
+        FieldPanel('title'),
         FieldPanel('description'),
         FieldPanel('category'),
     ]
@@ -156,7 +156,7 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
 
     features_panels = [
         InlinePanel(
-            relation_name='points',
+            relation_name='features',
             label="Features",
             classname="collapsed1",
             panels=[
@@ -195,7 +195,7 @@ class LineStringVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
 
     features_panels = [
         InlinePanel(
-            relation_name='lines',
+            relation_name='features',
             label="Features",
             classname="collapsed1",
             panels=[
@@ -234,7 +234,7 @@ class PolygonVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
 
     features_panels = [
         InlinePanel(
-            relation_name='polygons',
+            relation_name='features',
             label="Features",
             classname="collapsed1",
             panels=[
@@ -273,7 +273,7 @@ class MultiPointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
 
     features_panels = [
         InlinePanel(
-            relation_name='multipoints',
+            relation_name='features',
             label="Features",
             classname="collapsed1",
             panels=[
@@ -312,7 +312,7 @@ class MultiLineStringVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
 
     features_panels = [
         InlinePanel(
-            relation_name='multilines',
+            relation_name='features',
             label="Features",
             classname="collapsed1",
             panels=[
@@ -351,7 +351,7 @@ class MultiPolygonVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
 
     features_panels = [
         InlinePanel(
-            relation_name='multipolygons',
+            relation_name='features',
             label="Features",
             classname="collapsed1",
             panels=[

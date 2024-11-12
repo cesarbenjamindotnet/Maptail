@@ -26,7 +26,7 @@ class Feature(PolymorphicModel, LockableWorkFlowDraftStateRevisionModelBaseMixin
 
 class Point(Feature):
     geom = models.PointField(srid=settings.DATA_FEATURES_SRID)
-    layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="points")
+    layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="features")
     source_file = ParentalKey("resource_files.ResourcePointsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -39,7 +39,7 @@ class Point(Feature):
 
 class LineString(Feature):
     geom = models.LineStringField(srid=settings.DATA_FEATURES_SRID)
-    layer = ParentalKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="lines")
+    layer = ParentalKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="features")
     source_file = ParentalKey("resource_files.ResourceLineStringsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -48,7 +48,7 @@ class LineString(Feature):
 
 class Polygon(Feature):
     geom = models.PolygonField(srid=settings.DATA_FEATURES_SRID)
-    layer = ParentalKey(PolygonVectorLayer, on_delete=models.CASCADE, related_name="polygons")
+    layer = ParentalKey(PolygonVectorLayer, on_delete=models.CASCADE, related_name="features")
     source_file = ParentalKey("resource_files.ResourcePolygonsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -57,7 +57,7 @@ class Polygon(Feature):
 
 class MultiPoint(Feature):
     geom = models.MultiPointField(srid=settings.DATA_FEATURES_SRID)
-    layer = ParentalKey(MultiPointVectorLayer, on_delete=models.CASCADE, related_name="multipoints")
+    layer = ParentalKey(MultiPointVectorLayer, on_delete=models.CASCADE, related_name="features")
     source_file = ParentalKey("resource_files.ResourceMultiPointsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -66,7 +66,7 @@ class MultiPoint(Feature):
 
 class MultiLineString(Feature):
     geom = models.MultiLineStringField(srid=settings.DATA_FEATURES_SRID)
-    layer = ParentalKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="multilines")
+    layer = ParentalKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="features")
     source_file = ParentalKey("resource_files.ResourceMultiLineStringsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -75,7 +75,7 @@ class MultiLineString(Feature):
 
 class MultiPolygon(Feature):
     geom = models.MultiPolygonField(srid=settings.DATA_FEATURES_SRID)
-    layer = ParentalKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="multipolygons")
+    layer = ParentalKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="features")
     source_file = ParentalKey("resource_files.ResourceMultiPolygonsFile", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):

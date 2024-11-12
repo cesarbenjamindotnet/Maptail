@@ -105,6 +105,9 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     # Fetch from cache. Must be LAST.
     "wagtailcache.cache.FetchFromCacheMiddleware",
+
+    # pygeoapi
+    "resources.middleware.DynamicPygeoapiConfigMiddleware",
 ]
 
 ROOT_URLCONF = "Maptail.urls"

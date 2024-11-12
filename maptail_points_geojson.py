@@ -91,17 +91,6 @@ class GeoJSONProvider(BaseProvider):
             print("data", type(data))
             print("data", dir(data))
 
-            """
-            for key, value in data['points']['features'][0]['properties'].items():
-                if isinstance(value, float):
-                    type_ = 'number'
-                elif isinstance(value, int):
-                    type_ = 'integer'
-                else:
-                    type_ = 'string'
-
-                fields[key] = {'type': type_}
-            """
         else:
             LOGGER.warning(f'File {self.data} does not exist.')
         return fields

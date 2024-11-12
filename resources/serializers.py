@@ -17,7 +17,7 @@ class ResourceSerializer(serializers.ModelSerializer):
 
 
 class PointVectorLayerSerializer(serializers.ModelSerializer):
-    points = PointGeoFeatureSerializer(many=True, read_only=True)
+    features = PointGeoFeatureSerializer(many=True, read_only=True)
 
     class Meta:
         model = PointVectorLayer

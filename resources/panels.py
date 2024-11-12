@@ -152,7 +152,7 @@ class PointMapPanel(Panel):
                 return
 
             try:
-                print(self.form['points'])
+                print(self.form['features'])
                 self.bound_field = self.form[self.relation_name]
             except KeyError:
                 print(self)

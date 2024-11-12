@@ -6,6 +6,7 @@ from features.serializers import PointGeoFeatureSerializer  # Importa tus serial
 
 LOGGER = logging.getLogger(__name__)
 
+
 class WagtailProvider(BaseProvider):
     def __init__(self, provider_def):
         super().__init__(provider_def)
