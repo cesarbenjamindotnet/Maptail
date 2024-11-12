@@ -189,158 +189,205 @@ class PointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     ])
 
 
-class ResourcesSnippetViewSetGroup(SnippetViewSetGroup):
-    items = [PointVectorLayerSnippetViewSet]
-    menu_icon = "folder-open-inverse"
-    menu_label = "Resources"
-    menu_name = "resources"
-
-
-"""
-@register_snippet
 class LineStringVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     model = LineStringVectorLayer
     menu_label = "LineString Vector Layers"
 
     features_panels = [
-        InlinePanel('lines', panels=[
-            FieldPanel('id', heading=' '),
-            FieldPanel('source_file'),
-            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
-            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
-        ], min_num=0),
+        InlinePanel(
+            relation_name='lines',
+            label="Features",
+            classname="collapsed1",
+            panels=[
+                FieldPanel('id', heading=' '),
+                FieldPanel('source_file', read_only=True),
+                FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
+                FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+            ]),
     ]
 
     files_panels = [
-        InlinePanel('files', panels=[
-            FieldPanel('file')
-        ], min_num=0),
+        FilesInlinePanel(
+            relation_name='files',
+            label="Files",
+            classname="collapsed1",
+            panels=[
+                FieldPanel('collection', read_only=True),
+                FieldPanel('title', read_only=True),
+                FieldPanel('file', read_only=True),
+            ]
+        ),
     ]
 
     edit_handler = TabbedInterface([
         ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(features_panels, heading='Features'),
         ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
         ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
-        ObjectList(files_panels, heading='Files'),
-        ObjectList(features_panels, heading='Features'),
+        ObjectList(files_panels, heading='Source Data Files'),
     ])
 
 
-@register_snippet
 class PolygonVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     model = PolygonVectorLayer
-    menu_label = "Polygons Vector Layers"
+    menu_label = "Polygon Vector Layers"
 
     features_panels = [
-        InlinePanel('polygons', panels=[
-            FieldPanel('id', heading=' '),
-            FieldPanel('source_file'),
-            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
-            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
-        ], min_num=0),
+        InlinePanel(
+            relation_name='polygons',
+            label="Features",
+            classname="collapsed1",
+            panels=[
+                FieldPanel('id', heading=' '),
+                FieldPanel('source_file', read_only=True),
+                FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
+                FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+            ]),
     ]
 
     files_panels = [
-        InlinePanel('files', panels=[
-            FieldPanel('file')
-        ], min_num=0),
+        FilesInlinePanel(
+            relation_name='files',
+            label="Files",
+            classname="collapsed1",
+            panels=[
+                FieldPanel('collection', read_only=True),
+                FieldPanel('title', read_only=True),
+                FieldPanel('file', read_only=True),
+            ]
+        ),
     ]
 
     edit_handler = TabbedInterface([
         ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(features_panels, heading='Features'),
         ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
         ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
-        ObjectList(files_panels, heading='Files'),
-        ObjectList(features_panels, heading='Features'),
+        ObjectList(files_panels, heading='Source Data Files'),
     ])
 
 
-
-@register_snippet
 class MultiPointVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     model = MultiPointVectorLayer
     menu_label = "MultiPoint Vector Layers"
 
     features_panels = [
-        InlinePanel('multipoints', panels=[
-            FieldPanel('id', heading=' '),
-            FieldPanel('source_file'),
-            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
-            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
-        ], min_num=0),
+        InlinePanel(
+            relation_name='multipoints',
+            label="Features",
+            classname="collapsed1",
+            panels=[
+                FieldPanel('id', heading=' '),
+                FieldPanel('source_file', read_only=True),
+                FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
+                FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+            ]),
     ]
 
     files_panels = [
-        InlinePanel('files', panels=[
-            FieldPanel('file')
-        ], min_num=0),
+        FilesInlinePanel(
+            relation_name='files',
+            label="Files",
+            classname="collapsed1",
+            panels=[
+                FieldPanel('collection', read_only=True),
+                FieldPanel('title', read_only=True),
+                FieldPanel('file', read_only=True),
+            ]
+        ),
     ]
 
     edit_handler = TabbedInterface([
         ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(features_panels, heading='Features'),
         ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
         ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
-        ObjectList(files_panels, heading='Files'),
-        ObjectList(features_panels, heading='Features'),
+        ObjectList(files_panels, heading='Source Data Files'),
     ])
 
 
-
-
-@register_snippet
 class MultiLineStringVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     model = MultiLineStringVectorLayer
     menu_label = "MultiLineString Vector Layers"
 
     features_panels = [
-        InlinePanel('multilines', panels=[
-            FieldPanel('id', heading=' '),
-            FieldPanel('source_file'),
-            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
-            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
-        ], min_num=0),
+        InlinePanel(
+            relation_name='multilines',
+            label="Features",
+            classname="collapsed1",
+            panels=[
+                FieldPanel('id', heading=' '),
+                FieldPanel('source_file', read_only=True),
+                FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
+                FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+            ]),
     ]
 
     files_panels = [
-        InlinePanel('files', panels=[
-            FieldPanel('file')
-        ], min_num=0),
+        FilesInlinePanel(
+            relation_name='files',
+            label="Files",
+            classname="collapsed1",
+            panels=[
+                FieldPanel('collection', read_only=True),
+                FieldPanel('title', read_only=True),
+                FieldPanel('file', read_only=True),
+            ]
+        ),
     ]
 
     edit_handler = TabbedInterface([
         ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(features_panels, heading='Features'),
         ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
         ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
-        ObjectList(files_panels, heading='Files'),
-        ObjectList(features_panels, heading='Features'),
+        ObjectList(files_panels, heading='Source Data Files'),
     ])
 
 
-@register_snippet
 class MultiPolygonVectorLayerSnippetViewSet(VectorLayerSnippetViewSet):
     model = MultiPolygonVectorLayer
-    menu_label = "MultiPolygons Vector Layers"
+    menu_label = "MultiPolygon Vector Layers"
 
     features_panels = [
-        InlinePanel('multipolygons', panels=[
-            FieldPanel('id', heading=' '),
-            FieldPanel('source_file'),
-            FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
-            FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
-        ], min_num=0),
+        InlinePanel(
+            relation_name='multipolygons',
+            label="Features",
+            classname="collapsed1",
+            panels=[
+                FieldPanel('id', heading=' '),
+                FieldPanel('source_file', read_only=True),
+                FieldPanel('geom', widget=CustomOSMWidget(attrs={'map_width': 800, 'data_height': 500})),
+                FieldPanel('data', widget=JSONEditorWidget(options={}, width="800px")),
+            ]),
     ]
 
     files_panels = [
-        InlinePanel('files', panels=[
-            FieldPanel('file')
-        ], min_num=0),
+        FilesInlinePanel(
+            relation_name='files',
+            label="Files",
+            classname="collapsed1",
+            panels=[
+                FieldPanel('collection', read_only=True),
+                FieldPanel('title', read_only=True),
+                FieldPanel('file', read_only=True),
+            ]
+        ),
     ]
 
     edit_handler = TabbedInterface([
         ObjectList(VectorLayerSnippetViewSet.main_panels, heading='Main'),
+        ObjectList(features_panels, heading='Features'),
         ObjectList(VectorLayerSnippetViewSet.metadata_panels, heading='Metadata'),
         ObjectList(VectorLayerSnippetViewSet.extra_panels, heading='Extra'),
-        ObjectList(files_panels, heading='Files'),
-        ObjectList(features_panels, heading='Features'),
+        ObjectList(files_panels, heading='Source Data Files'),
     ])
-"""
+
+
+class ResourcesSnippetViewSetGroup(SnippetViewSetGroup):
+    items = [PointVectorLayerSnippetViewSet, LineStringVectorLayerSnippetViewSet, PolygonVectorLayerSnippetViewSet,
+             MultiPointVectorLayerSnippetViewSet, MultiLineStringVectorLayerSnippetViewSet,
+             MultiPolygonVectorLayerSnippetViewSet]
+    menu_icon = "folder-open-inverse"
+    menu_label = "Resources"
+    menu_name = "resources"

@@ -9,17 +9,6 @@ from shapely.geometry import shape
 
 
 # TODO: Create a function that will take a file and readit using fiona to get the crs and convert the data to data able to store in geom field on geodjango
-
-def get_data_from_file(file):
-    pass
-    # with fiona.open(file) as src:
-    #     crs = src.crs
-    #     for feature in src:
-    #         feature = feature
-    #         break
-    #     return crs, feature
-
-
 # TODO: create a function to store data in a geodjango model
 
 
@@ -81,7 +70,7 @@ def uuid_file_path(instance, filename):
         raise ValidationError("El archivo debe tener extensión")
     file_name = filename.replace(' ', '_')
     filename = f"{instance.layer.pk}--{file_name}"
-    file_path = os.path.join('resource_files/', filename)
+    file_path = os.path.join('resource_data_files/', filename)
     return file_path
 
 
@@ -128,6 +117,7 @@ def validate_linestring_vector_file(file):
         else:
             raise ValidationError(e)
 
+
 def validate_polygon_vector_file(file):
     print("validate_point_vector_file", file)
     try:
@@ -148,7 +138,6 @@ def validate_polygon_vector_file(file):
             raise ValidationError(e.message)
         else:
             raise ValidationError(e)
-
 
 
 def validate_multipoint_vector_file(file):
@@ -193,6 +182,7 @@ def validate_multilinestring_vector_file(file):
             raise ValidationError(e.message)
         else:
             raise ValidationError(e)
+
 
 def validate_multipolygon_vector_file(file):
     print("validate_multipolygon_vector_file", file)

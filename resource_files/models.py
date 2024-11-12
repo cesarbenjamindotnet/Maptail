@@ -24,7 +24,7 @@ class ResourcePointsFile(AbstractDocument, ClusterableModel):
     layer = ParentalKey(PointVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title}: {self.file.name} ({self.layer.name})"
+        return f"{self.title} ({self.layer.name})"
 
     @receiver(post_delete, sender='resource_files.ResourcePointsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -47,10 +47,10 @@ class ResourcePointsFile(AbstractDocument, ClusterableModel):
 
 class ResourceLineStringsFile(AbstractDocument, ClusterableModel):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_linestring_vector_file])
-    layer = ForeignKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="files")
+    layer = ParentalKey(LineStringVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title}: {self.file.name} ({self.layer.name})"
+        return f"{self.title} ({self.layer.name})"
 
     @receiver(post_delete, sender='resource_files.ResourceLineStringsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -72,10 +72,10 @@ class ResourceLineStringsFile(AbstractDocument, ClusterableModel):
 
 class ResourcePolygonsFile(AbstractDocument, ClusterableModel):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_polygon_vector_file])
-    layer = ForeignKey(PolygonVectorLayer, on_delete=models.CASCADE, related_name="files")
+    layer = ParentalKey(PolygonVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title}: {self.file.name} ({self.layer.name})"
+        return f"{self.title} ({self.layer.name})"
 
     @receiver(post_delete, sender='resource_files.ResourcePolygonsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -97,10 +97,10 @@ class ResourcePolygonsFile(AbstractDocument, ClusterableModel):
 
 class ResourceMultiPointsFile(AbstractDocument, ClusterableModel):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_multipoint_vector_file])
-    layer = ForeignKey(MultiPointVectorLayer, on_delete=models.CASCADE, related_name="files")
+    layer = ParentalKey(MultiPointVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title}: {self.file.name} ({self.layer.name})"
+        return f"{self.title} ({self.layer.name})"
 
     @receiver(post_delete, sender='resource_files.ResourceMultiPointsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -122,10 +122,10 @@ class ResourceMultiPointsFile(AbstractDocument, ClusterableModel):
 
 class ResourceMultiLineStringsFile(AbstractDocument, ClusterableModel):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_multilinestring_vector_file])
-    layer = ForeignKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="files")
+    layer = ParentalKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title}: {self.file.name} ({self.layer.name})"
+        return f"{self.title} ({self.layer.name})"
 
     @receiver(post_delete, sender='resource_files.ResourceMultiLineStringsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
@@ -147,10 +147,10 @@ class ResourceMultiLineStringsFile(AbstractDocument, ClusterableModel):
 
 class ResourceMultiPolygonsFile(AbstractDocument, ClusterableModel):
     file = models.FileField(upload_to=uuid_file_path, validators=[validate_multipolygon_vector_file])
-    layer = ForeignKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="files")
+    layer = ParentalKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="files")
 
     def __str__(self):
-        return f"{self.title}: {self.file.name} ({self.layer.name})"
+        return f"{self.title} ({self.layer.name})"
 
     @receiver(post_delete, sender='resource_files.ResourceMultiPolygonsFile')
     def delete_orphans_post_delete(sender, instance, **kwargs):
