@@ -10,7 +10,6 @@ from features.serializers import PointGeoFeatureSerializer
 
 
 class ResourceSerializer(serializers.ModelSerializer):
-    uuid = serializers.UUIDField(format='hex_verbose')
 
     class Meta:
         model = Resource
@@ -18,12 +17,12 @@ class ResourceSerializer(serializers.ModelSerializer):
 
 
 class PointVectorLayerSerializer(serializers.ModelSerializer):
-    uuid = serializers.UUIDField(format='hex_verbose')
     points = PointGeoFeatureSerializer(many=True, read_only=True)
 
     class Meta:
         model = PointVectorLayer
         fields = '__all__'
+
 
 """
 class LineStringVectorLayerSerializer(serializers.ModelSerializer):

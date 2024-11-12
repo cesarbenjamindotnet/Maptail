@@ -84,10 +84,12 @@ class GeoJSONProvider(BaseProvider):
         from resources.models import PointVectorLayer
         from resources.serializers import PointVectorLayerSerializer
 
+        print("self", self)
+        print("self.data", self.data)
 
-        if PointVectorLayer.objects.filter(uuid=self.data).exists():
+        if PointVectorLayer.objects.filter(id=self.data).exists():
             print("si existe")
-            data = PointVectorLayerSerializer(PointVectorLayer.objects.get(uuid=self.data)).data
+            data = PointVectorLayerSerializer(PointVectorLayer.objects.get(id=self.data)).data
             print("data", data)
             print("data", type(data))
             print("data", dir(data))
@@ -117,6 +119,7 @@ class GeoJSONProvider(BaseProvider):
 
         if os.path.exists(self.data):
             with open(self.data) as src:
+                print("src", src)
                 data = json.loads(src.read())
         else:
             LOGGER.warning(f'File {self.data} does not exist.')

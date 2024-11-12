@@ -13,10 +13,20 @@ class PointSerializer(serializers.ModelSerializer):
 
 
 class PointGeoFeatureSerializer(GeoFeatureModelSerializer):
+    feature_ptr = serializers.PrimaryKeyRelatedField(read_only=True)
+
+
     class Meta:
         model = Point
         geo_field = 'geom'
         fields = '__all__'
+        extra_fields = ['feature_ptr']
+
+    def get_field_names(self, declared_fields, info):
+        expanded_fields = super(PointGeoFeatureSerializer, self).get_field_names(declared_fields, info)
+        if hasattr(self.Meta, 'extra_fields'):
+            expanded_fields += self.Meta.extra_fields
+        return expanded_fields
 
 
 """
