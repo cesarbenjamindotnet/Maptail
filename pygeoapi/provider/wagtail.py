@@ -20,14 +20,13 @@ class WagtailProvider(BaseProvider):
         total_count = queryset.count()
         queryset = queryset[offset:offset + limit]
         serializer = PointGeoFeatureSerializer(queryset, many=True)
-        data = {
-            'type': 'FeatureCollection',
-            'features': serializer.data,
-            'numberMatched': total_count,
-            'numberReturned': len(serializer.data)
-        }
+
+        serializer.data['numberMatched'] = total_count
+        serializer.data['numberReturned'] = len(serializer.data['features'])
+
+
         # Convierte los datos a JSON
-        json_data = json.dumps(data)
+        json_data = json.dumps(serializer.data)
         print("json_data", json_data)
         return json.loads(json_data)
 
