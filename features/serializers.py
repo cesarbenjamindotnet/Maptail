@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from .models import Point
-# from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection
+from .models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon
 
 # Register your serializers here.
 
@@ -15,68 +14,24 @@ class PointSerializer(serializers.ModelSerializer):
 class PointGeoFeatureSerializer(GeoFeatureModelSerializer):
     feature_ptr = serializers.PrimaryKeyRelatedField(read_only=True)
 
-
     class Meta:
         model = Point
         geo_field = 'geom'
         fields = '__all__'
-        extra_fields = ['feature_ptr']
+        # extra_fields = ['feature_ptr']
 
+    """
     def get_field_names(self, declared_fields, info):
         expanded_fields = super(PointGeoFeatureSerializer, self).get_field_names(declared_fields, info)
         if hasattr(self.Meta, 'extra_fields'):
             expanded_fields += self.Meta.extra_fields
         return expanded_fields
-
-
-"""
-class LineStringSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LineString
-        fields = '__all__'
-
-
-class PolygonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Polygon
-        fields = '__all__'
-
-
-class MultiPointSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MultiPoint
-        fields = '__all__'
-
-
-class MultiLineStringSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MultiLineString
-        fields = '__all__'
-
-
-class MultiPolygonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MultiPolygon
-        fields = '__all__'
-
-
-class GeometryCollectionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GeometryCollection
-        fields = '__all__'
-
-
-# GeoFeatureModelSerializer
-
-
-class PointGeoFeatureSerializer(GeoFeatureModelSerializer):
-    class Meta:
-        model = Point
-        geo_field = 'geom'
-        fields = '__all__'
+    """
 
 
 class LineStringGeoFeatureSerializer(GeoFeatureModelSerializer):
+    feature_ptr = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = LineString
         geo_field = 'geom'
@@ -84,6 +39,8 @@ class LineStringGeoFeatureSerializer(GeoFeatureModelSerializer):
 
 
 class PolygonGeoFeatureSerializer(GeoFeatureModelSerializer):
+    feature_ptr = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = Polygon
         geo_field = 'geom'
@@ -91,6 +48,8 @@ class PolygonGeoFeatureSerializer(GeoFeatureModelSerializer):
 
 
 class MultiPointGeoFeatureSerializer(GeoFeatureModelSerializer):
+    feature_ptr = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = MultiPoint
         geo_field = 'geom'
@@ -98,6 +57,8 @@ class MultiPointGeoFeatureSerializer(GeoFeatureModelSerializer):
 
 
 class MultiLineStringGeoFeatureSerializer(GeoFeatureModelSerializer):
+    feature_ptr = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = MultiLineString
         geo_field = 'geom'
@@ -105,15 +66,9 @@ class MultiLineStringGeoFeatureSerializer(GeoFeatureModelSerializer):
 
 
 class MultiPolygonGeoFeatureSerializer(GeoFeatureModelSerializer):
+    feature_ptr = serializers.PrimaryKeyRelatedField(read_only=True)
+
     class Meta:
         model = MultiPolygon
         geo_field = 'geom'
         fields = '__all__'
-
-
-class GeometryCollectionGeoFeatureSerializer(GeoFeatureModelSerializer):
-    class Meta:
-        model = GeometryCollection
-        geo_field = 'geom'
-        fields = '__all__'
-"""

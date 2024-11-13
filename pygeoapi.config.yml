@@ -48,6 +48,23 @@ server:
     map:
         url: https://tile.openstreetmap.org/{z}/{x}/{y}.png
         attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    tiling_schemes:
+        WebMercatorQuad:
+            id: "WebMercatorQuad"
+            uri: "http://www.opengis.net/def/tilematrixset/OGC/1.0/WebMercatorQuad"
+            crs: "http://www.opengis.net/def/crs/EPSG/0/3857"
+            tile_width: 256
+            tile_height: 256
+            matrix_widths: [ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288 ]
+            matrix_heights: [ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288 ]
+        WorldCRS84Quad:
+            id: "WorldCRS84Quad"
+            uri: "http://www.opengis.net/def/tilematrixset/OGC/1.0/EPSG4326Quad"
+            crs: "http://www.opengis.net/def/crs/EPSG/0/4326"
+            tile_width: 256
+            tile_height: 256
+            matrix_widths: [ 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024 ]
+            matrix_heights: [ 1, 2, 4, 8, 16, 32, 64, 128, 256, 512 ]
 #    manager:
 #        name: TinyDB
 #        connection: /tmp/pygeoapi-process-manager.db
@@ -211,7 +228,9 @@ resources:
               layer_id: 1
               id_field: id
 
+
     hello-world:
         type: process
         processor:
             name: HelloWorld
+            

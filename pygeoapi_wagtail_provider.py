@@ -1,69 +1,200 @@
 import logging
 import json
 from pygeoapi.provider.base import BaseProvider, ProviderItemNotFoundError
-from features.models import Point  # Importa tus modelos aquí
-from features.serializers import PointGeoFeatureSerializer  # Importa tus serializadores aquí
+from features.models import Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon
+from features.serializers import (
+    PointGeoFeatureSerializer, LineStringGeoFeatureSerializer, PolygonGeoFeatureSerializer,
+    MultiPointGeoFeatureSerializer, MultiLineStringGeoFeatureSerializer, MultiPolygonGeoFeatureSerializer
+)
+from resources.models import (
+    Resource, PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer,
+    MultiPointVectorLayer, MultiLineStringVectorLayer, MultiPolygonVectorLayer
+)
+from django.contrib.gis.geos import Polygon as GEOSPolygon
+import math
+from django.contrib.gis.db.models import Extent
+from django.db.models import Min, Max
 
 LOGGER = logging.getLogger(__name__)
+
+
+class TilingScheme:
+    def __init__(self, tileMatrixSetURI, crs, tileMatrixSet):
+        self.tileMatrixSetURI = tileMatrixSetURI
+        self.crs = crs
+        self.tileMatrixSet = tileMatrixSet
 
 
 class WagtailProvider(BaseProvider):
     def __init__(self, provider_def):
         super().__init__(provider_def)
         self.layer_id = provider_def.get('data')
-        print("layer_id", self.layer_id)
+        self.tile_type = provider_def.get('tile_type', 'vector')
+        self.format_type = provider_def.get('format_type', 'GeoJSON')
+        self.model_map = {
+            PointVectorLayer: (Point, PointGeoFeatureSerializer),
+            LineStringVectorLayer: (LineString, LineStringGeoFeatureSerializer),
+            PolygonVectorLayer: (Polygon, PolygonGeoFeatureSerializer),
+            MultiPointVectorLayer: (MultiPoint, MultiPointGeoFeatureSerializer),
+            MultiLineStringVectorLayer: (MultiLineString, MultiLineStringGeoFeatureSerializer),
+            MultiPolygonVectorLayer: (MultiPolygon, MultiPolygonGeoFeatureSerializer)
+        }
 
-    def _get_queryset(self):
-        # Filtra los datos por el ID de la capa
-        return Point.objects.filter(layer_id=self.layer_id)
+    def _get_queryset_and_serializer(self):
+        resource_layer = Resource.objects.get(id=self.layer_id)
+        real_instance = resource_layer.get_real_instance()
+        model_class, serializer_class = self.model_map.get(type(real_instance), (None, None))
+        if model_class is None:
+            raise ValueError('Invalid layer type')
+        return model_class.objects.filter(layer_id=self.layer_id), serializer_class
 
-    def query(self, offset=0, limit=10, resulttype='results', bbox=[], datetime_=None, properties=[], sortby=[], select_properties=[], skip_geometry=False, q=None, **kwargs):
-        queryset = self._get_queryset()
+    def query(self, offset=0, limit=10, resulttype='results', bbox=[], datetime_=None, properties=[], sortby=[],
+              select_properties=[], skip_geometry=False, q=None, **kwargs):
+        queryset, serializer_class = self._get_queryset_and_serializer()
         total_count = queryset.count()
         queryset = queryset[offset:offset + limit]
-        serializer = PointGeoFeatureSerializer(queryset, many=True)
+        serializer = serializer_class(queryset, many=True)
 
         serializer.data['numberMatched'] = total_count
         serializer.data['numberReturned'] = len(serializer.data['features'])
 
-
-        # Convierte los datos a JSON
         json_data = json.dumps(serializer.data)
         print("json_data", json_data)
         return json.loads(json_data)
 
     def get(self, identifier, **kwargs):
+        queryset, serializer_class = self._get_queryset_and_serializer()
         try:
-            instance = Point.objects.get(id=identifier)
-            serializer = PointGeoFeatureSerializer(instance)
+            instance = queryset.get(id=identifier)
+            serializer = serializer_class(instance)
             return serializer.data
-        except Point.DoesNotExist:
+        except queryset.model.DoesNotExist:
             raise ProviderItemNotFoundError(f'Item {identifier} not found')
 
     def create(self, new_feature):
-        serializer = PointGeoFeatureSerializer(data=new_feature)
+        _, serializer_class = self._get_queryset_and_serializer()
+        serializer = serializer_class(data=new_feature)
         if serializer.is_valid():
             serializer.save()
         else:
             raise ValueError('Invalid data')
 
     def update(self, identifier, new_feature):
+        queryset, serializer_class = self._get_queryset_and_serializer()
         try:
-            instance = Point.objects.get(id=identifier)
-            serializer = PointGeoFeatureSerializer(instance, data=new_feature)
+            instance = queryset.get(id=identifier)
+            serializer = serializer_class(instance, data=new_feature)
             if serializer.is_valid():
                 serializer.save()
             else:
                 raise ValueError('Invalid data')
-        except Point.DoesNotExist:
+        except queryset.model.DoesNotExist:
             raise ProviderItemNotFoundError(f'Item {identifier} not found')
 
     def delete(self, identifier):
+        queryset, serializer_class = self._get_queryset_and_serializer()
         try:
-            instance = Point.objects.get(id=identifier)
+            instance = queryset.get(id=identifier)
             instance.delete()
-        except Point.DoesNotExist:
+        except queryset.model.DoesNotExist:
             raise ProviderItemNotFoundError(f'Item {identifier} not found')
+
+    def get_data_tiles(self, z, x, y):
+        queryset, serializer_class = self._get_queryset_and_serializer()
+
+        # Calcular los límites geográficos del tile
+        bounds = self._calculate_tile_bounds(z, x, y)
+
+        # Filtrar datos en función de los límites
+        tile_queryset = queryset.filter(geometry__intersects=bounds)
+
+        # Serializar los datos
+        serializer = serializer_class(tile_queryset, many=True)
+
+        return {
+            'type': 'FeatureCollection',
+            'features': serializer.data
+        }
+
+    def _calculate_tile_bounds(self, z, x, y):
+        n = 2.0 ** z
+        lon_left = x / n * 360.0 - 180.0
+        lon_right = (x + 1) / n * 360.0 - 180.0
+        lat_top = math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * y / n))))
+        lat_bottom = math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * (y + 1) / n))))
+
+        return GEOSPolygon.from_bbox((lon_left, lat_bottom, lon_right, lat_top))
+
+    def get_tiles_service(self, baseurl, servicepath):
+        return {
+            "type": "vector",
+            "tiles": [
+                f"{baseurl}/collections/{self.layer_id}/tiles/{{z}}/{{x}}/{{y}}"
+            ],
+            "links": [
+                {
+                    "href": f"{baseurl}/collections/{self.layer_id}/tiles",
+                    "rel": "self",
+                    "type": "application/json",
+                    "title": "Tiles"
+                }
+            ]
+        }
+
+    def get_tiling_schemes(self):
+        return [
+            TilingScheme(
+                tileMatrixSetURI='https://www.opengis.net/def/tilematrixset/OGC/1.0/WebMercatorQuad',
+                crs='EPSG:3857',
+                tileMatrixSet='WebMercatorQuad'
+            ),
+        ]
+
+    """
+    TilingScheme(
+        tileMatrixSetURI='https://www.opengis.net/def/tilematrixset/OGC/1.0/WorldCRS84Quad',
+        crs='EPSG:4326',
+        tileMatrixSet='WorldCRS84Quad'
+    )
+    """
+
+    def get_layer(self):
+        try:
+            resource_layer = Resource.objects.get(id=self.layer_id)
+            real_instance = resource_layer.get_real_instance()
+            features = real_instance.features.all()
+            return features
+        except Resource.DoesNotExist:
+            raise ProviderItemNotFoundError(f'Layer with id {self.layer_id} not found')
+
+    def get_metadata(self, dataset, server_url, layer, tileset, metadata_format, title, description, language):
+        try:
+            resource_layer = Resource.objects.get(id=self.layer_id)
+            real_instance = resource_layer.get_real_instance()
+            metadata = {
+                "title": title,
+                "description": description,
+                "keywords": list(real_instance.tags.all().values_list('name', flat=True)),
+                "extents": {
+                    "spatial": {
+                        "bbox": real_instance.features.aggregate(Extent('geom'))['geom__extent'],
+                        'crs': 'http://www.opengis.net/def/crs/OGC/1.3/CRS84'
+                    },
+                    "temporal": {
+                        "begin": real_instance.features.aggregate(begin=Min('last_published_at'))['begin'],
+                        "end": real_instance.features.aggregate(end=Max('last_published_at'))['end']
+                    }
+                },
+                "server_url": server_url,
+                "dataset": dataset,
+                "layer": layer,
+                "tileset": tileset,
+                "metadata_format": metadata_format,
+                "language": language
+            }
+            return metadata
+        except Resource.DoesNotExist:
+            raise ProviderItemNotFoundError(f'Layer with id {self.layer_id} not found')
 
     def __repr__(self):
         return f'<WagtailProvider> layer_id={self.layer_id}'

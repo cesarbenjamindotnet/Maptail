@@ -28,11 +28,28 @@ class DynamicPygeoapiResourcesView(View):
                     "end": resource.features.aggregate(end=Max('last_published_at'))['end']
                   }
                 },
-                "providers": [{
-                    "type": "feature",
-                    "name": "pygeoapi_wagtail_provider.WagtailProvider",
-                    "data": resource.id,
-                }]
+                "providers": [
+                    {
+                        "type": "feature",
+                        "name": "pygeoapi_wagtail_provider.WagtailProvider",
+                        "data": resource.id,
+                    },
+                    {
+                        "type": "tile",
+                        "name": "pygeoapi_wagtail_provider.WagtailProvider",
+                        "tile_type": "vector",
+                        "tile_format": "pbf",
+                        "format_type": "application/vnd.mapbox-vector-tile",
+                        "tile_schema": "WebMercatorQuad",
+                        "data": resource.id,
+                        "options": {
+                            "zoom": {
+                                "min": 0,
+                                "max": 22
+                            }
+                        },
+                    }
+                ]
             }
 
         return JsonResponse(config)
