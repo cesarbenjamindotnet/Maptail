@@ -10,11 +10,9 @@ from resources.models import (
     Resource, PointVectorLayer, LineStringVectorLayer, PolygonVectorLayer,
     MultiPointVectorLayer, MultiLineStringVectorLayer, MultiPolygonVectorLayer
 )
-from django.contrib.gis.geos import Polygon as GEOSPolygon
-import math
 from django.contrib.gis.db.models import Extent
 from django.db.models import Min, Max
-
+import httpx
 LOGGER = logging.getLogger(__name__)
 
 
@@ -99,65 +97,6 @@ class WagtailProvider(BaseProvider):
         except queryset.model.DoesNotExist:
             raise ProviderItemNotFoundError(f'Item {identifier} not found')
 
-    def get_data_tiles(self, z, x, y):
-        queryset, serializer_class = self._get_queryset_and_serializer()
-
-        # Calcular los límites geográficos del tile
-        bounds = self._calculate_tile_bounds(z, x, y)
-
-        # Filtrar datos en función de los límites
-        tile_queryset = queryset.filter(geometry__intersects=bounds)
-
-        # Serializar los datos
-        serializer = serializer_class(tile_queryset, many=True)
-
-        return {
-            'type': 'FeatureCollection',
-            'features': serializer.data
-        }
-
-    def _calculate_tile_bounds(self, z, x, y):
-        n = 2.0 ** z
-        lon_left = x / n * 360.0 - 180.0
-        lon_right = (x + 1) / n * 360.0 - 180.0
-        lat_top = math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * y / n))))
-        lat_bottom = math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * (y + 1) / n))))
-
-        return GEOSPolygon.from_bbox((lon_left, lat_bottom, lon_right, lat_top))
-
-    def get_tiles_service(self, baseurl, servicepath):
-        return {
-            "type": "vector",
-            "tiles": [
-                f"{baseurl}/collections/{self.layer_id}/tiles/{{z}}/{{x}}/{{y}}"
-            ],
-            "links": [
-                {
-                    "href": f"{baseurl}/collections/{self.layer_id}/tiles",
-                    "rel": "self",
-                    "type": "application/json",
-                    "title": "Tiles"
-                }
-            ]
-        }
-
-    def get_tiling_schemes(self):
-        return [
-            TilingScheme(
-                tileMatrixSetURI='https://www.opengis.net/def/tilematrixset/OGC/1.0/WebMercatorQuad',
-                crs='EPSG:3857',
-                tileMatrixSet='WebMercatorQuad'
-            ),
-        ]
-
-    """
-    TilingScheme(
-        tileMatrixSetURI='https://www.opengis.net/def/tilematrixset/OGC/1.0/WorldCRS84Quad',
-        crs='EPSG:4326',
-        tileMatrixSet='WorldCRS84Quad'
-    )
-    """
-
     def get_layer(self):
         try:
             resource_layer = Resource.objects.get(id=self.layer_id)
@@ -195,6 +134,39 @@ class WagtailProvider(BaseProvider):
             return metadata
         except Resource.DoesNotExist:
             raise ProviderItemNotFoundError(f'Layer with id {self.layer_id} not found')
+
+    def get_data_tiles(self, z, x, y):
+        url = f"https://8408c9deeb14462e9828caee0f63a531.us-central1.gcp.cloud.es.io/{self.index_name}/_mvt/{self.field}/{z}/{x}/{y}"
+        response = httpx.get(url)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise ProviderItemNotFoundError(f"Tile data not found for {z}/{x}/{y}")
+
+    def get_tiles_service(self, baseurl, servicepath):
+        return {
+            "type": "vector",
+            "tiles": [
+                f"{baseurl}/collections/{self.layer_id}/tiles/{{z}}/{{x}}/{{y}}"
+            ],
+            "links": [
+                {
+                    "href": f"{baseurl}/collections/{self.layer_id}/tiles",
+                    "rel": "self",
+                    "type": "application/json",
+                    "title": "Tiles"
+                }
+            ]
+        }
+
+    def get_tiling_schemes(self):
+        return [
+            TilingScheme(
+                tileMatrixSetURI='https://www.opengis.net/def/tilematrixset/OGC/1.0/WebMercatorQuad',
+                crs='EPSG:3857',
+                tileMatrixSet='WebMercatorQuad'
+            ),
+        ]
 
     def __repr__(self):
         return f'<WagtailProvider> layer_id={self.layer_id}'

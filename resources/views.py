@@ -7,7 +7,6 @@ from .models import Resource
 
 class DynamicPygeoapiResourcesView(View):
     def get(self, request, *args, **kwargs):
-
         config = {
             "resources": {}
         }
@@ -36,18 +35,12 @@ class DynamicPygeoapiResourcesView(View):
                     },
                     {
                         "type": "tile",
-                        "name": "pygeoapi_wagtail_provider.WagtailProvider",
-                        "tile_type": "vector",
-                        "tile_format": "pbf",
-                        "format_type": "application/vnd.mapbox-vector-tile",
-                        "tile_schema": "WebMercatorQuad",
-                        "data": resource.id,
-                        "options": {
-                            "zoom": {
-                                "min": 0,
-                                "max": 22
-                            }
-                        },
+                        "name": "elasticsearch",
+                        "data": {
+                            "url": "https://8408c9deeb14462e9828caee0f63a531.us-central1.gcp.cloud.es.io/{index}/_mvt/{field}/{z}/{x}/{y}",
+                            "index": resource.index_name,
+                            "field": "geom"
+                        }
                     }
                 ]
             }
