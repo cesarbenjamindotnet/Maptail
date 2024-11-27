@@ -14,6 +14,7 @@ path.logs: /usr/share/elasticsearch/logs  # Ruta interna para los logs
 # Seguridad
 xpack.security.enabled: true           # Habilitar seguridad
 xpack.security.http.ssl.enabled: false # Deshabilitar SSL (Cloud Run ya proporciona HTTPS)
+xpack.security.authc.api_key.enabled: true # Habilitar autenticación por API key
 bootstrap.password: ${ELASTIC_PASSWORD} # Contraseña inicial del usuario elastic
 
 # Configuración de descubrimiento

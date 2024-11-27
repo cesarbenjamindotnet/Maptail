@@ -8,4 +8,4 @@ COPY elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
 EXPOSE 9200
 
 # Ejecutar Elasticsearch
-CMD ["elasticsearch", "-E", "xpack.security.enabled=true", "-E", "xpack.security.authc.api_key.enabled=true"]
+CMD ["elasticsearch"]
