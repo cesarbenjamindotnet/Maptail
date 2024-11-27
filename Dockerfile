@@ -48,7 +48,7 @@ USER wagtail
 # Collect static files.
 RUN python manage.py collectstatic --noinput --clear
 
-# Runtime command that executes when "docker run" is called, it does the
+# Runtime command that executes when "elastic run" is called, it does the
 # following:
 #   1. Migrate the database.
 #   2. Start the application server.
@@ -56,6 +56,6 @@ RUN python manage.py collectstatic --noinput --clear
 #   Migrating database at the same time as starting the server IS NOT THE BEST
 #   PRACTICE. The database should be migrated manually or using the release
 #   phase facilities of your hosting platform. This is used only so the
-#   Wagtail instance can be started with a simple "docker run" command.
+#   Wagtail instance can be started with a simple "elastic run" command.
 # CMD set -xe; python manage.py migrate --noinput; gunicorn application.wsgi:application
 CMD gunicorn application.wsgi:application --workers 2 --worker-class gthread --threads 2 --timeout 180 --log-level=info --access-logfile - --access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
