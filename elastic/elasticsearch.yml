@@ -5,7 +5,7 @@ node.roles: [master, data, ingest]     # Roles para este nodo
 
 # Configuración de red
 network.host: 0.0.0.0                  # Escucha en todas las interfaces
-http.port: 9200                        # Cloud Run requiere el puerto 8080 para tráfico HTTP
+http.port: 8080                        # Cloud Run requiere el puerto 8080 para tráfico HTTP
 
 # Configuración de almacenamiento
 path.data: /usr/share/elasticsearch/data  # Ruta interna para los datos
