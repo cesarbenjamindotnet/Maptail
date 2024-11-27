@@ -1,0 +1,11 @@
+# Usar la imagen oficial de Elasticsearch
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.16.1
+
+# Configuración para que funcione en entornos con pocos recursos
+ENV discovery.type=single-node
+
+# Exponer el puerto por defecto de Elasticsearch
+EXPOSE 9200
+
+# Ejecutar Elasticsearch
+CMD ["elasticsearch"]
