@@ -258,3 +258,4 @@ APPEND_SLASH = not API_RULES.strict_slashes
 # Custom
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = None
+

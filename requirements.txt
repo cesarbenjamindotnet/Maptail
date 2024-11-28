@@ -46,3 +46,6 @@ SQLAlchemy<2.0.0
 tinydb
 unicodecsv
 jsonpatch
+
+elasticsearch
+elasticsearch_dsl

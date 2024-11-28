@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.gis.db import models
-from django.db.models import ForeignKey
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 from base.mixins import LockableWorkFlowDraftStateRevisionModelBaseMixin
 from wagtail.models import RevisionMixin, LockableMixin, DraftStateMixin, Orderable
@@ -9,6 +10,8 @@ from resources.models import (VectorLayer, PointVectorLayer, LineStringVectorLay
                               MultiPointVectorLayer, MultiLineStringVectorLayer, MultiPolygonVectorLayer,
                               GeometryCollectionVectorLayer, RasterLayer, DataTable, RemoteWMS, RemoteWFS)
 from polymorphic.models import PolymorphicModel
+from .documents import PointFeatureDocument, LineStringFeatureDocument, PolygonFeatureDocument
+
 
 # Create your models here.
 
@@ -32,6 +35,18 @@ class Point(Feature):
     def __str__(self):
         return f"{self.layer.title}: {self.id}"
 
+    @receiver(post_save, sender='features.Point')
+    def index_point_feature(sender, instance, **kwargs):
+        if not instance.has_unpublished_changes:
+            doc = PointFeatureDocument(
+                meta={'id': instance.id},
+                data=instance.data,
+                layer=instance.layer.id,
+                geom=instance.geom.geojson,
+                last_published_at=instance.last_published_at
+            )
+            doc.save()
+
     class Meta:
         verbose_name = "Point"
         verbose_name_plural = "Points"
@@ -45,6 +60,22 @@ class LineString(Feature):
     def __str__(self):
         return f"{self.layer.title}: {self.id}"
 
+    @receiver(post_save, sender='features.LineString')
+    def index_linestring_feature(sender, instance, **kwargs):
+        if not instance.has_unpublished_changes:
+            doc = LineStringFeatureDocument(
+                meta={'id': instance.id},
+                data=instance.data,
+                layer=instance.layer.id,
+                geom=instance.geom.geojson,
+                last_published_at=instance.last_published_at
+            )
+            doc.save()
+
+    class Meta:
+        verbose_name = "LineString"
+        verbose_name_plural = "LineStrings"
+
 
 class Polygon(Feature):
     geom = models.PolygonField(srid=settings.DATA_FEATURES_SRID)
@@ -53,6 +84,22 @@ class Polygon(Feature):
 
     def __str__(self):
         return f"{self.layer.title}: {self.id}"
+
+    @receiver(post_save, sender='features.Polygon')
+    def index_polygon_feature(sender, instance, **kwargs):
+        if not instance.has_unpublished_changes:
+            doc = PolygonFeatureDocument(
+                meta={'id': instance.id},
+                data=instance.data,
+                layer=instance.layer.id,
+                geom=instance.geom.geojson,
+                last_published_at=instance.last_published_at
+            )
+            doc.save()
+
+    class Meta:
+        verbose_name = "Polygon"
+        verbose_name_plural = "Polygons"
 
 
 class MultiPoint(Feature):

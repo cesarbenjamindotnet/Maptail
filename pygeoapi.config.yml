@@ -193,42 +193,6 @@ resources:
               id_field: id
               title_field: name
 
-    aaa:
-        type: collection
-        title: aaa
-        description: Point Vector Layer from Django
-        keywords:
-            - point
-            - vector
-        extents:
-            spatial:
-                bbox: [ -180,-90,180,90 ]
-                crs: http://www.opengis.net/def/crs/OGC/1.3/CRS84
-        providers:
-            - type: feature
-              name: pygeoapi.provider.maptail_points_geojson.GeoJSONProvider
-              data: 1
-              id_field: id
-
-    my_wagtail_points:
-        type: collection
-        title: My Wagtail Points
-        description: Collection of Points filtered by layer ID
-        keywords:
-            - points
-            - wagtail
-        extents:
-            spatial:
-                bbox: [ -180, -90, 180, 90 ]
-                crs: http://www.opengis.net/def/crs/OGC/1.3/CRS84
-        providers:
-            - type: feature
-              name: pygeoapi.provider.wagtail.WagtailProvider
-              data: 1
-              layer_id: 1
-              id_field: id
-
-
     hello-world:
         type: process
         processor:

@@ -29,7 +29,7 @@ class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, Clu
 
     title = models.CharField(max_length=255, unique=True)
     slug = AutoSlugField(populate_from='title', always_update=True, unique=True, editable=False)
-    index_name = models.CharField(max_length=255, null=True, blank=True)
+    index_name = models.CharField(max_length=255, null=True, blank=True, editable=False)
     description = GeoKnotTextField(null=True, blank=True)
     category = models.ForeignKey(ResourceCategory, on_delete=models.PROTECT)
     tags = TaggableManager(help_text=None, blank=True, verbose_name=_("tags"))
@@ -41,6 +41,10 @@ class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, Clu
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.index_name = self.pk
+        super().save(*args, **kwargs)
 
     class Meta:
         abstract = True
