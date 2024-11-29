@@ -3,11 +3,18 @@ from elasticsearch_dsl import Document, Text, Keyword, Date, GeoPoint, GeoShape
 class PointFeatureDocument(Document):
     data = Text()
     layer = Keyword()
-    geom = GeoPoint()
+    geom = GeoShape()
     last_published_at = Date()
 
+    @classmethod
+    def init(cls, index=None, using=None):
+        cls._index.mapping = cls._doc_type.mapping
+        cls._index.mapping.field('geom', 'geo_shape')
+        super().init(index=index, using=using)
+
     class Index:
-        name = 'point_features'
+        name = 'pointvectorlayer'
+
 
 class LineStringFeatureDocument(Document):
     data = Text()
@@ -15,8 +22,15 @@ class LineStringFeatureDocument(Document):
     geom = GeoShape()
     last_published_at = Date()
 
+    @classmethod
+    def init(cls, index=None, using=None):
+        cls._index.mapping = cls._doc_type.mapping
+        cls._index.mapping.field('geom', 'geo_shape')
+        super().init(index=index, using=using)
+
     class Index:
-        name = 'linestring_features'
+        name = 'linestringvectorlayer'
+
 
 class PolygonFeatureDocument(Document):
     data = Text()
@@ -24,5 +38,16 @@ class PolygonFeatureDocument(Document):
     geom = GeoShape()
     last_published_at = Date()
 
+    @classmethod
+    def init(cls, index=None, using=None):
+        cls._index.mapping = cls._doc_type.mapping
+        cls._index.mapping.field('geom', 'geo_shape')
+        super().init(index=index, using=using)
+
     class Index:
-        name = 'polygon_features'
+        name = 'polygonvectorlayer'
+
+
+PointFeatureDocument.init()
+LineStringFeatureDocument.init()
+PolygonFeatureDocument.init()

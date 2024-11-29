@@ -13,6 +13,10 @@ class DynamicPygeoapiResourcesView(View):
         }
 
         for resource in Resource.objects.all():
+            print("Resource: ", resource)
+            print("begin", resource.features.aggregate(begin=Min('last_published_at'))['begin'])
+            print("type", type(resource.features.aggregate(begin=Min('last_published_at'))['begin']))
+            print("dir", dir(resource.features.aggregate(begin=Min('last_published_at'))['begin']))
             config["resources"][resource.slug] = {
                 "type": "collection",
                 "title": resource.title,
@@ -24,8 +28,8 @@ class DynamicPygeoapiResourcesView(View):
                     'crs': 'http://www.opengis.net/def/crs/OGC/1.3/CRS84'
                   },
                   "temporal": {
-                    "begin": datetime.fromisoformat(resource.features.aggregate(begin=Min('last_published_at'))['begin']),
-                    "end": datetime.fromisoformat(resource.features.aggregate(end=Max('last_published_at'))['end'])
+                    "begin": resource.features.aggregate(begin=Min('last_published_at'))['begin'],
+                    "end": resource.features.aggregate(end=Max('last_published_at'))['end']
                   }
                 },
                 "providers": [
@@ -34,22 +38,32 @@ class DynamicPygeoapiResourcesView(View):
                         "name": "pygeoapi_wagtail_provider.WagtailProvider",
                         "data": resource.id,
                     },
+
+                    {
+                        "type": "featureq",
+                        "name": "Elasticsearch",
+                            "data": f"https://elastic:sb1EfRjojWfCWbUdtkthVzWV@8408c9deeb14462e9828caee0f63a531.us-central1.gcp.cloud.es.io/{resource.polymorphic_ctype.model}",
+                        "id_field": "id",
+                        "options": {
+                            "auth": {
+                                "username": "elastic",
+                                "password": "sb1EfRjojWfCWbUdtkthVzWV"
+                            }
+                        }
+                    },
+
                     {
                         "type": "tile",
                         "name": "MVT-elastic",
-                        "data": {
-                            "url": "https://8408c9deeb14462e9828caee0f63a531.us-central1.gcp.cloud.es.io/{index}/_mvt/{field}/{z}/{x}/{y}",
-                            "index": resource.index_name,
-                            "field": "geom"
-                        },
+                        "data": f"https://elastic:sb1EfRjojWfCWbUdtkthVzWV@8408c9deeb14462e9828caee0f63a531.us-central1.gcp.cloud.es.io/{resource.polymorphic_ctype.model}/_mvt/geom/{{z}}/{{x}}/{{y}}?grid_precision=0",
                         "options": {
                             "zoom": {
                                 "min": 0,
-                                "max": 22
-                            }
+                                "max": 29
+                            },
                         },
                         "format": {
-                            "name": "pbf",
+                            "name": "mvt",
                             "mimetype": "application/vnd.mapbox-vector-tile"
                         }
                     }

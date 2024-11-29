@@ -13,6 +13,8 @@ from django.core.exceptions import ValidationError
 from modelcluster.fields import ParentalKey
 from taggit.managers import TaggableManager
 from django.utils.translation import gettext_lazy as _
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -29,7 +31,6 @@ class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, Clu
 
     title = models.CharField(max_length=255, unique=True)
     slug = AutoSlugField(populate_from='title', always_update=True, unique=True, editable=False)
-    index_name = models.CharField(max_length=255, null=True, blank=True, editable=False)
     description = GeoKnotTextField(null=True, blank=True)
     category = models.ForeignKey(ResourceCategory, on_delete=models.PROTECT)
     tags = TaggableManager(help_text=None, blank=True, verbose_name=_("tags"))
@@ -42,9 +43,7 @@ class ResourceBaseAbstract(LockableWorkFlowDraftStateRevisionModelBaseMixin, Clu
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        self.index_name = self.pk
-        super().save(*args, **kwargs)
+
 
     class Meta:
         abstract = True
@@ -66,8 +65,17 @@ class Resource(PolymorphicModel, ResourceBaseAbstract):
     """
     A resource.
     """
+    index_name = models.CharField(max_length=255, null=True, blank=True, editable=False)
 
-    # objects = ResourceBaseManager()  # TODO: Uncomment when the manager is implemented
+    def save(self, *args, **kwargs):
+        if self.polymorphic_ctype and self.polymorphic_ctype.model:
+            self.index_name = self.polymorphic_ctype.model
+        super().save(*args, **kwargs)
+
+    @receiver(post_save, sender='resources.Resource')
+    def update_index_name(sender, instance, **kwargs):
+        instance.index_name = instance.polymorphic_ctype.model
+        instance.save()
 
     class Meta:
         verbose_name = "Resource"

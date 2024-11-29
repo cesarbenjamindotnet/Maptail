@@ -11,6 +11,8 @@ from resources.models import (VectorLayer, PointVectorLayer, LineStringVectorLay
                               GeometryCollectionVectorLayer, RasterLayer, DataTable, RemoteWMS, RemoteWFS)
 from polymorphic.models import PolymorphicModel
 from .documents import PointFeatureDocument, LineStringFeatureDocument, PolygonFeatureDocument
+from django.contrib.gis.geos import GEOSGeometry
+import json
 
 
 # Create your models here.
@@ -18,7 +20,6 @@ from .documents import PointFeatureDocument, LineStringFeatureDocument, PolygonF
 
 class Feature(PolymorphicModel, LockableWorkFlowDraftStateRevisionModelBaseMixin):
     data = models.JSONField(null=True, blank=True)
-
     def __str__(self):
         return f"{self.id}"
 
@@ -38,13 +39,16 @@ class Point(Feature):
     @receiver(post_save, sender='features.Point')
     def index_point_feature(sender, instance, **kwargs):
         if not instance.has_unpublished_changes:
+            print("Guardar en elasticsearch")
+            geom_3857 = instance.geom.transform(3857, clone=True)
             doc = PointFeatureDocument(
                 meta={'id': instance.id},
                 data=instance.data,
                 layer=instance.layer.id,
-                geom=instance.geom.geojson,
+                geom=json.loads(geom_3857.geojson),
                 last_published_at=instance.last_published_at
             )
+            print("Document: ", doc)
             doc.save()
 
     class Meta:
@@ -63,11 +67,12 @@ class LineString(Feature):
     @receiver(post_save, sender='features.LineString')
     def index_linestring_feature(sender, instance, **kwargs):
         if not instance.has_unpublished_changes:
+            geom_3857 = instance.geom.transform(3857, clone=True)
             doc = LineStringFeatureDocument(
                 meta={'id': instance.id},
                 data=instance.data,
                 layer=instance.layer.id,
-                geom=instance.geom.geojson,
+                geom=json.loads(geom_3857.geojson),
                 last_published_at=instance.last_published_at
             )
             doc.save()
@@ -88,11 +93,12 @@ class Polygon(Feature):
     @receiver(post_save, sender='features.Polygon')
     def index_polygon_feature(sender, instance, **kwargs):
         if not instance.has_unpublished_changes:
+            geom_3857 = instance.geom.transform(3857, clone=True)
             doc = PolygonFeatureDocument(
                 meta={'id': instance.id},
                 data=instance.data,
                 layer=instance.layer.id,
-                geom=instance.geom.geojson,
+                geom=json.loads(geom_3857.geojson),
                 last_published_at=instance.last_published_at
             )
             doc.save()

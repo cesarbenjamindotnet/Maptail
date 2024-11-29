@@ -8,9 +8,9 @@ from .documents import PointFeatureDocument, LineStringFeatureDocument, PolygonF
 
 def search_features(request):
     layer = request.GET.get('layer')
-    point_search = Search(index='point_features').filter('term', layer=layer)
-    linestring_search = Search(index='linestring_features').filter('term', layer=layer)
-    polygon_search = Search(index='polygon_features').filter('term', layer=layer)
+    point_search = Search(index='pointvectorlayer').filter('term', layer=layer)
+    linestring_search = Search(index='linestringvectorlayer').filter('term', layer=layer)
+    polygon_search = Search(index='polygonvectorlayer').filter('term', layer=layer)
 
     point_response = point_search.execute()
     linestring_response = linestring_search.execute()

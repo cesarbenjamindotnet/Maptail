@@ -12,6 +12,7 @@ class DynamicPygeoapiConfigMiddleware:
 
     def __call__(self, request):
         if request.path.startswith('/ogcapi/'):
+            print('Request path starts with /ogcapi/')
             base_url = request.build_absolute_uri('/')
             config_url = f'{base_url}dynamic_pygeoapi_config/'
             print(f'Fetching dynamic config from {config_url}')

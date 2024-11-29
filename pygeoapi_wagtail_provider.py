@@ -46,8 +46,16 @@ class WagtailProvider(BaseProvider):
             raise ValueError('Invalid layer type')
         return model_class.objects.filter(layer_id=self.layer_id), serializer_class
 
-    def query(self, offset=0, limit=10, resulttype='results', bbox=[], datetime_=None, properties=[], sortby=[],
-              select_properties=[], skip_geometry=False, q=None, **kwargs):
+    def query(self, offset=0, limit=10, resulttype='results', bbox=None, datetime_=None, properties=None, sortby=None,
+              select_properties=None, skip_geometry=False, q=None, **kwargs):
+        if select_properties is None:
+            select_properties = []
+        if sortby is None:
+            sortby = []
+        if properties is None:
+            properties = []
+        if bbox is None:
+            bbox = []
         queryset, serializer_class = self._get_queryset_and_serializer()
         total_count = queryset.count()
         queryset = queryset[offset:offset + limit]
@@ -106,6 +114,17 @@ class WagtailProvider(BaseProvider):
         except Resource.DoesNotExist:
             raise ProviderItemNotFoundError(f'Layer with id {self.layer_id} not found')
 
+    def get_tiling_schemes(self):
+        return [
+            TilingScheme(
+                tileMatrixSetURI='https://www.opengis.net/def/tilematrixset/OGC/1.0/WebMercatorQuad',
+                crs='EPSG:3857',
+                tileMatrixSet='WebMercatorQuad'
+            ),
+        ]
+
+    """
+    
     def get_metadata(self, dataset, server_url, layer, tileset, metadata_format, title, description, language):
         try:
             resource_layer = Resource.objects.get(id=self.layer_id)
@@ -136,7 +155,7 @@ class WagtailProvider(BaseProvider):
             raise ProviderItemNotFoundError(f'Layer with id {self.layer_id} not found')
 
     def get_data_tiles(self, z, x, y):
-        url = f"https://8408c9deeb14462e9828caee0f63a531.us-central1.gcp.cloud.es.io/{self.index_name}/_mvt/{self.field}/{z}/{x}/{y}"
+        url = f"https://8408c9deeb14462e9828caee0f63a531.us-central1.gcp.cloud.es.io/{self.polymorphic_ctype.model}/_mvt/geom/{z}/{x}/{y}"
         response = httpx.get(url)
         if response.status_code == 200:
             return response.json()
@@ -166,7 +185,14 @@ class WagtailProvider(BaseProvider):
                 crs='EPSG:3857',
                 tileMatrixSet='WebMercatorQuad'
             ),
+            TilingScheme(
+                tileMatrixSetURI='https://www.opengis.net/def/tilematrixset/OGC/1.0/WebMercator',
+                crs='EPSG:3857',
+                tileMatrixSet='WebMercator'
+            ),
+            
         ]
+    """
 
     def __repr__(self):
         return f'<WagtailProvider> layer_id={self.layer_id}'
