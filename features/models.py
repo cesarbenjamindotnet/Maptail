@@ -39,13 +39,12 @@ class Point(Feature):
     @receiver(post_save, sender='features.Point')
     def index_point_feature(sender, instance, **kwargs):
         if not instance.has_unpublished_changes:
-            print("Guardar en elasticsearch")
-            geom_3857 = instance.geom.transform(3857, clone=True)
+            geom_geojson = json.loads(instance.geom.geojson)
             doc = PointFeatureDocument(
                 meta={'id': instance.id},
                 data=instance.data,
                 layer=instance.layer.id,
-                geom=json.loads(geom_3857.geojson),
+                geom=geom_geojson,
                 last_published_at=instance.last_published_at
             )
             print("Document: ", doc)
@@ -67,12 +66,13 @@ class LineString(Feature):
     @receiver(post_save, sender='features.LineString')
     def index_linestring_feature(sender, instance, **kwargs):
         if not instance.has_unpublished_changes:
-            geom_3857 = instance.geom.transform(3857, clone=True)
+            # geom_3857 = instance.geom.transform(3857, clone=True)
+            geom_geojson = json.loads(instance.geom.geojson)
             doc = LineStringFeatureDocument(
                 meta={'id': instance.id},
                 data=instance.data,
                 layer=instance.layer.id,
-                geom=json.loads(geom_3857.geojson),
+                geom=geom_geojson,
                 last_published_at=instance.last_published_at
             )
             doc.save()
@@ -93,12 +93,13 @@ class Polygon(Feature):
     @receiver(post_save, sender='features.Polygon')
     def index_polygon_feature(sender, instance, **kwargs):
         if not instance.has_unpublished_changes:
-            geom_3857 = instance.geom.transform(3857, clone=True)
+            # geom_3857 = instance.geom.transform(3857, clone=True)
+            geom_geojson = json.loads(instance.geom.geojson)
             doc = PolygonFeatureDocument(
                 meta={'id': instance.id},
                 data=instance.data,
                 layer=instance.layer.id,
-                geom=json.loads(geom_3857.geojson),
+                geom=geom_geojson,
                 last_published_at=instance.last_published_at
             )
             doc.save()

@@ -21,6 +21,7 @@ django-polymorphic
 django-modelcluster
 django-admin-rangefilter
 django-filter
+django-cors-headers
 wagtail-rangefilter
 djoser
 earthengine-api

@@ -93,6 +93,7 @@ MIDDLEWARE = [
     # Common functionality
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     # Security
     "django.middleware.csrf.CsrfViewMiddleware",

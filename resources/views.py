@@ -14,9 +14,6 @@ class DynamicPygeoapiResourcesView(View):
 
         for resource in Resource.objects.all():
             print("Resource: ", resource)
-            print("begin", resource.features.aggregate(begin=Min('last_published_at'))['begin'])
-            print("type", type(resource.features.aggregate(begin=Min('last_published_at'))['begin']))
-            print("dir", dir(resource.features.aggregate(begin=Min('last_published_at'))['begin']))
             config["resources"][resource.slug] = {
                 "type": "collection",
                 "title": resource.title,
@@ -37,19 +34,6 @@ class DynamicPygeoapiResourcesView(View):
                         "type": "feature",
                         "name": "pygeoapi_wagtail_provider.WagtailProvider",
                         "data": resource.id,
-                    },
-
-                    {
-                        "type": "featureq",
-                        "name": "Elasticsearch",
-                            "data": f"https://elastic:sb1EfRjojWfCWbUdtkthVzWV@8408c9deeb14462e9828caee0f63a531.us-central1.gcp.cloud.es.io/{resource.polymorphic_ctype.model}",
-                        "id_field": "id",
-                        "options": {
-                            "auth": {
-                                "username": "elastic",
-                                "password": "sb1EfRjojWfCWbUdtkthVzWV"
-                            }
-                        }
                     },
 
                     {
