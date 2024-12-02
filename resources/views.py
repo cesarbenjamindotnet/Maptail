@@ -35,7 +35,12 @@ class DynamicPygeoapiResourcesView(View):
                         "name": "pygeoapi_wagtail_provider.WagtailProvider",
                         "data": resource.id,
                     },
-
+                    {
+                        "type": "feature1",
+                        "name": "Elasticsearch",
+                        "data": f"https://elastic:sb1EfRjojWfCWbUdtkthVzWV@8408c9deeb14462e9828caee0f63a531.us-central1.gcp.cloud.es.io/{resource.polymorphic_ctype.model}",
+                        "id_field": resource.id
+                    },
                     {
                         "type": "tile",
                         "name": "MVT-elastic",
@@ -47,11 +52,12 @@ class DynamicPygeoapiResourcesView(View):
                             },
                         },
                         "format": {
-                            "name": "mvt",
+                            "name": "pbf",
                             "mimetype": "application/vnd.mapbox-vector-tile"
                         }
                     }
                 ]
             }
 
+        print("config", config)
         return JsonResponse(config)

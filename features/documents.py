@@ -1,7 +1,7 @@
-from elasticsearch_dsl import Document, Text, Keyword, Date, GeoPoint, GeoShape
+from elasticsearch_dsl import Document, Text, Keyword, Date, GeoShape, Object
 
 class PointFeatureDocument(Document):
-    data = Text()
+    properties = Object()
     layer = Keyword()
     geom = GeoShape()
     last_published_at = Date()
@@ -10,6 +10,7 @@ class PointFeatureDocument(Document):
     def init(cls, index=None, using=None):
         cls._index.mapping = cls._doc_type.mapping
         cls._index.mapping.field('geom', 'geo_shape')
+        cls._index.mapping.field('properties', 'object')
         super().init(index=index, using=using)
 
     class Index:

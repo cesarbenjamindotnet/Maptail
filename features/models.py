@@ -11,8 +11,9 @@ from resources.models import (VectorLayer, PointVectorLayer, LineStringVectorLay
                               GeometryCollectionVectorLayer, RasterLayer, DataTable, RemoteWMS, RemoteWFS)
 from polymorphic.models import PolymorphicModel
 from .documents import PointFeatureDocument, LineStringFeatureDocument, PolygonFeatureDocument
-from django.contrib.gis.geos import GEOSGeometry
+from django.forms.models import model_to_dict
 import json
+from django.utils.dateformat import format
 
 
 # Create your models here.
@@ -20,6 +21,7 @@ import json
 
 class Feature(PolymorphicModel, LockableWorkFlowDraftStateRevisionModelBaseMixin):
     data = models.JSONField(null=True, blank=True)
+
     def __str__(self):
         return f"{self.id}"
 
@@ -40,13 +42,24 @@ class Point(Feature):
     def index_point_feature(sender, instance, **kwargs):
         if not instance.has_unpublished_changes:
             geom_geojson = json.loads(instance.geom.geojson)
+
+            print("instance.data", instance.data)
+
+            # Convert the instance to a dictionary and remove 'id' and 'geom'
+            properties = {
+                'data': instance.data,
+                'layer': instance.layer.id}
+
+
             doc = PointFeatureDocument(
                 meta={'id': instance.id},
-                data=instance.data,
+                properties=properties,
                 layer=instance.layer.id,
                 geom=geom_geojson,
                 last_published_at=instance.last_published_at
             )
+            print("Properties: ", properties)
+
             print("Document: ", doc)
             doc.save()
 
@@ -68,9 +81,15 @@ class LineString(Feature):
         if not instance.has_unpublished_changes:
             # geom_3857 = instance.geom.transform(3857, clone=True)
             geom_geojson = json.loads(instance.geom.geojson)
+
+            # Convert the instance to a dictionary and remove 'id' and 'geom'
+            properties = model_to_dict(instance)
+            properties.pop('id', None)
+            properties.pop('geom', None)
+
             doc = LineStringFeatureDocument(
                 meta={'id': instance.id},
-                data=instance.data,
+                properties=properties,
                 layer=instance.layer.id,
                 geom=geom_geojson,
                 last_published_at=instance.last_published_at
@@ -95,9 +114,15 @@ class Polygon(Feature):
         if not instance.has_unpublished_changes:
             # geom_3857 = instance.geom.transform(3857, clone=True)
             geom_geojson = json.loads(instance.geom.geojson)
+
+            # Convert the instance to a dictionary and remove 'id' and 'geom'
+            properties = model_to_dict(instance)
+            properties.pop('id', None)
+            properties.pop('geom', None)
+
             doc = PolygonFeatureDocument(
                 meta={'id': instance.id},
-                data=instance.data,
+                properties=properties,
                 layer=instance.layer.id,
                 geom=geom_geojson,
                 last_published_at=instance.last_published_at
@@ -121,7 +146,8 @@ class MultiPoint(Feature):
 class MultiLineString(Feature):
     geom = models.MultiLineStringField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(MultiLineStringVectorLayer, on_delete=models.CASCADE, related_name="features")
-    source_file = ParentalKey("resource_files.ResourceMultiLineStringsFile", on_delete=models.CASCADE, null=True, blank=True)
+    source_file = ParentalKey("resource_files.ResourceMultiLineStringsFile", on_delete=models.CASCADE, null=True,
+                              blank=True)
 
     def __str__(self):
         return f"{self.layer.title}: {self.id}"
@@ -130,7 +156,8 @@ class MultiLineString(Feature):
 class MultiPolygon(Feature):
     geom = models.MultiPolygonField(srid=settings.DATA_FEATURES_SRID)
     layer = ParentalKey(MultiPolygonVectorLayer, on_delete=models.CASCADE, related_name="features")
-    source_file = ParentalKey("resource_files.ResourceMultiPolygonsFile", on_delete=models.CASCADE, null=True, blank=True)
+    source_file = ParentalKey("resource_files.ResourceMultiPolygonsFile", on_delete=models.CASCADE, null=True,
+                              blank=True)
 
     def __str__(self):
         return f"{self.layer.title}: {self.id}"

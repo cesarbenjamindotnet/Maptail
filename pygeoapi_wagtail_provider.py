@@ -114,14 +114,7 @@ class WagtailProvider(BaseProvider):
         except Resource.DoesNotExist:
             raise ProviderItemNotFoundError(f'Layer with id {self.layer_id} not found')
 
-    def get_tiling_schemes(self):
-        return [
-            TilingScheme(
-                tileMatrixSetURI='https://www.opengis.net/def/tilematrixset/OGC/1.0/WebMercatorQuad',
-                crs='EPSG:3857',
-                tileMatrixSet='WebMercatorQuad'
-            ),
-        ]
+
 
     """
     
