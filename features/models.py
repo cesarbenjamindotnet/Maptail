@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.gis.db import models
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 
 from base.mixins import LockableWorkFlowDraftStateRevisionModelBaseMixin
 from wagtail.models import RevisionMixin, LockableMixin, DraftStateMixin, Orderable
@@ -38,9 +38,14 @@ class Point(Feature):
     def __str__(self):
         return f"{self.layer.title}: {self.id}"
 
+    @receiver(post_delete, sender='features.Point')
+    def delete_point_feature(sender, instance, **kwargs):
+        doc = PointFeatureDocument.get(id=instance.id)
+        doc.delete()
+
     @receiver(post_save, sender='features.Point')
     def index_point_feature(sender, instance, **kwargs):
-        if not instance.has_unpublished_changes:
+        if instance.pk and not instance.has_unpublished_changes:
             geom_geojson = json.loads(instance.geom.geojson)
 
             print("instance.data", instance.data)
@@ -49,7 +54,6 @@ class Point(Feature):
             properties = {
                 'data': instance.data,
                 'layer': instance.layer.id}
-
 
             doc = PointFeatureDocument(
                 meta={'id': instance.id},
@@ -78,7 +82,7 @@ class LineString(Feature):
 
     @receiver(post_save, sender='features.LineString')
     def index_linestring_feature(sender, instance, **kwargs):
-        if not instance.has_unpublished_changes:
+        if instance.pk and not instance.has_unpublished_changes:
             # geom_3857 = instance.geom.transform(3857, clone=True)
             geom_geojson = json.loads(instance.geom.geojson)
 
@@ -111,7 +115,7 @@ class Polygon(Feature):
 
     @receiver(post_save, sender='features.Polygon')
     def index_polygon_feature(sender, instance, **kwargs):
-        if not instance.has_unpublished_changes:
+        if instance.pk and not instance.has_unpublished_changes:
             # geom_3857 = instance.geom.transform(3857, clone=True)
             geom_geojson = json.loads(instance.geom.geojson)
 
@@ -161,3 +165,4 @@ class MultiPolygon(Feature):
 
     def __str__(self):
         return f"{self.layer.title}: {self.id}"
+

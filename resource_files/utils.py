@@ -43,6 +43,8 @@ def store_layer_data(file, layer, model):
 
         if not model.objects.filter(layer=layer, source_file=file).exists():
             for feature, crs in get_spatial_data_features(file.file.path):
+                print("crs", crs.to_epsg)
+                print("crs", dir(crs))
                 properties = dict(feature['properties'])
                 reprojected_geometry = transform_geom(crs, settings.DATA_FEATURES_SRID, feature['geometry'])
                 shapely_geometry = shape(reprojected_geometry)

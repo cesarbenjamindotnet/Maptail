@@ -21,7 +21,7 @@ class DynamicPygeoapiResourcesView(View):
                 "keywords": list(resource.tags.all().values_list('name', flat=True)),
                 "extents": {
                   "spatial": {
-                    "bbox": resource.features.aggregate(Extent('geom'))['geom__extent'],
+                    "bbox": resource.features.aggregate(Extent('geom'))['geom__extent'] or [-180, -90, 180, 90],
                     'crs': 'http://www.opengis.net/def/crs/OGC/1.3/CRS84'
                   },
                   "temporal": {
@@ -59,5 +59,4 @@ class DynamicPygeoapiResourcesView(View):
                 ]
             }
 
-        print("config", config)
         return JsonResponse(config)
